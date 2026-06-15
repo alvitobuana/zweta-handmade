@@ -47,4 +47,9 @@
             </tbody>
         </table>
     </div>
+    @if ($customers->hasPages())
+        <div class="mt-4">
+            {{ $customers->links() }}
+        </div>
+    @endif
 @endsection

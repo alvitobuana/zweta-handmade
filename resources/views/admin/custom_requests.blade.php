@@ -47,10 +47,10 @@
                                 @csrf
                                 <select name="status" class="border rounded px-2 py-1 text-sm" onchange="this.form.submit()">
                                     <option value="">Ubah Status</option>
-                                    <option value="menunggu" @selected($r->status == 'menunggu')>Menunggu</option>
-                                    <option value="dikonfirmasi" @selected($r->status == 'dikonfirmasi')>Dikonfirmasi</option>
-                                    <option value="ditolak" @selected($r->status == 'ditolak')>Ditolak</option>
-                                    <option value="selesai" @selected($r->status == 'selesai')>Selesai</option>
+                                    <option value="menunggu"    @selected($r->status == 'menunggu')>Menunggu</option>
+                                    <option value="diproses"    @selected($r->status == 'diproses')>Diproses</option>
+                                    <option value="selesai"     @selected($r->status == 'selesai')>Selesai</option>
+                                    <option value="dibatalkan"  @selected($r->status == 'dibatalkan')>Dibatalkan</option>
                                 </select>
                             </form>
                         </td>
@@ -63,5 +63,10 @@
             </tbody>
         </table>
     </div>
+    @if ($requests->hasPages())
+        <div class="mt-4">
+            {{ $requests->links() }}
+        </div>
+    @endif
 @endsection
 

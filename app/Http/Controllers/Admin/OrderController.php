@@ -10,7 +10,7 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $orders = Order::latest()->get();
+        $orders = Order::latest()->paginate(15);
         return view('admin.orders', compact('orders'));
     }
 
@@ -22,6 +22,10 @@ class OrderController extends Controller
 
     public function updateStatus(Request $request, Order $order)
     {
+        $request->validate([
+            'status' => ['required', 'in:pending,produksi,finishing,selesai'],
+        ]);
+
         $order->update(['status' => $request->status]);
         return redirect()->back()->with('success', 'Status pesanan diperbarui');
     }

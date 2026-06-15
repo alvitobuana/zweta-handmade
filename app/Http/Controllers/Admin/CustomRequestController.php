@@ -10,7 +10,7 @@ class CustomRequestController extends Controller
 {
     public function index()
     {
-        $requests = CustomRequest::latest()->get();
+        $requests = CustomRequest::latest()->paginate(15);
         return view('admin.custom_requests', compact('requests'));
     }
 
@@ -22,6 +22,10 @@ class CustomRequestController extends Controller
 
     public function updateStatus(Request $request, CustomRequest $customRequest)
     {
+        $request->validate([
+            'status' => ['required', 'in:menunggu,diproses,selesai,dibatalkan'],
+        ]);
+
         $customRequest->update(['status' => $request->status]);
         return redirect()->back()->with('success', 'Status request diperbarui');
     }
