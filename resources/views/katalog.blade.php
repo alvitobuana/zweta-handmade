@@ -31,7 +31,7 @@
     <!-- Products Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
         @forelse($products as $p)
-            <x-card :title="$p->name" :price="'Rp '.number_format($p->price,0,',','.')" :href="route('product.show', $p->slug)" :status="$p->status" />
+            <x-card :title="$p->name" :price="'Rp '.number_format($p->price,0,',','.')" :href="route('product.show', $p->slug)" :status="$p->status" :image="$p->image" />
         @empty
             <div class="col-span-full text-center py-16">
                 <p class="text-xl text-gray-600">Tidak ada produk tersedia</p>

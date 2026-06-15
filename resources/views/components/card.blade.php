@@ -1,4 +1,4 @@
-@props(['title' => null, 'price' => null, 'href' => '#', 'status' => 'ready'])
+@props(['title' => null, 'price' => null, 'href' => '#', 'status' => 'ready', 'image' => null])
 @php
     $statusClass = 'bg-gray-200 text-gray-800';
     if($status === 'ready') $statusClass = 'bg-green-100 text-green-700 border border-green-300';
@@ -10,9 +10,14 @@
     <div class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition duration-300 h-full flex flex-col">
         <!-- Image -->
         <div class="bg-gradient-to-br from-[--soft-beige] to-[--cream] h-48 flex items-center justify-center overflow-hidden group-hover:scale-105 transition duration-300">
-            <svg class="w-20 h-20 text-[--caramel] opacity-40" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M7 4a3 3 0 016 0v12a3 3 0 11-6 0V4z"/>
-            </svg>
+            @if ($image)
+                <img src="{{ Storage::url($image) }}" alt="{{ $title }}"
+                     class="w-full h-full object-cover">
+            @else
+                <svg class="w-20 h-20 text-[--caramel] opacity-40" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M7 4a3 3 0 016 0v12a3 3 0 11-6 0V4z"/>
+                </svg>
+            @endif
         </div>
 
         <!-- Content -->

@@ -4,10 +4,15 @@
     <div class="grid lg:grid-cols-2 gap-12 mb-16">
         <!-- Image Section -->
         <div>
-            <div class="bg-gradient-to-br from-[--soft-beige] to-[--cream] rounded-2xl h-96 flex items-center justify-center mb-6 shadow-lg">
-                <svg class="w-24 h-24 text-[--caramel] opacity-30" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M7 4a3 3 0 016 0v12a3 3 0 11-6 0V4z"/>
-                </svg>
+            <div class="bg-gradient-to-br from-[--soft-beige] to-[--cream] rounded-2xl h-96 flex items-center justify-center mb-6 shadow-lg overflow-hidden">
+                @if ($product->image)
+                    <img src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}"
+                         class="w-full h-full object-cover">
+                @else
+                    <svg class="w-24 h-24 text-[--caramel] opacity-30" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M7 4a3 3 0 016 0v12a3 3 0 11-6 0V4z"/>
+                    </svg>
+                @endif
             </div>
             <div class="flex gap-3">
                 @for ($i=0;$i<4;$i++)
