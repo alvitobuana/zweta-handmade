@@ -167,6 +167,16 @@
                     <textarea name="description" rows="5" class="w-full px-4 py-3 bg-white border border-soft-beige rounded-xl text-sm focus:outline-none focus:border-caramel placeholder-gray-400 leading-relaxed" placeholder="Tulis deskripsi produk di sini...">{{ old('description', $product->description) }}</textarea>
                 </div>
 
+                <!-- Bottom Form Action Buttons -->
+                <div class="flex items-center gap-3 mt-4 pt-4 border-t border-gray-50">
+                    <button type="submit" class="px-6 py-2.5 bg-caramel text-white rounded-xl text-xs font-semibold hover:bg-opacity-95 transition shadow-sm">
+                        Simpan Produk
+                    </button>
+                    <a href="{{ route('admin.products.index') }}" class="px-5 py-2.5 border border-caramel/40 text-caramel rounded-xl text-xs font-semibold hover:bg-gray-50 transition">
+                        Batal
+                    </a>
+                </div>
+
                 <p class="text-[10px] text-gray-400 italic">Perubahan data produk akan langsung tampil di katalog customer setelah disimpan.</p>
             </div>
         </form>
