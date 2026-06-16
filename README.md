@@ -1,265 +1,235 @@
-# Zweta Handmade - Complete Laravel E-Commerce Application
+# 🎀 Zweta Handmade — Platform E-Commerce Tas Handmade
 
-A full-featured handmade bag e-commerce platform built with Laravel 11, featuring customer frontend and complete admin panel.
+Platform penjualan tas handmade berbasis web yang dibangun dengan **Laravel 11**, lengkap dengan antarmuka pelanggan yang modern dan panel admin yang komprehensif.
 
-## 🎯 Features
+---
 
-### Frontend (Customer)
-- **Product Catalog** - Browse handmade bags with filter and search
-- **Product Details** - View product information with timeline
-- **Custom Orders** - Submit custom order requests with specifications
-- **Order Tracking** - Track orders by order code in real-time
-- **User Authentication** - Secure login/register system
+## ✨ Fitur Utama
 
-### Admin Panel
-- **Dashboard** - Analytics with order stats, revenue, and recent activity
-- **Product Management** - Full CRUD operations for products
-- **Order Management** - View orders and manage status (Pending → Produksi → Finishing → Selesai)
-- **Custom Requests** - Manage custom order requests with status tracking
-- **Stock Management** - Inventory tracking for materials (Kain, Tali, Resleting, Benang, Label, Aksesori)
-- **Customer Database** - View all customers with purchase history
-- **Production Queue** - Kanban-style board for production workflow management
+### 🛍️ Frontend (Pelanggan)
+| Fitur | Keterangan |
+|---|---|
+| **Halaman Beranda** | Showcase produk unggulan, hero section, dan FAQ |
+| **Katalog Produk** | Browse produk dengan filter status & pencarian real-time |
+| **Detail Produk** | Info lengkap produk, timeline produksi, wishlist & bagikan |
+| **Stok Habis** | Badge "Habis" otomatis & tombol pesan di-disable jika stok = 0 |
+| **Custom Order** | Form pengajuan tas custom (model, warna, ukuran, catatan) |
+| **Lacak Pesanan** | Tracking otomatis tanpa input kode jika sudah login |
+| **Upload Bukti Bayar** | Upload foto transfer & lihat status verifikasi |
+| **Profil Saya** | Kelola data akun + pantau status pesanan terbaru |
+| **Edit Profil** | Update nama, email, WhatsApp, alamat, dan password |
+| **Halaman Kontak** | Info kontak lengkap (WhatsApp, Email, Instagram, Alamat) |
+| **Login / Register** | Autentikasi berbasis sesi yang aman |
 
-## 🚀 Cara Menjalankan Project (Local Setup)
+### ⚙️ Admin Panel (`/admin`)
+| Fitur | Keterangan |
+|---|---|
+| **Dashboard** | Statistik pesanan, revenue, custom order, & produk |
+| **Manajemen Produk** | CRUD lengkap termasuk upload foto & pengaturan stok |
+| **Manajemen Pesanan** | Lihat, update status, verifikasi/tolak bukti pembayaran |
+| **Custom Request** | Kelola permintaan custom order dari pelanggan |
+| **Production Queue** | Kanban board alur produksi (Menunggu → Finishing → Selesai) |
+| **Stok Bahan** | Tambah, edit, hapus bahan baku + indikator Aman/Menipis/Habis |
+| **Laporan Penjualan** | Grafik revenue, tren penjualan, & rincian transaksi |
+| **Data Customer** | Tabel pelanggan dengan riwayat pembelian & detail lengkap |
 
-Ikuti langkah-langkah berikut untuk menjalankan project ini di komputer/laptop Anda:
+---
 
-### Prasyarat (Prerequisites)
-Sebelum memulai, pastikan Anda sudah menginstal:
+## 🚀 Cara Menjalankan (Local Setup)
+
+### Prasyarat
+Pastikan sudah terinstal:
 - **PHP >= 8.2**
-- **Composer** (untuk PHP dependency manager)
-- **Node.js & NPM** (untuk frontend assets compilation)
+- **Composer**
+- **Node.js & NPM**
 - **SQLite** (biasanya sudah include dengan PHP)
 
----
+### Langkah Instalasi
 
-### Langkah-Langkah Instalasi
+**1. Clone Repository**
+```bash
+git clone https://github.com/alvitobuana/zweta-handmade.git
+cd zweta-handmade
+```
 
-1. **Clone Repository ini:**
-   ```bash
-   git clone https://github.com/alvitobuana/zweta-handmade.git
-   cd zweta-handmade
-   ```
+**2. Install Dependensi**
+```bash
+composer install
+npm install
+```
 
-2. **Instal Dependensi PHP (Composer):**
-   ```bash
-   composer install
-   ```
+**3. Buat File Environment**
+```powershell
+# Windows (PowerShell)
+copy .env.example .env
 
-3. **Instal Dependensi Frontend (NPM):**
-   ```bash
-   npm install
-   ```
+# Mac / Linux
+cp .env.example .env
+```
 
-4. **Salin File Konfigurasi Environment:**
-   Buat file `.env` dengan menduplikat `.env.example`:
-   - **Windows (PowerShell):**
-     ```powershell
-     copy .env.example .env
-     ```
-   - **Mac/Linux atau Git Bash:**
-     ```bash
-     cp .env.example .env
-     ```
+**4. Generate App Key**
+```bash
+php artisan key:generate
+```
 
-5. **Generate Application Key:**
-   ```bash
-   php artisan key:generate
-   ```
+**5. Buat File Database SQLite**
+```powershell
+# Windows (PowerShell)
+New-Item -Path database -Name database.sqlite -ItemType File
 
-6. **Siapkan Database SQLite:**
-   Secara default, project ini menggunakan SQLite. 
-   - Di Windows, Anda bisa membuat file kosong bernama `database.sqlite` di folder `database/`:
-     - **Windows (PowerShell):**
-       ```powershell
-       New-Item -Path database -Name database.sqlite -ItemType File
-       ```
-     - **Mac/Linux/Git Bash:**
-       ```bash
-       touch database/database.sqlite
-       ```
-   - Atau, saat Anda menjalankan perintah migrasi di bawah, Laravel akan secara otomatis mendeteksi jika file `database.sqlite` belum ada dan akan menanyakan apakah Anda ingin membuatnya. Ketik **`yes`** jika ditanya.
+# Mac / Linux
+touch database/database.sqlite
+```
 
-7. **Jalankan Migrasi & Seeder Database:**
-   Perintah ini akan membuat tabel-tabel database dan mengisi data awal (seperti produk demo, data admin, material, dll):
-   ```bash
-   php artisan migrate:fresh --seed
-   ```
+**6. Jalankan Migrasi & Seeder**
+```bash
+php artisan migrate:fresh --seed
+```
 
-8. **Jalankan Project:**
-   Untuk menjalankan aplikasi secara lokal, Anda perlu menyalakan **dua server** berikut secara bersamaan:
+**7. Jalankan Server (buka 2 terminal)**
+```bash
+# Terminal 1 — Backend Laravel
+php artisan serve
 
-   * **Server Backend (Laravel):**
-     ```bash
-     php artisan serve
-     ```
-     Aplikasi backend akan berjalan di: **`http://127.0.0.1:8000`**
+# Terminal 2 — Frontend Vite (CSS & JS)
+npm run dev
+```
 
-   * **Server Frontend (Vite):**
-     ```bash
-     npm run dev
-     ```
-     Server Vite ini bertugas untuk menyusun (compile) CSS Tailwind dan aset frontend lainnya secara real-time.
+Buka di browser: **http://localhost:8000**
 
 ---
 
-### 🔑 Demo Akun Admin
+## 🔑 Akun Demo
 
-Untuk masuk ke halaman Admin Dashboard (`http://127.0.0.1:8000/login`), gunakan kredensial berikut:
-- **Email:** `test@example.com`
-- **Password:** `password`
+| Role | Email | Password |
+|---|---|---|
+| **Admin** | `test@example.com` | `password` |
+| **User** | Daftar sendiri di `/register` | — |
 
-## 📋 Database Models
+---
 
-### Products
-- name, slug, price, stock, status (ready/pre-order/custom), description
+## 🗺️ Daftar Route
 
-### Orders  
-- code, customer_name, product, qty, price, status, notes, created_at
+### Public
+| Route | Keterangan |
+|---|---|
+| `/` | Beranda |
+| `/katalog` | Katalog produk |
+| `/produk/{slug}` | Detail produk |
+| `/custom` | Form custom order |
+| `/tracking` | Lacak pesanan |
+| `/kontak` | Halaman kontak |
+| `/login` | Login |
+| `/register` | Registrasi |
 
-### Custom Requests
-- customer_name, email, phone, model, color, notes, deadline, status, created_at
+### User (Harus Login)
+| Route | Keterangan |
+|---|---|
+| `/profile` | Profil saya |
+| `/profile/edit` | Edit profil |
+| `/produk/{slug}/order` | Buat pesanan |
+| `/tracking/{code}/receipt` | Upload bukti bayar |
 
-### Customers
-- name, email, phone, total_orders, total_spent
+### Admin (Harus Login sebagai Admin)
+| Route | Keterangan |
+|---|---|
+| `/admin` | Dashboard |
+| `/admin/products` | Manajemen produk |
+| `/admin/orders` | Manajemen pesanan |
+| `/admin/custom-requests` | Custom request |
+| `/admin/production` | Production queue |
+| `/admin/materials` | Stok bahan |
+| `/admin/reports` | Laporan penjualan |
+| `/admin/customers` | Data customer |
 
-### Materials
-- name, type, quantity, min_stock, status (aman/habis)
+---
 
-## 🎨 Technology Stack
+## 🗄️ Struktur Database
 
-- **Framework**: Laravel 11
-- **Frontend**: Blade templating + Tailwind CSS v4
-- **Database**: SQLite
-- **Build Tool**: Vite
-- **Authentication**: Custom session-based auth
-- **Styling**: Custom Tailwind configuration with brand colors
+### `users`
+`id` · `name` · `email` · `password` · `whatsapp` · `address` · `is_admin`
 
-## 🎨 Design System
+### `products`
+`id` · `name` · `slug` · `price` · `stock` · `status` (ready/pre-order/custom) · `description` · `image`
 
-**Brand Colors:**
-- Dark Brown: `#3D2817` (primary)
-- Caramel: `#C69C6D` (accent)
-- Cream: `#F5F1E8` (background)
-- Soft Beige: `#E8DCC8`
-- Dusty Pink: `#D4A5A5`
-- Sage: `#8B9E7F`
+### `orders`
+`id` · `code` · `customer_name` · `product` · `qty` · `price` · `status` · `notes` · `payment_receipt`
 
-**Typography:**
-- Serif: Playfair Display (headings)
-- Sans: Poppins (body text)
+### `custom_requests`
+`id` · `customer_name` · `email` · `phone` · `model` · `color` · `notes` · `deadline` · `status`
 
-## 📁 Project Structure
+### `materials`
+`id` · `name` · `type` · `quantity` · `min_stock` · `status` (aman/menipis/habis)
+
+### `customers`
+`id` · `name` · `email` · `phone` · `total_orders` · `total_spent`
+
+---
+
+## 🎨 Teknologi yang Digunakan
+
+| Teknologi | Kegunaan |
+|---|---|
+| **Laravel 11** | Backend framework |
+| **Blade** | Template engine |
+| **Tailwind CSS v4** | Styling & UI |
+| **Vite** | Build tool frontend |
+| **SQLite** | Database |
+| **Playfair Display + Poppins** | Tipografi |
+
+### Palet Warna Brand
+```
+Dark Brown  #4B2B20   ← Teks utama & sidebar admin
+Caramel     #A56A43   ← Aksen & tombol utama
+Cream       #FFF8F2   ← Background utama
+Soft Beige  #EAD9CC   ← Border & card
+Dusty Pink  #D89CA4   ← Aksen sekunder
+```
+
+---
+
+## 📦 Data Awal (Seeder)
+
+Setelah `migrate:fresh --seed`, database terisi dengan:
+- **7 Produk**: Tote Terra, Sling Latte, Pouch Rose, Mini Sage, Daily Cocoa, dll.
+- **Beberapa Pesanan** dengan berbagai status
+- **Custom Request** dari pelanggan contoh
+- **7 Bahan**: Kulit, Kain, Resleting, Benang, Label, Aksesori, dll.
+- **6 Customer** dengan riwayat transaksi
+
+---
+
+## 📁 Struktur Folder Utama
 
 ```
 ├── app/
-│   ├── Models/
-│   │   ├── Product.php
-│   │   ├── Order.php
-│   │   ├── CustomRequest.php
-│   │   ├── Customer.php
-│   │   └── Material.php
-│   └── Http/Controllers/
-│       ├── AuthController.php
-│       ├── ProductController.php
-│       ├── CustomRequestController.php
-│       ├── OrderTrackingController.php
-│       └── Admin/
-│           ├── DashboardController.php
-│           ├── ProductController.php
-│           ├── OrderController.php
-│           ├── CustomRequestController.php
-│           ├── CustomerController.php
-│           ├── MaterialController.php
-│           └── ProductionController.php
-├── resources/
-│   ├── views/
-│   │   ├── layouts/
-│   │   │   ├── app.blade.php
-│   │   │   └── admin.blade.php
-│   │   ├── admin/
-│   │   │   ├── dashboard.blade.php
-│   │   │   ├── orders.blade.php
-│   │   │   ├── custom_requests.blade.php
-│   │   │   ├── customers.blade.php
-│   │   │   ├── materials.blade.php
-│   │   │   ├── products/
-│   │   │   └── production_queue.blade.php
-│   │   ├── auth/
-│   │   │   ├── login.blade.php
-│   │   │   └── register.blade.php
-│   │   ├── components/
-│   │   │   ├── card.blade.php
-│   │   │   ├── badge.blade.php
-│   │   │   └── timeline.blade.php
-│   │   ├── home.blade.php
-│   │   ├── katalog.blade.php
-│   │   ├── product.blade.php
-│   │   ├── custom.blade.php
-│   │   └── tracking.blade.php
-│   └── css/
-│       └── app.css
+│   ├── Http/Controllers/
+│   │   ├── Admin/          ← Controller admin panel
+│   │   ├── AuthController.php
+│   │   ├── ProductController.php
+│   │   ├── OrderTrackingController.php
+│   │   └── UserController.php
+│   └── Models/
+│       ├── Product.php · Order.php · User.php
+│       ├── CustomRequest.php · Customer.php · Material.php
+├── resources/views/
+│   ├── admin/              ← Semua tampilan admin
+│   ├── auth/               ← Login & Register
+│   ├── components/         ← Komponen reusable (card, badge, timeline)
+│   ├── layouts/            ← Layout utama (app & admin)
+│   ├── pages/              ← Halaman user (profile, kontak, dll.)
+│   ├── partials/           ← Header & Footer
+│   ├── home.blade.php · katalog.blade.php
+│   ├── product.blade.php · custom.blade.php · tracking.blade.php
 ├── database/
 │   ├── migrations/
-│   ├── seeders/
-│   │   ├── ProductSeeder.php
-│   │   ├── OrderSeeder.php
-│   │   ├── CustomRequestSeeder.php
-.   │   ├── CustomerSeeder.php
-│   │   └── MaterialSeeder.php
-│   └── factories/
-└── routes/
-    └── web.php
+│   └── seeders/
+└── routes/web.php
 ```
 
-## 🔑 Key Routes
+---
 
-### Public Routes
-- `/` - Homepage with featured products
-- `/katalog` - Full product catalog
-- `/produk/{slug}` - Product detail page
-- `/custom` - Custom order form
-- `/tracking` - Order tracking search
-- `/login` - Customer login
-- `/register` - Customer registration
+## 👨‍💻 Dibuat oleh
 
-### Admin Routes (Protected)
-- `/admin` - Dashboard
-- `/admin/products` - Product management (CRUD)
-- `/admin/orders` - Order management with status updates
-- `/admin/custom-requests` - Custom request management
-- `/admin/materials` - Stock/material management
-- `/admin/customers` - Customer database
-- `/admin/production` - Production queue kanban board
-
-## 🔐 Authentication & Authorization
-
-The project uses custom session-based authentication:
-- Login/register at `/login` and `/register`
-- Admin routes protected with `auth` middleware
-- Simple password hashing with bcrypt
-
-## 📊 Sample Data
-
-The database is pre-seeded with:
-- **6 Products**: Tote Terra, Sling Latte, Pouch Rose, Mini Sage, Daily Cocoa, Bag Cream
-- **2 Orders**: ZW-24001 (Aulia), ZW-24002 (Rani)
-- **2 Custom Requests**: Aulia (Tote Bag), Rani (Sling)
-- **6 Customers**: With purchase history and spending data
-- **7 Materials**: Various fabric and accessory items with stock tracking
-
-## 🛠️ Development
-
-### File Organization
-- Database logic in Eloquent Models (`app/Models/`)
-- Business logic in Controllers (`app/Http/Controllers/`)
-- UI templates in Blade files (`resources/views/`)
-- Styling with Tailwind CSS (`resources/css/app.css`)
-- Routes defined in `routes/web.php`
-
-### Adding New Features
-1. Create migration: `php artisan make:migration create_table_name`
-2. Create model: `php artisan make:model ModelName -m`
-3. Create controller: `php artisan make:controller ControllerName -r`
-4. Add routes in `routes/web.php`
-5. Create Blade templates in `resources/views/`
+**Zweta Handmade Team** — Tugas Besar Pemrograman Berbasis Komponen  
+Universitas · 2026
