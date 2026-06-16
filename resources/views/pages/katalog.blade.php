@@ -56,9 +56,7 @@
             <h3>Kategori</h3>
             <label><input type="checkbox"> Tote Bag</label>
             <label><input type="checkbox"> Sling Bag</label>
-            <label><input type="checkbox"> Pouch</label>
-            <label><input type="checkbox"> Hampers</label>
-            <label><input type="checkbox"> Custom Gift</label>
+            <label><input type="checkbox"> Backpack</label>
         </div>
 
         <div class="box">
@@ -98,7 +96,7 @@
 
             <!-- CARD -->
             <div class="card">
-                <div class="img"></div>
+                <div class="img" style="background-image: url('{{ asset('images/Foto Tas/Tas totebag/WhatsApp Image 2026-06-15 at 21.35.03.jpeg') }}'); background-size: cover; background-position: center;"></div>
                 <h4>Tote Terra</h4>
                 <p>Rp 85.000</p>
                 <div class="card-bottom">
@@ -108,7 +106,7 @@
             </div>
 
             <div class="card">
-                <div class="img"></div>
+                <div class="img" style="background-image: url('{{ asset('images/Foto Tas/Sling bag/WhatsApp Image 2026-06-15 at 21.35.02.jpeg') }}'); background-size: cover; background-position: center;"></div>
                 <h4>Sling Latte</h4>
                 <p>Rp 85.000</p>
                 <div class="card-bottom">
@@ -118,7 +116,7 @@
             </div>
 
             <div class="card">
-                <div class="img"></div>
+                <div class="img" style="background-image: url('{{ asset('images/Foto Tas/Backpack/WhatsApp Image 2026-06-15 at 21.36.55.jpeg') }}'); background-size: cover; background-position: center;"></div>
                 <h4>Pouch Rose</h4>
                 <p>Rp 85.000</p>
                 <div class="card-bottom">
@@ -128,7 +126,7 @@
             </div>
 
             <div class="card">
-                <div class="img"></div>
+                <div class="img" style="background-image: url('{{ asset('images/Foto Tas/Tas totebag/WhatsApp Image 2026-06-15 at 21.36.59 (2).jpeg') }}'); background-size: cover; background-position: center;"></div>
                 <h4>Mini Sage</h4>
                 <p>Rp 85.000</p>
                 <div class="card-bottom">
@@ -138,7 +136,7 @@
             </div>
 
             <div class="card">
-                <div class="img"></div>
+                <div class="img" style="background-image: url('{{ asset('images/Foto Tas/Sling bag/WhatsApp Image 2026-06-15 at 21.35.02 (1).jpeg') }}'); background-size: cover; background-position: center;"></div>
                 <h4>Daily Cocoa</h4>
                 <p>Rp 85.000</p>
                 <div class="card-bottom">
@@ -148,7 +146,7 @@
             </div>
 
             <div class="card">
-                <div class="img"></div>
+                <div class="img" style="background-image: url('{{ asset('images/Foto Tas/Backpack/WhatsApp Image 2026-06-15 at 21.36.56 (1).jpeg') }}'); background-size: cover; background-position: center;"></div>
                 <h4>Bag Cream</h4>
                 <p>Rp 85.000</p>
                 <div class="card-bottom">

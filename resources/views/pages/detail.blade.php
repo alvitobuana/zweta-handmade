@@ -46,14 +46,14 @@
     <!-- LEFT -->
     <div class="left">
 
-        <div class="main-img"></div>
+        <div class="main-img" style="background-image: url('{{ asset('images/Foto Tas/Tas totebag/WhatsApp Image 2026-06-15 at 21.35.03.jpeg') }}'); background-size: cover; background-position: center;"></div>
 
         <div class="thumbs">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
+            <div style="background-image: url('{{ asset('images/Foto Tas/Tas totebag/WhatsApp Image 2026-06-15 at 21.35.03.jpeg') }}'); background-size: cover; background-position: center;"></div>
+            <div style="background-image: url('{{ asset('images/Foto Tas/Tas totebag/WhatsApp Image 2026-06-15 at 21.36.59 (2).jpeg') }}'); background-size: cover; background-position: center;"></div>
+            <div style="background-image: url('{{ asset('images/Foto Tas/Tas totebag/WhatsApp Image 2026-06-15 at 21.37.00 (1).jpeg') }}'); background-size: cover; background-position: center;"></div>
+            <div style="background-image: url('{{ asset('images/Foto Tas/Tas totebag/WhatsApp Image 2026-06-15 at 21.37.00 (2).jpeg') }}'); background-size: cover; background-position: center;"></div>
+            <div style="background-image: url('{{ asset('images/Foto Tas/Tas totebag/WhatsApp Image 2026-06-15 at 21.35.02 (2).jpeg') }}'); background-size: cover; background-position: center;"></div>
         </div>
 
     </div>

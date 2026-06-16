@@ -49,7 +49,7 @@
     <!-- LEFT -->
     <div class="preview-card">
 
-    <div class="preview-box">
+    <div class="preview-box" style="background-image: url('{{ asset('images/Foto Tas/Sling bag/WhatsApp Image 2026-06-15 at 21.35.02.jpeg') }}'); background-size: cover; background-position: center;">
         <div class="preview-label">Preview Produk</div>
     </div>
 
