@@ -23,10 +23,14 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/admin');
+            // Admin -> dashboard, user biasa -> homepage
+            if (Auth::user()->isAdmin()) {
+                return redirect()->intended('/admin');
+            }
+            return redirect()->intended('/');
         }
 
-        return back()->withErrors(['email' => 'Login failed'])->onlyInput('email');
+        return back()->withErrors(['email' => 'Email atau password salah.'])->onlyInput('email');
     }
 
     public function showRegister()
@@ -37,19 +41,19 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|email|unique:users,email',
             'password' => 'required|min:6|confirmed'
         ]);
 
         $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
+            'name'     => $data['name'],
+            'email'    => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
 
         Auth::login($user);
-        return redirect('/admin');
+        return redirect('/'); // user biasa langsung ke homepage
     }
 
     public function logout(Request $request)
