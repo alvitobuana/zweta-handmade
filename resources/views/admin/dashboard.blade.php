@@ -1,83 +1,81 @@
 @extends('layouts.admin')
 
 @section('content')
-    <h1 class="text-3xl font-serif mb-6">Dashboard Admin</h1>
-    
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-[--dark-brown]">
-            <p class="text-gray-600 text-sm">Total Produk</p>
-            <p class="text-3xl font-semibold">{{ $totalProducts }}</p>
+    <!-- Dashboard Header -->
+    <div class="mb-10">
+        <h1 class="text-4xl font-serif text-dark-brown font-bold mb-2">Dashboard Admin</h1>
+        <p class="text-sm text-gray-500">Ringkasan bisnis Zweta Handmade hari ini.</p>
+    </div>
+
+    <!-- Stats Grid (6 Cards) -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <!-- Card 1: Total Pesanan -->
+        <div class="bg-white border border-gray-100 rounded-2xl p-6 shadow-[0_4px_20px_rgba(28,20,16,0.015)]">
+            <p class="text-sm font-bold text-dark-brown mb-3">Total Pesanan</p>
+            <p class="text-2xl text-gray-500">{{ $totalOrders }}</p>
         </div>
-        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-blue-500">
-            <p class="text-gray-600 text-sm">Total Pesanan</p>
-            <p class="text-3xl font-semibold">{{ $totalOrders }}</p>
+
+        <!-- Card 2: Revenue -->
+        @php
+            if ($totalRevenue >= 1000000) {
+                $formattedRevenue = 'Rp ' . number_format($totalRevenue / 1000000, 1, ',', '.') . ' jt';
+            } else {
+                $formattedRevenue = 'Rp ' . number_format($totalRevenue, 0, ',', '.');
+            }
+        @endphp
+        <div class="bg-white border border-gray-100 rounded-2xl p-6 shadow-[0_4px_20px_rgba(28,20,16,0.015)]">
+            <p class="text-sm font-bold text-dark-brown mb-3">Revenue</p>
+            <p class="text-2xl text-gray-500">{{ $formattedRevenue }}</p>
         </div>
-        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-purple-500">
-            <p class="text-gray-600 text-sm">Custom Request</p>
-            <p class="text-3xl font-semibold">{{ $totalCustomRequests }}</p>
+
+        <!-- Card 3: Custom Order -->
+        <div class="bg-white border border-gray-100 rounded-2xl p-6 shadow-[0_4px_20px_rgba(28,20,16,0.015)]">
+            <p class="text-sm font-bold text-dark-brown mb-3">Custom Order</p>
+            <p class="text-2xl text-gray-500">{{ $totalCustomRequests }}</p>
         </div>
-        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-green-500">
-            <p class="text-gray-600 text-sm">Total Customer</p>
-            <p class="text-3xl font-semibold">{{ $totalCustomers }}</p>
+
+        <!-- Card 4: Produk -->
+        <div class="bg-white border border-gray-100 rounded-2xl p-6 shadow-[0_4px_20px_rgba(28,20,16,0.015)]">
+            <p class="text-sm font-bold text-dark-brown mb-3">Produk</p>
+            <p class="text-2xl text-gray-500">{{ $totalProducts }}</p>
+        </div>
+
+        <!-- Card 5: Pending -->
+        <div class="bg-white border border-gray-100 rounded-2xl p-6 shadow-[0_4px_20px_rgba(28,20,16,0.015)]">
+            <p class="text-sm font-bold text-dark-brown mb-3">Pending</p>
+            <p class="text-2xl text-gray-500">{{ $pendingCount }}</p>
+        </div>
+
+        <!-- Card 6: Deadline Dekat -->
+        <div class="bg-white border border-gray-100 rounded-2xl p-6 shadow-[0_4px_20px_rgba(28,20,16,0.015)]">
+            <p class="text-sm font-bold text-dark-brown mb-3">Deadline Dekat</p>
+            <p class="text-2xl text-gray-500">{{ $deadlineCount }}</p>
         </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="font-semibold mb-4">Pesanan berdasarkan Status</h3>
-            <div class="space-y-2">
-                @foreach ($ordersByStatus as $status => $count)
-                    <div class="flex justify-between items-center">
-                        <span class="capitalize">{{ $status }}</span>
-                        <span class="bg-gray-200 rounded-full px-3 py-1 text-sm">{{ $count }}</span>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-
-        <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="font-semibold mb-4">Custom Request berdasarkan Status</h3>
-            <div class="space-y-2">
-                @foreach ($requestsByStatus as $status => $count)
-                    <div class="flex justify-between items-center">
-                        <span class="capitalize">{{ $status }}</span>
-                        <span class="bg-gray-200 rounded-full px-3 py-1 text-sm">{{ $count }}</span>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="font-semibold mb-4">Pesanan Terbaru</h3>
-            <div class="space-y-3">
-                @forelse ($recentOrders as $order)
-                    <div class="border-b pb-3 last:border-0">
-                        <p class="font-medium">{{ $order->code }}</p>
-                        <p class="text-sm text-gray-600">{{ $order->customer_name }} - {{ $order->product }}</p>
-                        <p class="text-sm text-gray-600">Rp {{ number_format($order->price, 0, ',', '.') }}</p>
-                    </div>
-                @empty
-                    <p class="text-gray-400">Tidak ada pesanan</p>
-                @endforelse
-            </div>
-        </div>
-
-        <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="font-semibold mb-4">Custom Request Terbaru</h3>
-            <div class="space-y-3">
-                @forelse ($recentRequests as $request)
-                    <div class="border-b pb-3 last:border-0">
-                        <p class="font-medium">{{ $request->customer_name }}</p>
-                        <p class="text-sm text-gray-600">Model: {{ $request->model }}</p>
-                        <p class="text-sm text-gray-600">Status: <span class="px-2 py-1 bg-yellow-100 text-yellow-700 rounded text-xs">{{ $request->status }}</span></p>
-                    </div>
-                @empty
-                    <p class="text-gray-400">Tidak ada request</p>
-                @endforelse
-            </div>
+    <!-- Recent Orders Card -->
+    <div class="bg-white border border-gray-100 rounded-3xl p-8 shadow-[0_4px_20px_rgba(28,20,16,0.01)]">
+        <h3 class="text-lg font-bold text-dark-brown mb-6">Pesanan Terbaru</h3>
+        <div class="space-y-4">
+            @forelse ($recentOrders as $order)
+                <div class="text-sm text-gray-500 leading-relaxed flex items-center flex-wrap gap-1.5">
+                    <span class="font-medium text-dark-brown">{{ $order->code }}</span>
+                    <span>{{ $order->customer_name }}</span>
+                    <span>{{ $order->product }}</span>
+                    @if ($order->status == 'produksi')
+                        <span class="text-green-700 font-medium bg-green-50 px-2 py-0.5 rounded-md text-xs">Dibayar</span>
+                        <span class="text-gray-400">Sedang dibuat</span>
+                    @elseif ($order->status == 'pending')
+                        <span class="text-amber-700 font-medium bg-amber-50 px-2 py-0.5 rounded-md text-xs">Pending</span>
+                        <span class="text-gray-400">Menunggu produksi</span>
+                    @else
+                        <span class="text-blue-700 font-medium bg-blue-50 px-2 py-0.5 rounded-md text-xs">{{ ucfirst($order->status) }}</span>
+                    @endif
+                    <span class="text-gray-400 text-xs ml-auto">{{ $order->created_at->translatedFormat('j F') }}</span>
+                </div>
+            @empty
+                <p class="text-gray-400 text-sm">Tidak ada pesanan terbaru</p>
+            @endforelse
         </div>
     </div>
 @endsection
-

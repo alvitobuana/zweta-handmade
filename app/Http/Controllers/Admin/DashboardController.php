@@ -31,6 +31,9 @@ class DashboardController extends Controller
 
         $recentOrders = Order::latest()->limit(5)->get();
         $recentRequests = CustomRequest::latest()->limit(5)->get();
+        
+        $pendingCount = Order::where('status', 'pending')->count();
+        $deadlineCount = Order::where('status', 'produksi')->count();
 
         return view('admin.dashboard', compact(
             'totalProducts',
@@ -41,7 +44,9 @@ class DashboardController extends Controller
             'ordersByStatus',
             'requestsByStatus',
             'recentOrders',
-            'recentRequests'
+            'recentRequests',
+            'pendingCount',
+            'deadlineCount'
         ));
     }
 }
