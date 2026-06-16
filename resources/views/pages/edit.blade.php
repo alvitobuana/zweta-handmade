@@ -1,68 +1,97 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-<meta charset="UTF-8">
-<title>Edit Profil - Zweta Handmade</title>
+@extends('layouts.app')
 
-<link rel="stylesheet" href="{{ asset('css/edit.css') }}">
+@section('title', 'Edit Profil - Zweta Handmade')
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+@section('content')
 
-</head>
+<div class="max-w-lg mx-auto">
 
-<body>
-
-<!-- NAV -->
-<header class="navbar">
-    <div class="logo">Zweta Handmade</div>
-
-    <nav>
-        <a href="/home">Home</a>
-        <a href="/katalog">Katalog</a>
-        <a href="/custom">Custom</a>
-        <a href="/tracking">Tracking</a>
-        <a href="/kontak">Kontak</a>
-    </nav>
-
-    <div class="nav-right">
-    <input placeholder="Search product...">
-
-    <a href="/login" class="btn-login">Login</a>
-
-    <!-- PROFILE -->
-    <a href="/profile" class="profile-icon">
-        👤
-    </a>
-</div>
-</header>
-
-<!-- TITLE -->
-<div class="header">
-    <h1>Edit Profil</h1>
-    <p>Perbarui data diri dan alamat pengiriman pelanggan.</p>
-</div>
-
-<!-- FORM CARD -->
-<div class="card">
-
-    <label>Nama Lengkap</label>
-    <input type="text" value="Zweta Lathifah">
-
-    <label>Email</label>
-    <input type="email" value="zweta@email.com">
-
-    <label>Nomor WhatsApp</label>
-    <input type="text" value="0812-xxxx-xxxx">
-
-    <label>Alamat / Catatan</label>
-    <textarea placeholder="Masukkan alamat lengkap untuk pengiriman pesanan..."></textarea>
-
-    <div class="buttons">
-        <button class="btn btn-cancel" onclick="window.location.href='/profile'">Batal</button>
-        <button class="btn btn-save">Simpan Perubahan</button>
+    <!-- Page Title -->
+    <div class="text-center mb-10">
+        <h1 class="text-4xl font-serif font-bold text-dark-brown">Edit Profil</h1>
+        <p class="text-gray-500 mt-2">Perbarui data diri dan alamat pengiriman pelanggan.</p>
     </div>
 
+    @if($errors->any())
+        <div class="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-2xl text-sm">
+            <ul class="list-disc list-inside space-y-1">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <!-- Form Card -->
+    <div class="bg-white rounded-3xl shadow-md p-8 border border-soft-beige/40">
+        <form action="{{ route('profile.update') }}" method="POST" class="space-y-5">
+            @csrf
+
+            <!-- Nama Lengkap -->
+            <div>
+                <label class="block text-sm font-semibold text-dark-brown mb-1.5">Nama Lengkap</label>
+                <input type="text" name="name" required
+                       value="{{ old('name', $user->name) }}"
+                       class="w-full px-4 py-3 border-2 border-soft-beige rounded-xl focus:outline-none focus:border-caramel text-sm text-dark-brown transition placeholder-gray-300">
+            </div>
+
+            <!-- Email -->
+            <div>
+                <label class="block text-sm font-semibold text-dark-brown mb-1.5">Email</label>
+                <input type="email" name="email" required
+                       value="{{ old('email', $user->email) }}"
+                       class="w-full px-4 py-3 border-2 border-soft-beige rounded-xl focus:outline-none focus:border-caramel text-sm text-dark-brown transition placeholder-gray-300">
+            </div>
+
+            <!-- Nomor WhatsApp -->
+            <div>
+                <label class="block text-sm font-semibold text-dark-brown mb-1.5">Nomor WhatsApp</label>
+                <input type="text" name="whatsapp"
+                       value="{{ old('whatsapp', $user->whatsapp) }}"
+                       placeholder="0812-xxxx-xxxx"
+                       class="w-full px-4 py-3 border-2 border-soft-beige rounded-xl focus:outline-none focus:border-caramel text-sm text-dark-brown transition placeholder-gray-300">
+            </div>
+
+            <!-- Alamat -->
+            <div>
+                <label class="block text-sm font-semibold text-dark-brown mb-1.5">Alamat / Catatan</label>
+                <textarea name="address" rows="3"
+                          placeholder="Masukkan alamat lengkap untuk pengiriman pesanan..."
+                          class="w-full px-4 py-3 border-2 border-soft-beige rounded-xl focus:outline-none focus:border-caramel text-sm text-dark-brown transition placeholder-gray-300 resize-none">{{ old('address', $user->address) }}</textarea>
+            </div>
+
+            <!-- Password (opsional) -->
+            <div class="pt-2 border-t border-soft-beige/50">
+                <p class="text-xs text-gray-400 mb-3 font-medium">Ganti Password (opsional — kosongkan jika tidak ingin mengubah)</p>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-dark-brown mb-1.5">Password Baru</label>
+                        <input type="password" name="password"
+                               placeholder="••••••••"
+                               class="w-full px-4 py-3 border-2 border-soft-beige rounded-xl focus:outline-none focus:border-caramel text-sm text-dark-brown transition placeholder-gray-300">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-dark-brown mb-1.5">Konfirmasi Password</label>
+                        <input type="password" name="password_confirmation"
+                               placeholder="••••••••"
+                               class="w-full px-4 py-3 border-2 border-soft-beige rounded-xl focus:outline-none focus:border-caramel text-sm text-dark-brown transition placeholder-gray-300">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex gap-3 pt-2">
+                <a href="{{ route('profile') }}"
+                   class="flex-1 py-3 text-center border-2 border-soft-beige text-dark-brown font-semibold rounded-xl hover:bg-soft-beige transition text-sm">
+                    Batal
+                </a>
+                <button type="submit"
+                        class="flex-1 py-3 bg-caramel text-white font-semibold rounded-xl hover:bg-opacity-90 transition shadow-md text-sm">
+                    💾 Simpan Perubahan
+                </button>
+            </div>
+        </form>
+    </div>
 </div>
 
-</body>
-</html>
+@endsection

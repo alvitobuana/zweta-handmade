@@ -1,109 +1,90 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>Kontak - Zweta Handmade</title>
+@extends('layouts.app')
 
-    <link rel="stylesheet" href="{{ asset('css/kontak.css') }}">
+@section('title', 'Hubungi Kami - Zweta Handmade')
 
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-</head>
+@section('content')
 
-<body>
-
-<!-- NAVBAR -->
-<header class="navbar">
-    <div class="logo">Zweta Handmade</div>
-
-    <nav>
-        <a href="/home">Home</a>
-        <a href="/katalog">Katalog</a>
-        <a href="/custom">Custom</a>
-        <a href="/tracking">Tracking</a>
-        <a class="active" href="/Kontak">Kontak</a>
-    </nav>
-
-    <div class="nav-right">
-    <input placeholder="Search product...">
-
-    <a href="/login" class="btn-login">Login</a>
-
-    <!-- PROFILE -->
-    <a href="/profile" class="profile-icon">
-        👤
-    </a>
-</div>
-</header>
-
-<!-- TITLE -->
-<div class="header">
-    <h1>Hubungi Kami</h1>
-    <p>Hubungi Zweta Handmade untuk konsultasi pesanan custom, katalog produk, dan informasi pembayaran.</p>
+<!-- Page Title -->
+<div class="mb-10">
+    <h1 class="text-4xl font-serif font-bold text-dark-brown">Hubungi Kami</h1>
+    <p class="text-gray-500 mt-2">Hubungi Zweta Handmade untuk konsultasi pesanan custom, katalog produk, dan informasi pembayaran.</p>
 </div>
 
-<!-- CONTENT -->
-<section class="contact-wrapper">
+<!-- Main Grid -->
+<div class="grid lg:grid-cols-2 gap-8 mb-8">
 
-    <!-- LEFT -->
-    <div class="card contact-card">
+    <!-- LEFT: Contact Info -->
+    <div class="bg-white rounded-3xl shadow-md p-8 border border-soft-beige/40 space-y-6">
 
-        <div class="item">
-            <h4>WhatsApp</h4>
-            <p>0812-3456-7890</p>
+        <!-- WhatsApp -->
+        <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center text-green-600 text-lg shrink-0">📱</div>
+            <div>
+                <h4 class="font-bold text-dark-brown mb-0.5">WhatsApp</h4>
+                <a href="https://wa.me/6281234567890" target="_blank"
+                   class="text-gray-600 text-sm hover:text-caramel transition">
+                    0812-3456-7890
+                </a>
+            </div>
         </div>
 
-        <div class="item">
-            <h4>Email</h4>
-            <p>zwetahandmade@gmail.com</p>
+        <div class="border-t border-soft-beige/50"></div>
+
+        <!-- Email -->
+        <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center text-blue-600 text-lg shrink-0">✉️</div>
+            <div>
+                <h4 class="font-bold text-dark-brown mb-0.5">Email</h4>
+                <a href="mailto:zwetahandmade@gmail.com"
+                   class="text-gray-600 text-sm hover:text-caramel transition">
+                    zwetahandmade@gmail.com
+                </a>
+            </div>
         </div>
 
-        <div class="item">
-            <h4>Instagram</h4>
-            <p>@zwetahandmade</p>
+        <div class="border-t border-soft-beige/50"></div>
+
+        <!-- Instagram -->
+        <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl bg-pink-100 flex items-center justify-center text-pink-600 text-lg shrink-0">📸</div>
+            <div>
+                <h4 class="font-bold text-dark-brown mb-0.5">Instagram</h4>
+                <a href="https://instagram.com/zwetahandmade" target="_blank"
+                   class="text-gray-600 text-sm hover:text-caramel transition">
+                    @zwetahandmade
+                </a>
+            </div>
         </div>
 
-        <div class="item">
-            <h4>Alamat</h4>
-            <p>Bekasi, Jawa Barat</p>
-        </div>
+        <div class="border-t border-soft-beige/50"></div>
 
+        <!-- Alamat -->
+        <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center text-orange-600 text-lg shrink-0">📍</div>
+            <div>
+                <h4 class="font-bold text-dark-brown mb-0.5">Alamat Workshop</h4>
+                <p class="text-gray-600 text-sm">Bekasi, Jawa Barat</p>
+            </div>
+        </div>
     </div>
 
-    <!-- RIGHT -->
-    <div class="card map-card">
+    <!-- RIGHT: Map Placeholder -->
+    <div class="bg-soft-beige/60 rounded-3xl border border-soft-beige flex flex-col items-center justify-center min-h-64 p-10 text-center">
+        <div class="text-5xl mb-4">🗺️</div>
+        <p class="font-semibold text-caramel text-sm">Google Maps / Lokasi Workshop</p>
+        <p class="text-gray-400 text-xs mt-2">Area ini bisa diganti embed maps saat implementasi web.</p>
+    </div>
+</div>
+
+<!-- Note Card -->
+<div class="bg-white rounded-2xl border border-soft-beige/40 shadow-sm p-6">
+    <div class="flex items-start gap-3">
+        <span class="text-xl">💡</span>
         <div>
-            Google Maps / Lokasi Workshop
-            <span>Area ini bisa diganti embed maps saat implementasi web.</span>
+            <h3 class="font-semibold text-dark-brown mb-1">Catatan</h3>
+            <p class="text-gray-500 text-sm">Untuk pesanan custom, pelanggan dapat mengirim referensi warna/model melalui halaman <a href="{{ route('custom') }}" class="text-caramel hover:underline font-medium">Custom Order</a>.</p>
         </div>
     </div>
+</div>
 
-</section>
-
-<!-- NOTE -->
-<section class="note">
-    <div class="note-card">
-        <h3>Catatan</h3>
-        <p>Untuk pesanan custom, pelanggan dapat mengirim referensi warna/model melalui halaman Custom Order.</p>
-    </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-    <div>
-        <h3>Zweta Handmade</h3>
-        <p>Tas handmade custom dengan sentuhan personal.</p>
-    </div>
-
-    <div>
-        <h4>Menu</h4>
-        <p>Home • Katalog • Custom Order • Tracking • Kontak</p>
-    </div>
-
-    <div>
-        <h4>Kontak</h4>
-        <p>WhatsApp • Instagram • Email</p>
-    </div>
-</footer>
-
-</body>
-</html>
+@endsection

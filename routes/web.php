@@ -27,9 +27,7 @@ Route::get('/detail', function () {
 Route::get('/checkout', function () {
     return view('pages.checkout');
 });
-Route::get('/kontak', function () {
-    return view('pages.kontak');
-});
+
 
 // Authentication — hanya bisa diakses bila belum login (guest)
 Route::middleware('guest')->group(function () {
@@ -42,10 +40,15 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Profile routes (require auth)
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [UserController::class, 'profile']);
-    Route::get('/edit', [UserController::class, 'edit']);
-    Route::post('/profile', [UserController::class, 'update']);
+    Route::get('/profile', [UserController::class, 'profile'])->name('profile');
+    Route::get('/profile/edit', [UserController::class, 'edit'])->name('profile.edit');
+    Route::post('/profile/update', [UserController::class, 'update'])->name('profile.update');
 });
+
+// Kontak page (public)
+Route::get('/kontak', function () {
+    return view('pages.kontak');
+})->name('kontak');
 
 // Protect admin routes: harus login DAN harus is_admin = true
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {

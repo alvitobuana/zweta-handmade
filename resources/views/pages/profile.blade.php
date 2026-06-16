@@ -1,161 +1,175 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>Profil Saya - Zweta Handmade</title>
+@extends('layouts.app')
 
-    <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
+@section('title', 'Profil Saya - Zweta Handmade')
 
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+@section('content')
 
-</head>
+@if (session('success'))
+    <div class="mb-6 p-4 bg-green-50 border border-green-200 text-green-700 rounded-2xl text-sm shadow-sm flex items-center gap-2">
+        <span>✅</span> {{ session('success') }}
+    </div>
+@endif
 
-<body>
-
-<!-- NAV -->
-<header class="navbar">
-    <div class="logo">Zweta Handmade</div>
-
-    <nav>
-        <a href="/home">Home</a>
-        <a href="/katalog">Katalog</a>
-        <a href="/custom">Custom</a>
-        <a href="/tracking">Tracking</a>
-        <a href="/kontak">Kontak</a>
-    </nav>
-
-    <div class="nav-right">
-    <input placeholder="Search product...">
-
-    <a href="/login" class="btn-login">Login</a>
-
-    <!-- PROFILE -->
-    <a href="/profile" class="profile-icon">
-        👤
-    </a>
-</div>
-</header>
-
-<!-- TITLE -->
-<div class="header">
-    <h1>Profil Saya</h1>
-    <p>Kelola data akun dan pantau riwayat pesanan Zweta Handmade.</p>
+<!-- Page Title -->
+<div class="mb-8">
+    <h1 class="text-4xl font-serif font-bold text-dark-brown">Profil Saya</h1>
+    <p class="text-gray-500 mt-1">Kelola data akun dan pantau riwayat pesanan Zweta Handmade.</p>
 </div>
 
-<!-- CONTENT -->
-<div class="container">
+<div class="grid lg:grid-cols-2 gap-8 mb-8">
 
-    <!-- LEFT -->
-    <div class="card">
-
-        <div class="profile-header">
-            <div class="avatar">👤</div>
+    <!-- LEFT: User Info Card -->
+    <div class="bg-white rounded-3xl shadow-md p-8 border border-soft-beige/40">
+        <!-- Avatar & Name -->
+        <div class="flex items-center gap-4 mb-8">
+            <div class="w-16 h-16 rounded-full bg-caramel flex items-center justify-center text-white text-2xl font-bold shadow-md">
+                {{ strtoupper(substr($user->name, 0, 1)) }}
+            </div>
             <div>
-                <div class="profile-name">Zweta Lathifah</div>
-                <small>Customer</small>
+                <p class="text-xl font-serif font-bold text-dark-brown">{{ $user->name }}</p>
+                <p class="text-sm text-gray-400 mt-0.5">{{ $user->is_admin ? 'Admin' : 'Customer' }}</p>
             </div>
         </div>
 
-        <label>Email</label>
-        <input class="input" placeholder="zweta@email.com">
-
-        <label>Nomor WhatsApp</label>
-        <input class="input" placeholder="0812-xxxx-xxxx">
-
-        <label>Alamat</label>
-        <input class="input" placeholder="Bekasi, Jawa Barat">
-
-    </div>
-
-    <!-- RIGHT -->
-    <div class="card">
-
-        <div class="status-title">Status Pesanan Terbaru</div>
-        <div class="order-code">ZW240015</div>
-        <div><b>Tote Bag Canvas Custom</b></div>
-        <small>Estimasi selesai: 15 Juni 2026</small>
-
-        <div class="badge">Produksi</div>
-
-        <div class="timeline">
-
-            <div class="step active">
-                <div class="dot"></div>
-                <span>Diterima</span>
+        <!-- Info Fields (Read-Only Display) -->
+        <div class="space-y-4">
+            <div>
+                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1.5">Email</label>
+                <div class="w-full px-4 py-3 bg-cream border border-soft-beige rounded-xl text-sm text-dark-brown">
+                    {{ $user->email }}
+                </div>
             </div>
-
-            <div class="step active">
-                <div class="dot"></div>
-                <span>Bayar</span>
+            <div>
+                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1.5">Nomor WhatsApp</label>
+                <div class="w-full px-4 py-3 bg-cream border border-soft-beige rounded-xl text-sm text-dark-brown">
+                    {{ $user->whatsapp ?? '—' }}
+                </div>
             </div>
-
-            <div class="step active">
-                <div class="dot"></div>
-                <span>Produksi</span>
+            <div>
+                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1.5">Alamat</label>
+                <div class="w-full px-4 py-3 bg-cream border border-soft-beige rounded-xl text-sm text-dark-brown min-h-[48px]">
+                    {{ $user->address ?? '—' }}
+                </div>
             </div>
-
-            <div class="step">
-                <div class="dot"></div>
-                <span>Finishing</span>
-            </div>
-
-            <div class="step">
-                <div class="dot"></div>
-                <span>Selesai</span>
-            </div>
-
         </div>
-
     </div>
 
+    <!-- RIGHT: Latest Order Status -->
+    <div class="bg-white rounded-3xl shadow-md p-8 border border-soft-beige/40">
+        <p class="text-lg font-serif font-bold text-dark-brown mb-5">Status Pesanan Terbaru</p>
+
+        @if($latestOrder)
+            <p class="text-caramel font-bold text-sm mb-1">{{ $latestOrder->code }}</p>
+            <p class="font-bold text-dark-brown text-base mb-1">{{ $latestOrder->product }}</p>
+            <p class="text-xs text-gray-400 mb-4">Dipesan: {{ $latestOrder->created_at?->format('d M Y') }}</p>
+
+            <!-- Status Badge -->
+            @php
+                $statusMap = [
+                    'pending'              => ['label' => 'Menunggu Pembayaran', 'color' => 'bg-yellow-100 text-yellow-700 border border-yellow-300'],
+                    'menunggu_verifikasi'  => ['label' => 'Verifikasi Pembayaran', 'color' => 'bg-amber-100 text-amber-700 border border-amber-300'],
+                    'produksi'             => ['label' => 'Produksi', 'color' => 'bg-blue-100 text-blue-700 border border-blue-300'],
+                    'finishing'            => ['label' => 'Finishing', 'color' => 'bg-purple-100 text-purple-700 border border-purple-300'],
+                    'siap_dikirim'         => ['label' => 'Siap Dikirim', 'color' => 'bg-indigo-100 text-indigo-700 border border-indigo-300'],
+                    'selesai'              => ['label' => 'Selesai', 'color' => 'bg-green-100 text-green-700 border border-green-300'],
+                ];
+                $s = $statusMap[$latestOrder->status] ?? ['label' => ucfirst($latestOrder->status), 'color' => 'bg-gray-100 text-gray-700'];
+                $steps = ['pending', 'menunggu_verifikasi', 'produksi', 'finishing', 'selesai'];
+                $currentIdx = array_search($latestOrder->status, $steps);
+                if ($latestOrder->status === 'siap_dikirim') $currentIdx = 3; // treat as after finishing
+            @endphp
+            <span class="inline-block px-4 py-1.5 rounded-full text-xs font-bold {{ $s['color'] }} mb-6">
+                {{ $s['label'] }}
+            </span>
+
+            <!-- Timeline Progress -->
+            <div class="flex items-center gap-0">
+                @php
+                    $timelineSteps = [
+                        ['key' => 'pending',             'label' => 'Diterima'],
+                        ['key' => 'menunggu_verifikasi', 'label' => 'Bayar'],
+                        ['key' => 'produksi',            'label' => 'Produksi'],
+                        ['key' => 'finishing',           'label' => 'Finishing'],
+                        ['key' => 'selesai',             'label' => 'Selesai'],
+                    ];
+                    $orderIdx = array_search($latestOrder->status, array_column($timelineSteps, 'key'));
+                    if ($latestOrder->status === 'siap_dikirim') $orderIdx = 3;
+                    if ($latestOrder->status === 'selesai') $orderIdx = 4;
+                @endphp
+                @foreach($timelineSteps as $i => $step)
+                    <div class="flex flex-col items-center {{ $i < count($timelineSteps) - 1 ? 'flex-1' : '' }}">
+                        <div class="w-8 h-8 rounded-full border-2 flex items-center justify-center text-xs font-bold transition
+                            {{ $i <= $orderIdx ? 'bg-caramel border-caramel text-white' : 'bg-white border-gray-200 text-gray-400' }}">
+                            @if($i < $orderIdx)
+                                ✓
+                            @else
+                                {{ $i + 1 }}
+                            @endif
+                        </div>
+                        @if($i < count($timelineSteps) - 1)
+                            <div class="h-0 w-full flex items-center absolute">
+                            </div>
+                        @endif
+                        <span class="text-[10px] text-gray-500 mt-1.5 text-center">{{ $step['label'] }}</span>
+                    </div>
+                    @if($i < count($timelineSteps) - 1)
+                        <div class="flex-1 h-0.5 {{ $i < $orderIdx ? 'bg-caramel' : 'bg-gray-200' }} mb-4 -mt-4"></div>
+                    @endif
+                @endforeach
+            </div>
+
+            <div class="mt-6 pt-5 border-t border-soft-beige/50">
+                <a href="{{ route('tracking', ['code' => $latestOrder->code]) }}"
+                   class="text-caramel hover:underline font-semibold text-sm">
+                    Lihat detail pesanan →
+                </a>
+            </div>
+        @else
+            <div class="flex flex-col items-center justify-center h-48 text-center">
+                <div class="text-5xl mb-4">📦</div>
+                <p class="text-gray-400 font-medium">Belum ada pesanan.</p>
+                <a href="{{ route('katalog') }}" class="mt-4 px-5 py-2 bg-caramel text-white text-sm font-semibold rounded-xl hover:bg-opacity-90 transition">
+                    Belanja Sekarang
+                </a>
+            </div>
+        @endif
+    </div>
 </div>
 
-<!-- BUTTON -->
-<div class="actions left">
-    <button class="btn btn-primary" onclick="window.location.href='/edit'">
-        Edit Profil
-    </button>
+<!-- Action Buttons -->
+<div class="flex gap-4">
+    <a href="{{ route('profile.edit') }}"
+       class="px-8 py-3 bg-caramel text-white font-semibold rounded-xl hover:bg-opacity-90 transition shadow-md">
+        ✏️ Edit Profil
+    </a>
 
-    <button class="btn btn-outline" onclick="openLogout()">
+    <!-- Logout trigger -->
+    <button onclick="document.getElementById('logoutModal').classList.remove('hidden')"
+            class="px-8 py-3 border-2 border-caramel text-caramel font-semibold rounded-xl hover:bg-caramel hover:text-white transition">
         Logout
     </button>
 </div>
 
-<script>
-console.log("Profil page ready");
-</script>
-
-<!-- LOGOUT MODAL -->
-<div class="logout-overlay" id="logoutModal">
-
-    <div class="logout-box">
-
-        <h2>Konfirmasi Logout</h2>
-
-        <p>Apakah kamu yakin ingin keluar dari akun Zweta Handmade?</p>
-
-        <div class="logout-icon">⤴</div>
-
-        <div class="logout-action">
-            <button class="btn-cancel" onclick="closeLogout()">Batal</button>
-
-            <a href="/login" class="btn-logout">Logout</a>
+<!-- Logout Confirmation Modal -->
+<div id="logoutModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm hidden">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm mx-4 p-8 text-center">
+        <div class="text-5xl mb-4">⚠️</div>
+        <h2 class="text-xl font-serif font-bold text-dark-brown mb-2">Konfirmasi Logout</h2>
+        <p class="text-gray-500 text-sm mb-8">Apakah kamu yakin ingin keluar dari akun Zweta Handmade?</p>
+        <div class="flex gap-3">
+            <button onclick="document.getElementById('logoutModal').classList.add('hidden')"
+                    class="flex-1 py-3 border-2 border-soft-beige text-dark-brown font-semibold rounded-xl hover:bg-soft-beige transition">
+                Kembali
+            </button>
+            <form method="POST" action="{{ route('logout') }}" class="flex-1">
+                @csrf
+                <button type="submit"
+                        class="w-full py-3 bg-red-500 text-white font-semibold rounded-xl hover:bg-red-600 transition shadow-md">
+                    Logout
+                </button>
+            </form>
         </div>
-
     </div>
-
 </div>
 
-</body>
-
-<script>
-function openLogout(){
-    document.getElementById("logoutModal").style.display = "flex";
-}
-
-function closeLogout(){
-    document.getElementById("logoutModal").style.display = "none";
-}
-</script>
-
-</html>
+@endsection

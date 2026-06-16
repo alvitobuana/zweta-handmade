@@ -11,7 +11,7 @@
             <a href="{{ route('katalog') }}" class="{{ request()->routeIs('katalog') ? 'text-caramel font-semibold border-b-2 border-caramel pb-1' : 'text-dark-brown hover:text-caramel' }} transition">Katalog</a>
             <a href="{{ route('custom') }}" class="{{ request()->routeIs('custom') ? 'text-caramel font-semibold border-b-2 border-caramel pb-1' : 'text-dark-brown hover:text-caramel' }} transition">Custom</a>
             <a href="{{ route('tracking') }}" class="{{ request()->routeIs('tracking') ? 'text-caramel font-semibold border-b-2 border-caramel pb-1' : 'text-dark-brown hover:text-caramel' }} transition">Tracking</a>
-            <a href="#footer" class="text-dark-brown hover:text-caramel transition">Kontak</a>
+            <a href="{{ route('kontak') }}" class="{{ request()->routeIs('kontak') ? 'text-caramel font-semibold border-b-2 border-caramel pb-1' : 'text-dark-brown hover:text-caramel' }} transition">Kontak</a>
         </nav>
 
         <!-- Right Section -->
@@ -40,24 +40,15 @@
                         ⚙️ Admin
                     </a>
                 @else
-                    <span class="text-xs font-medium text-dark-brown hidden md:inline">
+                    <a href="{{ route('profile') }}" class="text-xs font-medium text-dark-brown hidden md:inline hover:text-caramel transition">
                         👤 {{ auth()->user()->name }}
-                    </span>
+                    </a>
                 @endif
 
-                <!-- Logout -->
-                <form action="{{ route('logout') }}" method="post" class="inline-block">
-                    @csrf
-                    <button type="submit"
-                            class="px-4 py-1.5 border border-caramel/40 text-caramel rounded-full text-xs font-semibold hover:bg-caramel hover:text-white transition">
-                        Logout
-                    </button>
-                </form>
-
-                <!-- Profile Initials -->
-                <div class="w-8 h-8 rounded-full bg-caramel text-white flex items-center justify-center font-bold text-xs" title="{{ auth()->user()->name }}">
+                <!-- Profile Icon (Logged in - links to profile) -->
+                <a href="{{ route('profile') }}" class="w-8 h-8 rounded-full bg-caramel text-white flex items-center justify-center font-bold text-xs hover:bg-opacity-90 transition" title="Profil Saya">
                     {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
-                </div>
+                </a>
             @endguest
 
             <!-- Mobile Toggle Menu Button -->
@@ -73,7 +64,7 @@
         <a href="{{ route('katalog') }}" class="block py-2 text-sm {{ request()->routeIs('katalog') ? 'text-caramel font-semibold border-l-4 border-caramel pl-2' : 'text-dark-brown hover:text-caramel' }}">Katalog</a>
         <a href="{{ route('custom') }}" class="block py-2 text-sm {{ request()->routeIs('custom') ? 'text-caramel font-semibold border-l-4 border-caramel pl-2' : 'text-dark-brown hover:text-caramel' }}">Custom</a>
         <a href="{{ route('tracking') }}" class="block py-2 text-sm {{ request()->routeIs('tracking') ? 'text-caramel font-semibold border-l-4 border-caramel pl-2' : 'text-dark-brown hover:text-caramel' }}">Tracking</a>
-        <a href="#footer" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="block py-2 text-sm text-dark-brown hover:text-caramel">Kontak</a>
+        <a href="{{ route('kontak') }}" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="block py-2 text-sm {{ request()->routeIs('kontak') ? 'text-caramel font-semibold border-l-4 border-caramel pl-2' : 'text-dark-brown hover:text-caramel' }}">Kontak</a>
         
         <!-- Mobile Search -->
         <form action="{{ route('katalog') }}" method="GET" class="pt-2 relative">
