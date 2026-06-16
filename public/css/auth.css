@@ -1,0 +1,115 @@
+
+:root{
+    --bg:#FFF7F0;
+    --brown:#4B2E1F;
+    --caramel:#A56A43;
+    --border:#E7D7C9;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins', sans-serif;
+}
+
+body{
+    background:var(--bg);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+/* WRAPPER */
+.wrapper{
+    text-align:center;
+}
+
+/* TITLE */
+.title h1{
+    font-family:'Playfair Display', serif;
+    font-size:28px;
+    color:var(--brown);
+}
+
+.title p{
+    font-size:14px;
+    color:#7A5C4B;
+    margin-bottom:25px;
+}
+
+/* CARD */
+.card{
+    width:380px;
+    background:white;
+    padding:30px;
+    border-radius:18px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.05);
+    text-align:left;
+}
+
+/* FORM TITLE */
+.form-title{
+    text-align:center;
+    margin-bottom:20px;
+    font-size:22px;
+    color:#111827;
+}
+
+/* FORM */
+.form-group{
+    margin-bottom:14px;
+}
+
+label{
+    font-size:13px;
+    color:var(--brown);
+    display:block;
+    margin-bottom:5px;
+}
+
+/* INPUT */
+input{
+    width:100%;
+    padding:12px 14px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    outline:none;
+    transition:0.3s;
+}
+
+input:focus{
+    border-color:var(--caramel);
+}
+
+/* BUTTON */
+.btn{
+    width:100%;
+    padding:12px;
+    background:var(--caramel);
+    color:white;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    margin-top:10px;
+    font-weight:500;
+}
+
+.btn:hover{
+    opacity:0.9;
+}
+
+/* LINK */
+.link{
+    text-align:center;
+    margin-top:15px;
+    font-size:13px;
+    color:#7A5C4B;
+}
+
+.link a{
+    color:var(--brown);
+    font-weight:600;
+    text-decoration:none;
+}

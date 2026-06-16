@@ -1,0 +1,219 @@
+:root{
+    --bg:#FFF7F0;
+    --brown:#4B2E1F;
+    --caramel:#A56A43;
+    --soft:#F3E3D3;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins';
+}
+
+body{
+    margin:0;
+    font-family:Poppins;
+    background:#FBF3EC;
+    color:#4B2E1E;
+}
+
+/* NAVBAR */
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 60px;
+    background:#FFF6F0;
+}
+
+.logo{
+    font-family:Playfair Display;
+    font-weight:700;
+    font-size:22px;
+}
+
+nav{
+    display:flex;
+    gap:25px;
+}
+
+nav a{
+    text-decoration:none;
+    color: #A56A43;
+    font-size:14px;
+}
+
+nav a.active{
+    font-weight:700;
+}
+
+.nav-right{
+    display:flex;
+    gap:10px;
+    align-items:center;
+}
+
+.nav-right input{
+    padding:8px 14px;
+    border-radius:20px;
+    border:1px solid #E7CDB6;
+}
+
+.login{
+    padding:8px 14px;
+    border-radius:20px;
+    border:1px solid #B06E45;
+    background:white;
+}
+
+.avatar{
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    background:#B06E45;
+}
+
+.btn-login{
+    padding:8px 14px;
+    border-radius:20px;
+    border:1px solid #B06E45;
+    background:white;
+    text-decoration:none;
+    color:#4B2E1E;
+    font-size:14px;
+}
+
+/* PROFILE ICON */
+.profile-icon{
+    width:42px;
+    height:42px;
+    border-radius:50%; /* INI KUNCI BULAT */
+    overflow:hidden;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:#B06E45;
+    flex-shrink:0;
+}
+
+.profile-icon:hover{
+    transform:scale(1.05);
+}
+
+/* TITLE */
+.page-title{
+    padding:40px 60px 10px;
+}
+
+.page-title h1{
+    font-family:'Playfair Display';
+    font-size:40px;
+}
+
+/* CONTAINER */
+.detail-container{
+    display:flex;
+    gap:60px;
+    padding:20px 60px;
+}
+
+/* LEFT */
+.left{
+    flex:1;
+}
+
+.main-img{
+    width:100%;
+    height:420px;
+    background:var(--soft);
+    border-radius:20px;
+}
+
+/* thumbnails */
+.thumbs{
+    display:flex;
+    gap:10px;
+    margin-top:15px;
+}
+
+.thumbs div{
+    width:60px;
+    height:60px;
+    background:var(--soft);
+    border-radius:12px;
+}
+
+/* RIGHT */
+.right{
+    flex:1;
+}
+
+.badge{
+    background:#E7C9C9;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:12px;
+}
+
+.price{
+    margin:10px 0;
+    color:var(--caramel);
+}
+
+/* rating */
+.rating{
+    margin-bottom:10px;
+    font-size:14px;
+}
+
+.rating span{
+    margin-left:10px;
+    color:#666;
+}
+
+/* desc */
+.desc{
+    margin:15px 0;
+    line-height:1.6;
+    color:#6b4b3a;
+}
+
+/* info table */
+.info div{
+    display:flex;
+    justify-content:space-between;
+    margin:8px 0;
+    font-size:14px;
+}
+
+/* note */
+.note{
+    font-size:13px;
+    color:#777;
+    margin-bottom:20px;
+}
+
+/* BUTTON */
+.btn-group{
+    display:flex;
+    gap:15px;
+}
+
+.btn-primary{
+    background:var(--caramel);
+    color:white;
+    border:none;
+    padding:12px 18px;
+    border-radius:12px;
+}
+
+.btn-outline{
+    border:1px solid var(--caramel);
+    padding:12px 18px;
+    border-radius:12px;
+    background:transparent;
+}

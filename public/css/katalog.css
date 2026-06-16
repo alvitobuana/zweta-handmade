@@ -1,0 +1,387 @@
+body{
+    margin:0;
+    font-family:Poppins;
+    background:#FBF3EC;
+    color:#4B2E1E;
+}
+
+/* NAVBAR */
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 60px;
+    background:#FFF6F0;
+}
+
+.logo{
+    font-family:Playfair Display;
+    font-weight:700;
+    font-size:22px;
+}
+
+nav{
+    display:flex;
+    gap:25px;
+}
+
+nav a{
+    text-decoration:none;
+    color: #A56A43;
+    font-size:14px;
+}
+
+nav a.active{
+    font-weight:700;
+}
+
+.nav-right{
+    display:flex;
+    gap:10px;
+    align-items:center;
+}
+
+.nav-right input{
+    padding:8px 14px;
+    border-radius:20px;
+    border:1px solid #E7CDB6;
+}
+
+.login{
+    padding:8px 14px;
+    border-radius:20px;
+    border:1px solid #B06E45;
+    background:white;
+}
+
+.avatar{
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    background:#B06E45;
+}
+
+.btn-login{
+    padding:8px 14px;
+    border-radius:20px;
+    border:1px solid #B06E45;
+    background: #FFF8F2;
+    text-decoration:none;
+    color:#4B2E1E;
+    font-size:14px;
+}
+
+/* PROFILE ICON */
+.profile-icon{
+    width:42px;
+    height:42px;
+    border-radius:50%; /* INI KUNCI BULAT */
+    overflow:hidden;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:#B06E45;
+    flex-shrink:0;
+}
+
+.profile-icon:hover{
+    transform:scale(1.05);
+}
+
+/* TITLE */
+.page-title{
+    padding:30px 60px;
+}
+
+.page-title h1{
+    font-family:Playfair Display;
+    font-size:40px;
+    margin:0;
+}
+
+/* LAYOUT */
+.container{
+    display:grid;
+    grid-template-columns:280px 1fr;
+    gap:30px;
+    padding:0 60px;
+}
+
+/* SIDEBAR MODERN UI */
+
+.sidebar{
+    background:white;
+    border-radius:18px;
+    padding:22px;
+    box-shadow:0 0 0 1px #EAD9C8;
+}
+
+/* SECTION BOX */
+.box{
+    margin-bottom:22px;
+}
+
+.box h3{
+    font-size:14px;
+    margin-bottom:10px;
+    color:#4B2E1F;
+}
+
+/* SEARCH INPUT */
+.box input[type="text"],
+.box input:not([type]){
+    width:100%;
+    padding:10px 5px;
+    border-radius:12px;
+    border:1px solid #EAD9C8;
+    outline:none;
+    font-size:13px;
+    background:#FFF;
+}
+
+.box input:focus{
+    border-color:#B06E45;
+}
+
+/* CHECKBOX STYLE */
+.box label{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:10px 0;
+    font-size:13px;
+    color:#4B2E1F;
+    cursor:pointer;
+}
+
+/* custom checkbox */
+.box input[type="checkbox"]{
+    width:16px;
+    height:16px;
+    accent-color:#B06E45;
+    cursor:pointer;
+}
+
+/* RANGE SLIDER */
+.box input[type="range"]{
+    width:100%;
+    accent-color:#B06E45;
+    margin-top:10px;
+}
+
+/* RANGE WRAPPER */
+.range-wrapper{
+    position:relative;
+    height:40px;
+    margin-top:10px;
+}
+
+/* TRACK */
+.slider-track{
+    position:absolute;
+    height:4px;
+    background:#E7C9C9;
+    width:100%;
+    top:50%;
+    transform:translateY(-50%);
+    border-radius:10px;
+}
+
+/* RANGE INPUT OVERLAY */
+.range-wrapper input[type="range"]{
+    position:absolute;
+    width:100%;
+    top:50%;
+    transform:translateY(-50%);
+    pointer-events:none;
+    -webkit-appearance:none;
+    background:none;
+}
+
+/* THUMB */
+.range-wrapper input[type="range"]::-webkit-slider-thumb{
+    pointer-events:auto;
+    -webkit-appearance:none;
+    width:16px;
+    height:16px;
+    border-radius:50%;
+    background:#B06E45;
+    border:2px solid white;
+    box-shadow:0 2px 6px rgba(0,0,0,0.15);
+    cursor:pointer;
+}
+
+/* Z INDEX */
+.range-min{
+    z-index:2;
+}
+
+.range-max{
+    z-index:3;
+}
+
+/* PRICE TEXT */
+.price{
+    display:flex;
+    justify-content:space-between;
+    font-size:12px;
+    color:#A56A43;
+    margin-top:8px;
+}
+
+/* APPLY BUTTON */
+.apply{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:14px;
+    background:#A56A42;
+    color:white;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+.apply:hover{
+    background:#8f5736;
+}
+
+/* APPLY */
+.apply{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:12px;
+    background:#A66A42;
+    color:white;
+}
+
+.btn-detail{
+    border:1px solid #B06E45;
+    background:white;
+    padding:6px 12px;
+    border-radius:10px;
+    font-size:13px;
+    color:#4B2E1E;
+    text-decoration:none;
+    display:inline-block;
+    transition:0.2s;
+}
+
+.btn-detail:hover{
+    background:#B06E45;
+    color:white;
+}
+
+
+/* TOPBAR */
+/* TOPBAR PRODUK */
+.topbar{
+    width:100%;
+    background:white;
+    border:1px solid #EAD9C8;
+    border-radius:16px;
+    padding:12px 24px;
+    margin-bottom:24px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    box-shadow:0 6px 18px rgba(75,46,31,0.04);
+}
+
+.product-count{
+    font-size:14px;
+    font-weight:600;
+    color:#4B2E1F;
+}
+
+.sort{
+    min-width:145px;
+    height:34px;
+    padding:0 22px;
+
+    border-radius:12px;
+    border:1px solid #B06E45;
+    background:white;
+
+    color:#4B2E1F;
+    font-size:13px;
+    font-weight:600;
+
+    cursor:pointer;
+    transition:0.2s ease;
+}
+
+.sort:hover{
+    background:#B06E45;
+    color:white;
+}
+
+/* GRID */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
+
+/* CARD */
+.card{
+    background:white;
+    border-radius:18px;
+    padding:15px;
+    box-shadow:0 0 0 1px #F0D7C5;
+}
+
+.img{
+    height:120px;
+    border-radius:12px;
+    background:#F3E2D2;
+}
+
+.card h4{
+    margin:10px 0 5px;
+}
+
+.card p{
+    margin:0;
+}
+
+.card-bottom{
+    display:flex;
+    justify-content:space-between;
+    margin-top:10px;
+}
+
+/* TAG CUSTOM (PILL STYLE) */
+.tag{
+    font-size:12px;
+    padding:6px 12px;
+    border-radius:999px;
+    font-weight:500;
+}
+
+/* CUSTOM TAG (PINK SOFT) */
+.custom-tag{
+    background:#D9A3A3;
+    color:#4B2E1F;
+}
+
+.btn-detail{
+    background:#A66A42;
+    color:white;
+    padding:7px 14px;
+    border-radius:10px;
+    font-size:13px;
+    font-weight:500;
+    border:none;
+    text-decoration:none;
+    transition:0.2s ease;
+}
+
+.btn-detail:hover{
+    background:#8f5736;
+}

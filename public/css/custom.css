@@ -1,0 +1,270 @@
+/* ================= BASE ================= */
+body{
+    margin:0;
+    font-family:Poppins;
+    background:#FBF3EC;
+    color:#4B2E1E;
+}
+
+/* ================= NAV ================= */
+
+.logo{
+    font-family:Playfair Display;
+    font-weight:700;
+    font-size:22px;
+}
+
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 60px;
+    background:#FFF6F0;
+}
+
+.navbar nav{
+    display:flex;
+    gap:20px;
+}
+
+.navbar nav a{
+    text-decoration:none;
+    color: #A56A43;
+    font-size:14px;
+}
+
+.navbar nav a.active{
+    font-weight:700;
+}
+
+.nav-right{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.nav-right input{
+    padding:8px 14px;
+    border-radius:20px;
+    border:1px solid #E7CDB6;
+}
+
+.nav-right button{
+    padding:8px 14px;
+    border-radius:20px;
+    border:1px solid #B06E45;
+    background:white;
+}
+
+/* ================= TITLE ================= */
+.header{
+    padding:30px 60px;
+}
+
+.header h1{
+    font-family:Playfair Display;
+    font-size:40px;
+    margin:0;
+}
+
+.header p{
+    color: #8A6A55;
+}
+
+/* ================= GRID ================= */
+.container{
+    display:grid;
+    grid-template-columns: 420px 1fr;
+    gap:30px;
+    padding:0 60px 40px;
+}
+
+/* ================= LEFT ================= */
+/* LEFT CARD */
+.preview-card{
+    background:white;
+    border-radius:20px;
+    padding:20px;
+    box-shadow:0 0 0 1px #EAD9C8;
+}
+
+/* BIG PREVIEW BOX */
+.preview-box{
+    height:240px;
+    background:#F3E3D3;
+    border-radius:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+}
+
+/* label inside image */
+.preview-label{
+    font-size:13px;
+    color:#4B2E1F;
+    position:absolute;
+    bottom:12px;
+}
+
+/* INFO SECTION */
+.preview-info{
+    margin-top:px;
+}
+
+.preview-info h3{
+    font-size:18px;
+    margin-bottom:10px;
+    color:#4B2E1F;
+}
+
+/* TEXT */
+.preview-info p{
+    font-size:13px;
+    color:#8A6A55;
+    margin:4px 0;
+}
+
+/* BADGE STATUS (BIG & SOFT LIKE IMAGE) */
+.badge.status{
+    display:inline-block;
+    margin-top:15px;
+    padding:8px 14px;
+    border-radius:20px;
+    background:#E7C9C9;
+    color:#4B2E1F;
+    font-size:12px;
+    font-weight:600;
+}
+
+/* ================= RIGHT FORM ================= */
+.form-card{
+    background:white;
+    border-radius:18px;
+    padding:25px;
+    box-shadow:0 0 0 1px #F0D7C5;
+}
+
+/* section title */
+.section-title{
+    font-weight:700;
+    font-size:25px;
+    font-family:'Playfair Display';
+    margin:18px 0 14px;
+    color:#4B2E1E;
+}
+
+/* grid form */
+.grid-2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+input, textarea{
+    width:100%;
+    padding:10px;
+    border-radius:10px;
+    border:1px solid #E7CDB6;
+    outline:none;
+    font-family:Poppins;
+}
+
+textarea{
+    min-height:110px;
+    resize:none;
+}
+
+.field{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+
+.field label{
+    font-size:12px;
+    font-weight:600;
+    color:#6B4A3A;
+}
+
+.field input,
+.field textarea{
+    width:100%;
+    padding:11px 12px;
+    border-radius:12px;
+    border:1px solid #E7CDB6;
+    background:#FFF;
+    font-size:13px;
+    outline:none;
+    transition:0.2s ease;
+}
+
+/* FOCUS EFFECT (biar modern) */
+.field input:focus,
+.field textarea:focus{
+    border-color:#B06E45;
+    box-shadow:0 0 0 3px rgba(166,106,66,0.12);
+}
+
+/* full width */
+.full{
+    grid-column:1 / -1;
+}
+
+/* ================= SUMMARY ================= */
+.summary{
+    background:#F7E9DD;
+    padding:12px;
+    border-radius:10px;
+    font-size:13px;
+    margin-top:10px;
+}
+
+/* ================= BUTTON ================= */
+.btn{
+    margin-top:20px;
+    padding:12px 20px;
+    background:#A66A42;
+    color:white;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    text-decoration:none;
+    display:inline-block;
+    text-align:center;
+}
+
+.btn:hover{
+    background:#8F5737;
+}
+
+.btn-login{
+    padding:8px 14px;
+    border-radius:20px;
+    border:1px solid #B06E45;
+    background:white;
+    text-decoration:none;
+    color:#4B2E1E;
+    font-size:14px;
+}
+
+/* PROFILE ICON */
+.profile-icon{
+    width:42px;
+    height:42px;
+    border-radius:50%; /* INI KUNCI BULAT */
+    overflow:hidden;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:#B06E45;
+    flex-shrink:0;
+}
+
+.profile-icon:hover{
+    transform:scale(1.05);
+}
+

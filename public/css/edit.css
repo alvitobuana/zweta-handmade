@@ -1,0 +1,181 @@
+/* ========== BASE ========== */
+body{
+    margin:0;
+    font-family:Poppins;
+    background:#FBF3EC;
+    color:#4B2E1E;
+}
+
+/* ============ NAVBAR ============ */
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 60px;
+    background:#FFF6F0;
+}
+
+.logo{
+    font-family:Playfair Display;
+    font-weight:700;
+    font-size:22px;
+}
+
+nav{
+    display:flex;
+    gap:25px;
+}
+
+nav a{
+    text-decoration:none;
+    color: #A56A43;
+    font-size:14px;
+}
+
+nav a.active{
+    font-weight:700;
+}
+
+.nav-right{
+    display:flex;
+    gap:10px;
+    align-items:center;
+}
+
+.nav-right input{
+    padding:8px 14px;
+    border-radius:20px;
+    border:1px solid #E7CDB6;
+}
+
+.login{
+    padding:8px 14px;
+    border-radius:20px;
+    border:1px solid #B06E45;
+    background:white;
+}
+
+.avatar{
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    background:#B06E45;
+}
+
+.btn-login{
+    padding:8px 14px;
+    border-radius:20px;
+    border:1px solid #B06E45;
+    background:white;
+    text-decoration:none;
+    color:#4B2E1E;
+    font-size:14px;
+}
+
+/* PROFILE ICON */
+.profile-icon{
+    width:42px;
+    height:42px;
+    border-radius:50%; /* INI KUNCI BULAT */
+    overflow:hidden;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:#B06E45;
+    flex-shrink:0;
+}
+
+.profile-icon:hover{
+    transform:scale(1.05);
+}
+
+/* ========== TITLE ========== */
+.header{
+    text-align:center;
+    padding:50px 20px 20px;
+}
+
+.header h1{
+    font-family:Playfair Display;
+    font-size:42px;
+    margin:0;
+}
+
+.header p{
+    color:#8A6A55;
+    font-size:14px;
+}
+
+/* ========== CARD ========== */
+.card{
+    width:520px;
+    margin:30px auto;
+    background:white;
+    border-radius:18px;
+    padding:30px;
+    box-shadow:0 0 0 1px #F0D7C5;
+}
+
+/* ========== INPUT ========== */
+label{
+    font-size:13px;
+    font-weight:600;
+    display:block;
+    margin-top:15px;
+    margin-bottom:6px;
+}
+
+input, textarea{
+    width:100%;
+    padding:12px;
+    border-radius:10px;
+    border:1px solid #E7CDB6;
+    font-family:Poppins;
+    outline:none;
+}
+
+textarea{
+    height:90px;
+    resize:none;
+}
+
+/* focus */
+input:focus, textarea:focus{
+    border:1px solid #A66A42;
+}
+
+/* ========== BUTTON ========== */
+.buttons{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    margin-top:25px;
+}
+
+.btn{
+    padding:10px 20px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:500;
+    border:none;
+}
+
+.btn-cancel{
+    background:white;
+    border:1px solid #A66A42;
+    color:#4B2E1E;
+    font-family: Poppins;
+}
+
+.btn-save{
+    background:#A66A42;
+    color:white;
+    font-family: Poppins;
+}
+
+/* hover */
+.btn-save:hover{
+    background:#8F5737;
+}

@@ -1,0 +1,209 @@
+/* ================= BASE ================= */
+body{
+    margin:0;
+    font-family:Poppins;
+    background:#FBF3EC;
+    color:#4B2E1E;
+}
+
+/* ================= NAVBAR ================= */
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 60px;
+    background:#FFF6F0;
+}
+
+.logo{
+    font-family:Playfair Display;
+    font-weight:700;
+    font-size:22px;
+}
+
+nav{
+    display:flex;
+    gap:25px;
+}
+
+nav a{
+    text-decoration:none;
+    color: #A56A43;
+    font-size:14px;
+}
+
+nav a.active{
+    font-weight:700;
+}
+
+.nav-right{
+    display:flex;
+    gap:10px;
+    align-items:center;
+}
+
+.nav-right input{
+    padding:8px 14px;
+    border-radius:20px;
+    border:1px solid #E7CDB6;
+}
+
+.login{
+    padding:8px 14px;
+    border-radius:20px;
+    border:1px solid #B06E45;
+    background:white;
+}
+
+.avatar{
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    background:#B06E45;
+}
+
+.btn-login{
+    padding:8px 14px;
+    border-radius:20px;
+    border:1px solid #B06E45;
+    background:white;
+    text-decoration:none;
+    color:#4B2E1E;
+    font-size:14px;
+}
+
+/* PROFILE ICON */
+.profile-icon{
+    width:42px;
+    height:42px;
+    border-radius:50%; /* INI KUNCI BULAT */
+    overflow:hidden;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:#B06E45;
+    flex-shrink:0;
+}
+
+.profile-icon:hover{
+    transform:scale(1.05);
+}
+
+/* ================= TITLE ================= */
+.header{
+    padding:30px 70px 10px;
+}
+
+.header h1{
+    font-family:Playfair Display;
+    font-size:42px;
+    margin:0;
+}
+
+.header p{
+    margin-top:8px;
+    color:#7A5B49;
+}
+
+/* ================= CONTENT GRID ================= */
+.contact-wrapper{
+    display:grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap:30px;
+    padding:30px 70px;
+}
+
+/* ================= CARD ================= */
+.card{
+    background:white;
+    border-radius:18px;
+    padding:28px;
+    box-shadow:0 0 0 1px #F0D7C5;
+}
+
+/* LEFT CARD */
+.contact-card .item{
+    margin-bottom:22px;
+}
+
+.contact-card h4{
+    margin:0;
+    font-size:14px;
+}
+
+.contact-card p{
+    margin:6px 0 0;
+    color:#8A6A55;
+}
+
+/* RIGHT MAP */
+.map-card{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:320px;
+    text-align:center;
+    color:#8A6A55;
+}
+
+.map-card span{
+    display:block;
+    margin-top:10px;
+    font-size:13px;
+}
+
+/* ================= NOTE ================= */
+.note{
+    padding:0 70px;
+    margin-top:10px;
+}
+
+.note-card{
+    background:#FFF8F2;
+    border:1px solid #E7CDB6;
+    border-radius:18px;
+    padding:24px 32px;
+    color:#4B2E1E;
+}
+
+.note-card h3{
+    margin:0 0 10px;
+    font-size:18px;
+    font-weight:700;
+    color:#4B2E1E;
+}
+
+.note-card p{
+    margin:0;
+    font-size:15px;
+    color:#8A6A55;
+    line-height:1.6;
+}
+
+/* ================= FOOTER ================= */
+footer{
+    margin-top:40px;
+    background:#4B2E1E;
+    color:white;
+    display:flex;
+    justify-content:space-between;
+    padding:30px 70px;
+}
+
+footer h3, footer h4{
+    margin:0 0 10px;
+    font-family:Playfair Display;
+}
+
+footer h4{
+    margin:0 0 10px;
+    font-family:Poppins;
+}
+
+footer p{
+    margin:0;
+    font-size:14px;
+    color:#EAD8C0;
+}

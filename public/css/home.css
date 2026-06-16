@@ -1,0 +1,684 @@
+
+:root{
+    --bg:#FFF7F0;
+    --brown:#4B2E1F;
+    --caramel:#A56A43;
+    --soft:#F3E3D3;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins';
+}
+
+body{
+    margin:0;
+    font-family:Poppins;
+    background:#FBF3EC;
+    color:#4B2E1E;
+}
+
+/* NAVBAR */
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 60px;
+    background:#FFF6F0;
+}
+
+.logo{
+    font-family:Playfair Display;
+    font-weight:700;
+    font-size:22px;
+}
+
+nav{
+    display:flex;
+    gap:25px;
+}
+
+nav a{
+    text-decoration:none;
+    color: #A56A43;
+    font-size:14px;
+}
+
+nav a.active{
+    font-weight:700;
+}
+
+.nav-right{
+    display:flex;
+    gap:10px;
+    align-items:center;
+}
+
+.nav-right input{
+    padding:8px 14px;
+    border-radius:20px;
+    border:1px solid #E7CDB6;
+}
+
+.login{
+    padding:8px 14px;
+    border-radius:20px;
+    border:1px solid #B06E45;
+    background:white;
+}
+
+.avatar{
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    background:#B06E45;
+}
+
+.btn-login{
+    padding:8px 14px;
+    border-radius:20px;
+    border:1px solid #B06E45;
+    background:white;
+    text-decoration:none;
+    color:#4B2E1E;
+    font-size:14px;
+}
+
+/* PROFILE ICON */
+.profile-icon{
+    width:42px;
+    height:42px;
+    border-radius:50%; /* INI KUNCI BULAT */
+    overflow:hidden;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:#B06E45;
+    flex-shrink:0;
+}
+
+.profile-icon:hover{
+    transform:scale(1.05);
+}
+
+/* WHY CHOOSE FIXED */
+
+.why-wrapper{
+    display:flex;
+    gap:30px;
+    align-items:stretch;
+}
+
+/* LEFT SIDE */
+.why-left{
+    flex:1;
+    background:#FFF6F0;
+    border-radius:20px;
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    border:1px solid #E7CDB6;
+}
+
+.why-image{
+    width:220px;
+    height:220px;
+    background:#A56A43;
+    border-radius:20px;
+    position:relative;
+}
+
+/* simple bag handle */
+.why-image::before{
+    content:"";
+    width:110px;
+    height:110px;
+    border:6px solid #4B2E1F;
+    border-bottom:none;
+    border-radius:70px 70px 0 0;
+    position:absolute;
+    top:-80px;
+    left:50%;
+    transform:translateX(-50%);
+}
+
+.why-left p{
+    margin-top:15px;
+    font-size:14px;
+    color:#4B2E1F;
+}
+
+/* RIGHT SIDE */
+.why-right{
+    flex:1;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+}
+
+/* CARD */
+.why-card{
+    background:white;
+    padding:18px;
+    border-radius:18px;
+    box-shadow:0 10px 25px rgba(75,46,31,0.08);
+    border:1px solid #F0DDCF;
+
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+}
+
+/* ICON */
+.why-card .icon{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    background:#FFF7F0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:16px;
+    flex-shrink:0;
+}
+
+/* TEXT */
+.why-card h4{
+    margin:0;
+    font-size:14px;
+    font-weight:700;
+    color:#4B2E1F;
+}
+
+.why-card p{
+    margin-top:4px;
+    font-size:12px;
+    color:#A56A43;
+    line-height:1.4;
+}
+
+/* BUTTON */
+.btn{
+    background:var(--caramel);
+    color:white;
+    padding:10px 16px;
+    border:none;
+    border-radius:12px;
+}
+
+.btn-outline{
+    border:1px solid #A56A43;
+    padding:10px 16px;
+    border-radius:12px;
+    background:transparent;
+    text-decoration:none;
+    color:#4B2E1F;
+    display:inline-block;
+}
+
+/* HERO */
+.hero{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:60px;
+    gap:40px;
+    overflow:hidden;
+}
+
+.hero-left{
+    width:50%;
+}
+
+.hero h1{
+    font-size:48px;
+    font-family:'Playfair Display';
+    line-height:1.15;
+}
+
+.hero p{
+    font-family:'Poppins';
+    color:#A56A43;
+    margin-top:15px;
+}
+
+.hero-btn{
+    display:flex;
+    gap:12px;
+    margin-top:25px;
+}
+
+.badge{
+    background:#f3d9b1;
+    padding:6px 12px;
+    border-radius:20px;
+    display:inline-block;
+    margin-bottom:18px;
+}
+
+/* BAG AREA */
+.hero-right{
+    width:50%;
+    height:380px;
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/* GAMBAR TAS / MOCKUP */
+.mock{
+    width:260px;
+    height:230px;
+    background:#A56A43;
+    border-radius:20px;
+    position:relative;
+    z-index:1;
+}
+
+/* pegangan tas */
+.mock::before{
+    content:"";
+    width:120px;
+    height:120px;
+    border:8px solid #4B2E1F;
+    border-bottom:none;
+    border-radius:80px 80px 0 0;
+    position:absolute;
+    top:-105px;
+    left:50%;
+    transform:translateX(-50%);
+}
+
+/* lingkaran belakang */
+.mock::after{
+    content:"";
+    width:210px;
+    height:210px;
+    background:#FFF9F4;
+    border-radius:50%;
+    position:absolute;
+    top:-95px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:-1;
+}
+
+/* FLOATING CARD */
+.floating{
+    position:absolute;
+    z-index:5;
+    background:white;
+    padding:14px 18px;
+    border-radius:18px;
+    box-shadow:0 10px 25px rgba(75,46,31,0.12);
+    border:1px solid #EAD9C8;
+
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    min-width:210px;
+}
+
+.float-icon{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    background:#FFF7F0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+    flex-shrink:0;
+}
+
+.floating h4{
+    font-size:14px;
+    color:#4B2E1F;
+    margin:0;
+    font-weight:700;
+}
+
+.floating p{
+    font-size:12px;
+    color:#A56A43;
+    margin:2px 0 0;
+}
+
+/* POSISI 3 TULISAN DI DEPAN GAMBAR */
+.f1{
+    left:10px;
+    top:150px;
+}
+
+.f2{
+    right:5px;
+    top:80px;
+}
+
+.f3{
+    right:0;
+    bottom:85px;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+    .hero{
+        flex-direction:column;
+        padding:35px 25px;
+    }
+
+    .hero-left,
+    .hero-right{
+        width:100%;
+    }
+
+    .hero h1{
+        font-size:36px;
+    }
+
+    .hero-right{
+        height:420px;
+    }
+
+    .f1{
+        left:0;
+        top:155px;
+    }
+
+    .f2{
+        right:0;
+        top:70px;
+    }
+
+    .f3{
+        right:0;
+        bottom:80px;
+    }
+}
+
+/* SECTION */
+.section{
+    padding:60px;
+}
+
+.section h2{
+    font-family:'Playfair Display';
+    font-size:32px;
+    margin-bottom:25px;
+}
+
+.grid-4{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+}
+
+.grid-3{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
+
+.grid-2{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+}
+
+/* STEPS (FIXED DESIGN) */
+.steps{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:20px;
+    margin-top:30px;
+}
+
+.step{
+    flex:1;
+    text-align:left;
+    position:relative;
+    padding-right:20px;
+}
+
+/* garis penghubung halus */
+.step:not(:last-child)::after{
+    content:"";
+    position:absolute;
+    top:15px;
+    right:0;
+    width:100%;
+    height:1px;
+    background:#E7CDB6;
+    z-index:-1;
+}
+
+/* STEPS STYLE BARU (SESUAI GAMBAR) */
+
+.steps-line{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    position:relative;
+    margin-top:40px;
+}
+
+/* garis putus-putus tengah */
+.steps-line::before{
+    content:"";
+    position:absolute;
+    top:22px;
+    left:5%;
+    right:5%;
+    border-top:2px dashed #C68B59;
+    z-index:0;
+}
+
+.step-item{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    position:relative;
+    z-index:1;
+    width:20%;
+}
+
+/* lingkaran angka */
+.circle{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    border:2px solid #C68B59;
+    background:#FFF7F0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:600;
+    color:#A56A43;
+    font-size:16px;
+}
+
+/* text bawah */
+.step-text{
+    margin-top:12px;
+    font-size:14px;
+    color:#4B2E1F;
+    text-align:center;
+}
+
+.num{
+    display:block;
+    font-size:16px;
+    color:#A56A43;
+    margin-bottom:6px;
+}
+
+.txt{
+    font-size:16px;
+    color:#4B2E1F;
+    font-weight:500;
+}
+
+.num{
+    display:block;
+    font-size:16px;
+    color:#A56A43;
+    margin-bottom:6px;
+}
+
+.txt{
+    font-size:16px;
+    color:#4B2E1F;
+    font-weight:500;
+}
+
+.step{
+    flex:1;
+    text-align:left;
+    position:relative;
+    padding-right:20px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:18px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.05);
+}
+
+/* BIG CARD */
+.big-card{
+    background:var(--soft);
+    border-radius:20px;
+    height:300px;
+}
+
+/* STEPS */
+.steps{
+    display:flex;
+    justify-content:space-between;
+}
+
+/* TESTIMONI FIXED UI */
+
+.testimonial-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:25px;
+}
+
+/* CARD */
+.testi-card{
+    background:white;
+    border-radius:18px;
+    padding:22px;
+    border:1px solid #EAD9C8;
+    box-shadow:0 8px 20px rgba(75,46,31,0.06);
+}
+
+/* HEADER */
+.testi-head{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:12px;
+}
+
+/* ICON BULAT */
+.avatar{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    background:#F3E3D3;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:14px;
+    color:#4B2E1F;
+}
+
+/* NAME */
+.testi-head h4{
+    font-size:15px;
+    color:#4B2E1F;
+    font-weight:600;
+    margin:0;
+}
+
+/* TEXT */
+.testi-card p{
+    font-size:13px;
+    color:#A56A43;
+    line-height:1.5;
+}
+
+/* FAQ SECTION TITLE */
+.faq h2{
+    font-family:'Playfair Display';
+}
+
+/* FAQ WRAPPER */
+.faq{
+    margin-top:20px;
+}
+
+/* FAQ CARD STYLE */
+.faq-item{
+    background:white;
+    padding:18px 22px;
+    margin-bottom:14px;
+    border-radius:14px;
+
+    border:1px solid #EAD9C8;
+    box-shadow:0 6px 18px rgba(75,46,31,0.05);
+
+    font-size:14px;
+    color:#4B2E1F;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    cursor:pointer;
+    transition:0.2s ease;
+}
+
+/* HOVER EFFECT */
+.faq-item:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 25px rgba(75,46,31,0.10);
+}
+
+/* tambah icon arrow kanan (seperti gambar modern FAQ) */
+.faq-item::after{
+    content:"+";
+    font-size:18px;
+    color:#A56A43;
+}
+
+/* FOOTER */
+.footer{
+    background:#3b2418;
+    color: #D8C2A5;
+    padding:40px;
+    display:flex;
+    justify-content:space-between;
+}
+
+.footer h3{
+    color: #FFF8F2;
+    font-family: 'Playfair Display';
+    font-size: 30px;
+}
+
+.footer h4{
+    color: #FFF8F2;
+}

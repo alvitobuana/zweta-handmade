@@ -1,0 +1,353 @@
+/* ============ BASE ============ */
+body{
+    margin:0;
+    font-family:Poppins;
+    background:#FBF3EC;
+    color:#4B2E1E;
+}
+
+/* ============ NAVBAR ============ */
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 60px;
+    background:#FFF6F0;
+}
+
+.logo{
+    font-family:Playfair Display;
+    font-weight:700;
+    font-size:22px;
+}
+
+nav{
+    display:flex;
+    gap:25px;
+}
+
+nav a{
+    text-decoration:none;
+    color: #A56A43;
+    font-size:14px;
+}
+
+nav a.active{
+    font-weight:700;
+}
+
+.nav-right{
+    display:flex;
+    gap:10px;
+    align-items:center;
+}
+
+.nav-right input{
+    padding:8px 14px;
+    border-radius:20px;
+    border:1px solid #8E735F;
+
+}
+
+.login{
+    padding:8px 14px;
+    border-radius:20px;
+    border:1px solid #B06E45;
+    background:white;
+}
+
+.avatar{
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    background:#B06E45;
+}
+
+.btn-login{
+    padding:8px 14px;
+    border-radius:20px;
+    border:1px solid #B06E45;
+    background:white;
+    text-decoration:none;
+    color:#4B2E1E;
+    font-size:14px;
+}
+
+/* PROFILE ICON */
+.profile-icon{
+    width:42px;
+    height:42px;
+    border-radius:50%; /* INI KUNCI BULAT */
+    overflow:hidden;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:#B06E45;
+    flex-shrink:0;
+}
+
+.profile-icon:hover{
+    transform:scale(1.05);
+}
+
+/* ============ TITLE ============ */
+.header{
+    padding:30px 70px;
+}
+
+.header h1{
+    font-family:Playfair Display;
+    font-size:42px;
+    margin:0;
+}
+
+.header p{
+    color:#7A5B49;
+}
+
+/* ============ GRID ============ */
+.container{
+    display:grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap:30px;
+    padding:20px 70px;
+}
+
+/* ============ CARD ============ */
+.card{
+    background:white;
+    border-radius:18px;
+    padding:25px;
+    box-shadow:0 0 0 1px #F0D7C5;
+}
+
+/* ============ PROFILE CARD ============ */
+.profile-header{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.avatar{
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    background:#A66A42;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+    font-size:22px;
+}
+
+.profile-name{
+    font-weight:700;
+}
+
+/* input */
+.input{
+    width:100%;
+    padding:10px;
+    border-radius:10px;
+    border:1px solid #E7CDB6;
+    margin-top:6px;
+    margin-bottom:12px;
+}
+
+/* ============ STATUS CARD ============ */
+.status-title{
+    font-weight:700;
+    font-size:18px;
+    margin-bottom:10px;
+}
+
+.order-code{
+    color:#A66A42;
+    font-weight:600;
+}
+
+.badge{
+    display:inline-block;
+    background:#E7D1BA;
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:12px;
+    margin:10px 0;
+}
+
+/* timeline */
+.timeline{
+    margin-top:20px;
+}
+
+.step{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:18px;
+    position:relative;
+}
+
+.dot{
+    width:16px;
+    height:16px;
+    border-radius:50%;
+    background:#CDB7A0;
+}
+
+.step.active .dot{
+    background:#A66A42;
+}
+
+.step span{
+    font-size:13px;
+}
+
+/* line */
+.step::before{
+    content:"";
+    position:absolute;
+    left:7px;
+    top:18px;
+    width:2px;
+    height:25px;
+    background:#E7D1BA;
+}
+
+/* buttons */
+.actions{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    padding:20px 70px;
+}
+
+/* BUTTON WRAPPER LEFT ALIGN */
+.actions.left{
+    display:flex;
+    justify-content:flex-start; /* INI KUNCI PINDAH KE KIRI */
+    gap:15px;
+    padding:20px 70px;
+}
+
+.btn{
+    padding:10px 20px;
+    border-radius:10px;
+    border:none;
+    cursor:pointer;
+}
+
+.btn-primary{
+    background:#A66A42;
+    color:white;
+    padding:10px 22px;
+    border-radius:12px;
+    border:none;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.btn-outline{
+    background:white;
+    color:#A66A42;
+    padding:10px 22px;
+    border-radius:12px;
+    border:1px solid #A66A42;
+    cursor:pointer;
+    font-weight:600;
+    transition:0.2s;
+}
+
+
+
+/* BACKGROUND BLUR */
+.logout-overlay{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.4);
+    backdrop-filter:blur(6px);
+
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:999;
+}
+
+/* BOX */
+.logout-box{
+    width:320px;
+    background:#FFF7F0;
+    border-radius:18px;
+    padding:25px;
+    text-align:center;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+/* TITLE */
+.logout-box h2{
+    font-size:18px;
+    margin-bottom:10px;
+    color:#4B2E1E;
+}
+
+/* TEXT */
+.logout-box p{
+    font-size:13px;
+    color:#8A6A55;
+    margin-bottom:20px;
+}
+
+/* ICON */
+.logout-icon{
+    width:60px;
+    height:60px;
+    margin:0 auto 20px;
+    background:#E7C9C9;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+}
+
+/* BUTTON AREA */
+.logout-action{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+}
+
+/* CANCEL */
+.btn-cancel{
+    flex:1;
+    padding:10px;
+    border-radius:12px;
+    border:1px solid #B06E45;
+    background:white;
+    cursor:pointer;
+    font-family: Poppins;
+    color: #A56A43;
+}
+
+/* LOGOUT */
+.btn-logout{
+    flex:1;
+    padding:10px;
+    border-radius:12px;
+    background:#A66A42;
+    color:white;
+    text-decoration:none;
+    text-align:center;
+    font-family: Poppins;
+}
+
+/* HOVER */
+.btn-logout:hover{
+    background:#8F5737;
+}
