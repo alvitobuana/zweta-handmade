@@ -8,8 +8,8 @@
             <p class="text-sm text-gray-500">Tambahkan produk baru ke dalam katalog Zweta Handmade.</p>
         </div>
         
-        <!-- Action Buttons (Right) -->
-        <div class="flex items-center gap-3">
+        <!-- Action Buttons (Right - Top) -->
+        <div id="top-action-buttons" class="flex items-center gap-3 transition-all duration-300">
             <a href="{{ route('admin.products.index') }}" class="px-5 py-2.5 border border-caramel/40 text-caramel rounded-xl text-xs font-semibold hover:bg-gray-50 transition">
                 Batal
             </a>
@@ -161,14 +161,14 @@
                     <textarea name="description" rows="5" class="w-full px-4 py-3 bg-white border border-soft-beige rounded-xl text-sm focus:outline-none focus:border-caramel placeholder-gray-400 leading-relaxed" placeholder="Tulis deskripsi produk di sini...">{{ old('description') }}</textarea>
                 </div>
 
-                <!-- Bottom Form Action Buttons -->
-                <div class="flex items-center gap-3 mt-4 pt-4 border-t border-gray-50">
-                    <button type="submit" class="px-6 py-2.5 bg-caramel text-white rounded-xl text-xs font-semibold hover:bg-opacity-95 transition shadow-sm">
-                        Simpan Produk
-                    </button>
+                <!-- Bottom Form Action Buttons (Right-aligned) -->
+                <div id="bottom-action-buttons" class="flex items-center justify-end gap-3 mt-4 pt-4 border-t border-gray-50 transition-all duration-300 opacity-0 pointer-events-none">
                     <a href="{{ route('admin.products.index') }}" class="px-5 py-2.5 border border-caramel/40 text-caramel rounded-xl text-xs font-semibold hover:bg-gray-50 transition">
                         Batal
                     </a>
+                    <button type="submit" class="px-6 py-2.5 bg-caramel text-white rounded-xl text-xs font-semibold hover:bg-opacity-95 transition shadow-sm">
+                        Simpan Produk
+                    </button>
                 </div>
 
                 <p class="text-[10px] text-gray-400 italic">Perubahan data produk akan langsung tampil di katalog customer setelah disimpan.</p>
@@ -207,6 +207,26 @@
             const name = this.value;
             const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
             document.getElementById('slug-input').value = slug;
+        });
+
+        // Dynamic scroll behavior to toggle save button between header (top) and form (bottom right)
+        document.addEventListener('DOMContentLoaded', function() {
+            const scrollContainer = document.querySelector('main');
+            const topActions = document.getElementById('top-action-buttons');
+            const bottomActions = document.getElementById('bottom-action-buttons');
+
+            if (scrollContainer && topActions && bottomActions) {
+                scrollContainer.addEventListener('scroll', function() {
+                    // If scrolled down by more than 150px, hide top buttons and show bottom buttons
+                    if (scrollContainer.scrollTop > 150) {
+                        topActions.classList.add('opacity-0', 'pointer-events-none');
+                        bottomActions.classList.remove('opacity-0', 'pointer-events-none');
+                    } else {
+                        topActions.classList.remove('opacity-0', 'pointer-events-none');
+                        bottomActions.classList.add('opacity-0', 'pointer-events-none');
+                    }
+                });
+            }
         });
     </script>
 @endsection
