@@ -103,8 +103,8 @@ Buka di browser: **http://localhost:8000**
 
 | Role | Email | Password |
 |---|---|---|
-| **Admin** | `test@example.com` | `password` |
-| **User** | Daftar sendiri di `/register` | — |
+| **Admin** | `zwetaadmin@gmail.com` | `password` |
+| **User** | `user@example.com` | `password` |
 
 ---
 
