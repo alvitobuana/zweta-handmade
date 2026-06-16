@@ -24,6 +24,13 @@ class DatabaseSeeder extends Seeder
             'is_admin' => true,
         ]);
 
+        User::factory()->create([
+            'name' => 'User Zweta',
+            'email' => 'user@example.com',
+            'password' => bcrypt('password'),
+            'is_admin' => false,
+        ]);
+
         // sample products
         $this->call([
             \Database\Seeders\ProductSeeder::class,
