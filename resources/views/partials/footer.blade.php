@@ -1,59 +1,35 @@
-<footer class="mt-20 bg-[--dark-brown] text-cream py-12 rounded-t-3xl">
-    <div class="container mx-auto px-6">
-        <div class="grid md:grid-cols-4 gap-8 mb-8">
-            <!-- Brand Info -->
-            <div>
-                <h3 class="font-serif text-xl font-bold mb-3">🎀 Zweta Handmade</h3>
-                <p class="text-sm text-cream/80 mb-4">Tas handmade custom dengan sentuhan personal dan kualitas terbaik.</p>
-                <div class="flex gap-3">
-                    <a href="#" class="w-10 h-10 bg-[--caramel] rounded-full flex items-center justify-center hover:bg-opacity-80 transition">f</a>
-                    <a href="#" class="w-10 h-10 bg-[--caramel] rounded-full flex items-center justify-center hover:bg-opacity-80 transition">📷</a>
-                    <a href="#" class="w-10 h-10 bg-[--caramel] rounded-full flex items-center justify-center hover:bg-opacity-80 transition">𝕏</a>
+<footer id="footer" class="mt-20 bg-dark-brown text-cream py-16 rounded-t-[2.5rem]">
+    <div class="container mx-auto px-8">
+        <div class="flex flex-col md:flex-row justify-between items-start gap-12">
+            <!-- Brand Column -->
+            <div class="max-w-md">
+                <h3 class="font-serif text-2xl font-semibold tracking-wide text-white">Zweta Handmade</h3>
+                <p class="text-sm text-cream/70 mt-4 leading-relaxed">
+                    Tas handmade custom dengan sentuhan personal. Dibuat untuk membantu customer dan memudahkan manajemen produksi.
+                </p>
+            </div>
+
+            <!-- Menu Column -->
+            <div class="flex flex-col">
+                <h4 class="font-semibold text-white tracking-wider uppercase text-xs mb-4">Menu</h4>
+                <div class="flex flex-wrap items-center gap-2 text-sm text-cream/70">
+                    <a href="{{ route('katalog') }}" class="hover:text-white transition">Katalog</a>
+                    <span class="text-cream/30">•</span>
+                    <a href="{{ route('custom') }}" class="hover:text-white transition">Custom</a>
+                    <span class="text-cream/30">•</span>
+                    <a href="{{ route('tracking') }}" class="hover:text-white transition">Tracking</a>
+                    <span class="text-cream/30">•</span>
+                    <a href="#footer" class="hover:text-white transition">Kontak</a>
                 </div>
-            </div>
-
-            <!-- Quick Links -->
-            <div>
-                <h4 class="font-semibold mb-4">Link Cepat</h4>
-                <ul class="space-y-2 text-sm">
-                    <li><a href="{{ route('home') }}" class="text-cream/80 hover:text-cream transition">Home</a></li>
-                    <li><a href="{{ route('katalog') }}" class="text-cream/80 hover:text-cream transition">Katalog</a></li>
-                    <li><a href="{{ route('custom') }}" class="text-cream/80 hover:text-cream transition">Custom Order</a></li>
-                    <li><a href="{{ route('tracking') }}" class="text-cream/80 hover:text-cream transition">Tracking</a></li>
-                </ul>
-            </div>
-
-            <!-- Info -->
-            <div>
-                <h4 class="font-semibold mb-4">Informasi</h4>
-                <ul class="space-y-2 text-sm">
-                    <li class="text-cream/80">📞 +62 812-xxxx-xxxx</li>
-                    <li class="text-cream/80">📧 hello@zwetahandmade.com</li>
-                    <li class="text-cream/80">📍 Jakarta, Indonesia</li>
-                    <li class="text-cream/80">⏰ Senin-Jumat: 09:00-17:00</li>
-                </ul>
-            </div>
-
-            <!-- Newsletter -->
-            <div>
-                <h4 class="font-semibold mb-4">Newsletter</h4>
-                <p class="text-sm text-cream/80 mb-3">Dapatkan update promo dan koleksi terbaru</p>
-                <form class="flex">
-                    <input type="email" placeholder="Email Anda" class="flex-1 px-3 py-2 rounded-l-lg focus:outline-none text-sm">
-                    <button type="submit" class="px-3 bg-[--caramel] rounded-r-lg hover:bg-opacity-90 transition">Subscribe</button>
-                </form>
             </div>
         </div>
 
-        <!-- Divider -->
-        <div class="border-t border-cream/30 pt-8">
-            <div class="flex flex-col sm:flex-row justify-between items-center text-xs text-cream/70">
-                <p>&copy; 2026 Zweta Handmade. Semua hak dilindungi.</p>
-                <div class="flex gap-4 mt-4 sm:mt-0">
-                    <a href="#" class="hover:text-cream transition">Kebijakan Privasi</a>
-                    <a href="#" class="hover:text-cream transition">Syarat Layanan</a>
-                    <a href="#" class="hover:text-cream transition">Kontak</a>
-                </div>
+        <!-- Divider & Bottom Info -->
+        <div class="border-t border-cream/10 mt-12 pt-8 flex flex-col sm:flex-row justify-between items-center text-xs text-cream/50">
+            <p>&copy; 2026 Zweta Handmade. Semua hak dilindungi.</p>
+            <div class="flex gap-6 mt-4 sm:mt-0">
+                <span class="flex items-center gap-1">📍 Jakarta, Indonesia</span>
+                <span class="flex items-center gap-1">📧 hello@zwetahandmade.com</span>
             </div>
         </div>
     </div>

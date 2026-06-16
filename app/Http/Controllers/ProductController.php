@@ -14,10 +14,18 @@ class ProductController extends Controller
         return view('home', compact('products','featured'));
     }
 
-    public function katalog()
+    public function katalog(Request $request)
     {
-        $products = Product::orderBy('name')->get();
-        return view('katalog', compact('products'));
+        $search = $request->query('search');
+        $query = Product::query();
+
+        if ($search) {
+            $query->where('name', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+        }
+
+        $products = $query->orderBy('name')->get();
+        return view('katalog', compact('products', 'search'));
     }
 
     public function show($slug)

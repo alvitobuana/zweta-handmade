@@ -13,6 +13,14 @@
     --dusty-pink: #D89CA4;
 }
 
+@theme {
+    --color-dark-brown: var(--dark-brown);
+    --color-caramel: var(--caramel);
+    --color-cream: var(--cream);
+    --color-soft-beige: var(--soft-beige);
+    --color-dusty-pink: var(--dusty-pink);
+}
+
 html,body{font-family: Poppins, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial}
 
 /* small helpers used by the scaffolding views */
