@@ -19,7 +19,7 @@
                     <span class="text-cream/30">•</span>
                     <a href="{{ route('tracking') }}" class="hover:text-white transition">Tracking</a>
                     <span class="text-cream/30">•</span>
-                    <a href="#footer" class="hover:text-white transition">Kontak</a>
+                    <a href="{{ route('kontak') }}" class="hover:text-white transition">Kontak</a>
                 </div>
             </div>
         </div>
