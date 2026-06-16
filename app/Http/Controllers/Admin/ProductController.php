@@ -9,10 +9,18 @@ use App\Models\Product;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::orderBy('id', 'desc')->paginate(10);
-        return view('admin.products.index', compact('products'));
+        $search = $request->query('search');
+        $query = Product::query();
+
+        if ($search) {
+            $query->where('name', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+        }
+
+        $products = $query->orderBy('id', 'desc')->paginate(12);
+        return view('admin.products.index', compact('products', 'search'));
     }
 
     public function create()
@@ -30,6 +38,10 @@ class ProductController extends Controller
             'status'      => 'nullable|in:ready,pre-order,custom',
             'description' => 'nullable|string',
             'image'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'category'    => 'nullable|string|max:255',
+            'material'    => 'nullable|string|max:255',
+            'size'        => 'nullable|string|max:255',
+            'colors'      => 'nullable|string|max:255',
         ]);
 
         if ($request->hasFile('image')) {
@@ -57,9 +69,18 @@ class ProductController extends Controller
             'status'      => 'nullable|in:ready,pre-order,custom',
             'description' => 'nullable|string',
             'image'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'category'    => 'nullable|string|max:255',
+            'material'    => 'nullable|string|max:255',
+            'size'        => 'nullable|string|max:255',
+            'colors'      => 'nullable|string|max:255',
         ]);
 
-        if ($request->hasFile('image')) {
+        if ($request->remove_image == '1') {
+            if ($product->image) {
+                Storage::disk('public')->delete($product->image);
+            }
+            $data['image'] = null;
+        } elseif ($request->hasFile('image')) {
             // Hapus gambar lama jika ada
             if ($product->image) {
                 Storage::disk('public')->delete($product->image);
