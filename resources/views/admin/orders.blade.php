@@ -36,6 +36,7 @@
                     <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
                     <option value="produksi" {{ request('status') == 'produksi' ? 'selected' : '' }}>Produksi</option>
                     <option value="finishing" {{ request('status') == 'finishing' ? 'selected' : '' }}>Finishing</option>
+                    <option value="siap_dikirim" {{ request('status') == 'siap_dikirim' ? 'selected' : '' }}>Siap Dikirim</option>
                     <option value="selesai" {{ request('status') == 'selesai' ? 'selected' : '' }}>Selesai</option>
                 </select>
             </form>
@@ -87,6 +88,7 @@
                                         <option value="pending" @selected($o->status == 'pending')>Menunggu</option>
                                         <option value="produksi" @selected($o->status == 'produksi')>Produksi</option>
                                         <option value="finishing" @selected($o->status == 'finishing')>Finishing</option>
+                                        <option value="siap_dikirim" @selected($o->status == 'siap_dikirim')>Siap Dikirim</option>
                                         <option value="selesai" @selected($o->status == 'selesai')>Selesai</option>
                                     </select>
                                 </form>

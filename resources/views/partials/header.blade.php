@@ -6,12 +6,12 @@
         </a>
 
         <!-- Desktop Navigation (Centered) -->
-        <nav class="hidden lg:flex gap-8 text-sm font-medium text-dark-brown">
-            <a href="{{ route('home') }}" class="hover:text-caramel transition">Home</a>
-            <a href="{{ route('katalog') }}" class="hover:text-caramel transition">Katalog</a>
-            <a href="{{ route('custom') }}" class="hover:text-caramel transition">Custom</a>
-            <a href="{{ route('tracking') }}" class="hover:text-caramel transition">Tracking</a>
-            <a href="#footer" class="hover:text-caramel transition">Kontak</a>
+        <nav class="hidden lg:flex gap-8 text-sm font-medium items-center">
+            <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'text-caramel font-semibold border-b-2 border-caramel pb-1' : 'text-dark-brown hover:text-caramel' }} transition">Home</a>
+            <a href="{{ route('katalog') }}" class="{{ request()->routeIs('katalog') ? 'text-caramel font-semibold border-b-2 border-caramel pb-1' : 'text-dark-brown hover:text-caramel' }} transition">Katalog</a>
+            <a href="{{ route('custom') }}" class="{{ request()->routeIs('custom') ? 'text-caramel font-semibold border-b-2 border-caramel pb-1' : 'text-dark-brown hover:text-caramel' }} transition">Custom</a>
+            <a href="{{ route('tracking') }}" class="{{ request()->routeIs('tracking') ? 'text-caramel font-semibold border-b-2 border-caramel pb-1' : 'text-dark-brown hover:text-caramel' }} transition">Tracking</a>
+            <a href="#footer" class="text-dark-brown hover:text-caramel transition">Kontak</a>
         </nav>
 
         <!-- Right Section -->
@@ -69,10 +69,10 @@
 
     <!-- Mobile Navigation -->
     <div id="mobile-menu" class="hidden lg:hidden border-t border-soft-beige/40 px-6 py-4 space-y-2 bg-cream">
-        <a href="{{ route('home') }}" class="block py-2 text-sm text-dark-brown hover:text-caramel">Home</a>
-        <a href="{{ route('katalog') }}" class="block py-2 text-sm text-dark-brown hover:text-caramel">Katalog</a>
-        <a href="{{ route('custom') }}" class="block py-2 text-sm text-dark-brown hover:text-caramel">Custom</a>
-        <a href="{{ route('tracking') }}" class="block py-2 text-sm text-dark-brown hover:text-caramel">Tracking</a>
+        <a href="{{ route('home') }}" class="block py-2 text-sm {{ request()->routeIs('home') ? 'text-caramel font-semibold border-l-4 border-caramel pl-2' : 'text-dark-brown hover:text-caramel' }}">Home</a>
+        <a href="{{ route('katalog') }}" class="block py-2 text-sm {{ request()->routeIs('katalog') ? 'text-caramel font-semibold border-l-4 border-caramel pl-2' : 'text-dark-brown hover:text-caramel' }}">Katalog</a>
+        <a href="{{ route('custom') }}" class="block py-2 text-sm {{ request()->routeIs('custom') ? 'text-caramel font-semibold border-l-4 border-caramel pl-2' : 'text-dark-brown hover:text-caramel' }}">Custom</a>
+        <a href="{{ route('tracking') }}" class="block py-2 text-sm {{ request()->routeIs('tracking') ? 'text-caramel font-semibold border-l-4 border-caramel pl-2' : 'text-dark-brown hover:text-caramel' }}">Tracking</a>
         <a href="#footer" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="block py-2 text-sm text-dark-brown hover:text-caramel">Kontak</a>
         
         <!-- Mobile Search -->

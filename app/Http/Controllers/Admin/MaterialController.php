@@ -26,7 +26,14 @@ class MaterialController extends Controller
             'min_stock' => 'required|integer',
         ]);
 
-        $status = $data['quantity'] <= $data['min_stock'] ? 'habis' : 'aman';
+        if ($data['quantity'] <= 0) {
+            $status = 'habis';
+        } elseif ($data['quantity'] <= $data['min_stock']) {
+            $status = 'menipis';
+        } else {
+            $status = 'aman';
+        }
+
         $material->update($data + ['status' => $status]);
 
         return redirect()->route('admin.materials.index')->with('success', 'Material updated');

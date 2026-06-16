@@ -1,41 +1,53 @@
 @extends('layouts.admin')
 
 @section('content')
-    <div class="mb-6">
-        <a href="{{ route('admin.materials.index') }}" class="text-[--caramel] hover:underline">← Kembali</a>
-        <h1 class="text-3xl font-serif mt-2">Edit Bahan: {{ $material->name }}</h1>
+    <!-- Header with Back Button -->
+    <div class="flex items-center gap-4 mb-8">
+        <a href="{{ route('admin.materials.index') }}" class="inline-flex items-center justify-center w-10 h-10 border border-[#F2ECE4] bg-white text-[#4B2B20] rounded-full hover:bg-gray-50 transition" title="Kembali ke list">
+            ←
+        </a>
+        <h1 class="text-3xl font-serif text-[#4B2B20] font-bold">Edit Bahan: {{ $material->name }}</h1>
     </div>
 
-    <div class="bg-white rounded-lg shadow p-6 max-w-2xl">
-        <form action="{{ route('admin.materials.update', $material) }}" method="post">
+    <!-- Edit Form Card -->
+    <div class="bg-white rounded-[2rem] border border-[#FAF6F0] p-8 shadow-[0_4px_30px_rgba(75,43,32,0.02)] max-w-xl">
+        <form action="{{ route('admin.materials.update', $material) }}" method="post" class="space-y-6">
             @csrf
             @method('PATCH')
 
-            <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700">Nama Bahan</label>
-                <input type="text" value="{{ $material->name }}" class="border rounded px-3 py-2 w-full mt-1" disabled>
+            <!-- Name Field (Disabled) -->
+            <div>
+                <label class="block text-xs font-bold text-[#4B2B20] uppercase tracking-wider mb-2">Nama Bahan</label>
+                <input type="text" value="{{ $material->name }}" class="w-full px-5 py-3.5 bg-gray-50 border border-[#F2ECE4] rounded-[18px] text-sm text-gray-500 font-medium focus:outline-none" disabled>
             </div>
 
-            <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700">Jenis</label>
-                <input type="text" value="{{ $material->type }}" class="border rounded px-3 py-2 w-full mt-1" disabled>
+            <!-- Type Field (Disabled) -->
+            <div>
+                <label class="block text-xs font-bold text-[#4B2B20] uppercase tracking-wider mb-2">Jenis</label>
+                <input type="text" value="{{ $material->type }}" class="w-full px-5 py-3.5 bg-gray-50 border border-[#F2ECE4] rounded-[18px] text-sm text-gray-500 font-medium focus:outline-none" disabled>
             </div>
 
+            <!-- Quantity & Min Stock Fields -->
             <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Quantity</label>
-                    <input type="number" name="quantity" value="{{ $material->quantity }}" class="border rounded px-3 py-2 w-full mt-1" required>
+                    <label class="block text-xs font-bold text-[#4B2B20] uppercase tracking-wider mb-2">Quantity</label>
+                    <input type="number" name="quantity" value="{{ $material->quantity }}" class="w-full px-5 py-3.5 bg-white border border-[#F2ECE4] rounded-[18px] text-sm text-[#4B2B20] font-medium focus:outline-none focus:border-[#A56A43] focus:ring-1 focus:ring-[#A56A43] transition" required>
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Min. Stok</label>
-                    <input type="number" name="min_stock" value="{{ $material->min_stock }}" class="border rounded px-3 py-2 w-full mt-1" required>
+                    <label class="block text-xs font-bold text-[#4B2B20] uppercase tracking-wider mb-2">Min. Stok</label>
+                    <input type="number" name="min_stock" value="{{ $material->min_stock }}" class="w-full px-5 py-3.5 bg-white border border-[#F2ECE4] rounded-[18px] text-sm text-[#4B2B20] font-medium focus:outline-none focus:border-[#A56A43] focus:ring-1 focus:ring-[#A56A43] transition" required>
                 </div>
             </div>
 
-            <div class="mt-6 flex gap-3">
-                <button type="submit" class="px-4 py-2 bg-[--caramel] text-white rounded">Simpan</button>
-                <a href="{{ route('admin.materials.index') }}" class="px-4 py-2 border rounded text-gray-700">Batal</a>
+            <!-- Action Buttons -->
+            <div class="pt-2 flex gap-4">
+                <a href="{{ route('admin.materials.index') }}" class="flex-1 py-3.5 border border-[#A56A43]/40 text-[#A56A43] font-bold rounded-xl text-xs hover:bg-gray-50 transition text-center shadow-sm">
+                    Batal
+                </a>
+                <button type="submit" class="flex-1 py-3.5 bg-[#A56A43] text-white font-bold rounded-xl text-xs hover:bg-opacity-95 transition text-center shadow-sm">
+                    Simpan
+                </button>
             </div>
         </form>
     </div>

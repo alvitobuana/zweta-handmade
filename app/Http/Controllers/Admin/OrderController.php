@@ -41,10 +41,31 @@ class OrderController extends Controller
     public function updateStatus(Request $request, Order $order)
     {
         $request->validate([
-            'status' => ['required', 'in:pending,produksi,finishing,selesai'],
+            'status' => ['required', 'in:pending,menunggu_verifikasi,produksi,finishing,siap_dikirim,selesai'],
         ]);
 
         $order->update(['status' => $request->status]);
         return redirect()->back()->with('success', 'Status pesanan diperbarui');
+    }
+
+    public function verifyPayment(Order $order)
+    {
+        $order->update(['status' => 'produksi']);
+        return redirect()->back()->with('success', 'Pembayaran berhasil diverifikasi. Pesanan masuk ke proses produksi.');
+    }
+
+    public function rejectPayment(Order $order)
+    {
+        if ($order->payment_receipt && file_exists(public_path($order->payment_receipt))) {
+            @unlink(public_path($order->payment_receipt));
+        }
+
+        $order->update([
+            'payment_receipt' => null,
+            'status' => 'pending',
+            'notes' => 'Bukti pembayaran sebelumnya ditolak oleh admin. Harap unggah bukti pembayaran yang valid.',
+        ]);
+
+        return redirect()->back()->with('success', 'Pembayaran ditolak. Pesanan dikembalikan ke status Pending.');
     }
 }

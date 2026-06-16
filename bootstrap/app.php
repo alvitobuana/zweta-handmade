@@ -3,10 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-<<<<<<< HEAD
-=======
 use Illuminate\Http\Request;
->>>>>>> 7d3d76c5ac893614aeb83c1d057e180f21b81278
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -15,12 +12,6 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-<<<<<<< HEAD
-        //
-    })
-    ->withExceptions(function (Exceptions $exceptions): void {
-        //
-=======
         $middleware->alias([
             'admin' => \App\Http\Middleware\EnsureUserIsAdmin::class,
         ]);
@@ -29,5 +20,4 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*'),
         );
->>>>>>> 7d3d76c5ac893614aeb83c1d057e180f21b81278
     })->create();

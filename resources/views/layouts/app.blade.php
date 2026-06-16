@@ -11,7 +11,7 @@
         <link rel="stylesheet" href="/css/app.css">
     @endif
 </head>
-<body class="bg-cream text-[--dark-brown] min-h-screen font-sans flex flex-col">
+<body class="bg-cream text-dark-brown min-h-screen font-sans flex flex-col">
     <!-- Header -->
     @include('partials.header')
 

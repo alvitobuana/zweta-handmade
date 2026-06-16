@@ -107,9 +107,9 @@
                     <div>
                         <label class="block text-xs font-bold text-dark-brown uppercase tracking-wider mb-2">Kategori</label>
                         <select name="category" class="w-full px-4 py-3 bg-white border border-soft-beige rounded-xl text-sm focus:outline-none focus:border-caramel">
-                            <option value="Tas" {{ old('category', $product->category) == 'Tas' ? 'selected' : '' }}>Tas</option>
-                            <option value="Pouch" {{ old('category', $product->category) == 'Pouch' ? 'selected' : '' }}>Pouch</option>
-                            <option value="Aksesoris" {{ old('category', $product->category) == 'Aksesoris' ? 'selected' : '' }}>Aksesoris</option>
+                            <option value="Sling Bag" {{ old('category', $product->category) == 'Sling Bag' ? 'selected' : '' }}>Sling Bag</option>
+                            <option value="Backpack" {{ old('category', $product->category) == 'Backpack' ? 'selected' : '' }}>Backpack</option>
+                            <option value="Totebag" {{ old('category', $product->category) == 'Totebag' ? 'selected' : '' }}>Totebag</option>
                         </select>
                     </div>
                     <div>

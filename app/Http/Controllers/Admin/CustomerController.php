@@ -8,10 +8,18 @@ use App\Models\Customer;
 
 class CustomerController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $customers = Customer::paginate(15);
-        return view('admin.customers', compact('customers'));
+        $search = $request->query('search');
+        $query = Customer::query();
+
+        if ($search) {
+            $query->where('name', 'like', "%{$search}%")
+                  ->orWhere('phone', 'like', "%{$search}%");
+        }
+
+        $customers = $query->paginate(15);
+        return view('admin.customers', compact('customers', 'search'));
     }
 
     public function destroy(Customer $customer)

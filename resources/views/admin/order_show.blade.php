@@ -21,11 +21,12 @@
 
         $statusVal = $order->status;
         $step1 = true; // Order dibuat
-        $step2 = $statusVal != 'pending'; // Pembayaran diverifikasi
-        $step3 = in_array($statusVal, ['produksi', 'finishing', 'selesai']); // Masuk antrean produksi
-        $step4 = in_array($statusVal, ['produksi', 'finishing', 'selesai']); // Sedang dibuat 50%
-        $step5 = in_array($statusVal, ['finishing', 'selesai']); // Finishing
-        $step6 = $statusVal == 'selesai'; // Siap dikirim
+        $step2 = in_array($statusVal, ['produksi', 'finishing', 'siap_dikirim', 'selesai']); // Pembayaran diverifikasi
+        $step3 = in_array($statusVal, ['produksi', 'finishing', 'siap_dikirim', 'selesai']); // Masuk antrean produksi
+        $step4 = in_array($statusVal, ['produksi', 'finishing', 'siap_dikirim', 'selesai']); // Sedang dibuat 50%
+        $step5 = in_array($statusVal, ['finishing', 'siap_dikirim', 'selesai']); // Finishing
+        $step6 = in_array($statusVal, ['siap_dikirim', 'selesai']); // Siap dikirim
+        $step7 = $statusVal == 'selesai'; // Selesai
 
         $stepsData = [
             [
@@ -57,6 +58,11 @@
                 'label' => 'Siap dikirim',
                 'active' => $step6,
                 'days' => 4,
+            ],
+            [
+                'label' => 'Pesanan Selesai',
+                'active' => $step7,
+                'days' => 5,
             ]
         ];
     @endphp
@@ -76,6 +82,10 @@
                 <span class="px-5 py-2.5 bg-[#FAF2E9] text-[#A56A43] font-bold rounded-full text-xs uppercase tracking-wider">
                     Pending
                 </span>
+            @elseif($order->status == 'menunggu_verifikasi')
+                <span class="px-5 py-2.5 bg-[#FEF3C7] text-[#D97706] font-bold rounded-full text-xs uppercase tracking-wider">
+                    Menunggu Verifikasi
+                </span>
             @elseif($order->status == 'produksi')
                 <span class="px-5 py-2.5 bg-[#EED8DA] text-[#8C4F57] font-bold rounded-full text-xs uppercase tracking-wider">
                     Sedang Dibuat
@@ -84,9 +94,13 @@
                 <span class="px-5 py-2.5 bg-[#EAF2F8] text-[#4A7F9D] font-bold rounded-full text-xs uppercase tracking-wider">
                     Finishing
                 </span>
-            @elseif($order->status == 'selesai')
+            @elseif($order->status == 'siap_dikirim')
                 <span class="px-5 py-2.5 bg-[#EBF7EE] text-[#4CAF50] font-bold rounded-full text-xs uppercase tracking-wider">
                     Siap Dikirim
+                </span>
+            @elseif($order->status == 'selesai')
+                <span class="px-5 py-2.5 bg-[#EAD8C9] text-[#7A5A40] font-bold rounded-full text-xs uppercase tracking-wider">
+                    Selesai
                 </span>
             @endif
         </div>
@@ -146,7 +160,14 @@
             <div>
                 <h4 class="font-bold text-dark-brown text-sm mb-2">Payment</h4>
                 <p class="text-xs text-gray-500 leading-relaxed">
-                    QRIS Status: {{ $order->status == 'pending' ? 'Pending' : 'Terverifikasi' }}
+                    QRIS Status: 
+                    @if($order->status == 'pending')
+                        Pending
+                    @elseif($order->status == 'menunggu_verifikasi')
+                        Menunggu Verifikasi
+                    @else
+                        Terverifikasi
+                    @endif
                 </p>
                 <p class="text-xs text-gray-500 leading-relaxed mt-1">
                     {{ $order->created_at ? $formatIndo($order->created_at, 0) . ' ' . $order->created_at->format('Y') : '12 Juni 2026' }}
@@ -154,6 +175,41 @@
             </div>
         </div>
     </div>
+
+    <!-- Bukti Pembayaran Section -->
+    @if($order->payment_receipt)
+        <div class="bg-white border border-gray-100 rounded-3xl p-8 shadow-[0_4px_20px_rgba(28,20,16,0.01)] mb-8">
+            <h3 class="text-xl font-serif font-bold text-dark-brown mb-6">Bukti Pembayaran</h3>
+            <div class="flex flex-col sm:flex-row gap-8 items-start">
+                <div class="w-full max-w-[280px] border-2 border-soft-beige rounded-2xl overflow-hidden bg-cream shadow-sm flex items-center justify-center p-2">
+                    <img src="{{ asset($order->payment_receipt) }}" alt="Bukti Pembayaran" class="w-full h-auto object-cover rounded-xl">
+                </div>
+                <div class="flex-1 space-y-4">
+                    <p class="text-sm text-gray-600 font-medium">Pelanggan telah mengunggah bukti transfer pembayaran.</p>
+                    @if($order->status == 'menunggu_verifikasi')
+                        <div class="flex flex-wrap gap-3 pt-2">
+                            <form action="{{ route('admin.orders.verifyPayment', $order) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="px-5 py-2.5 bg-green-600 text-white rounded-xl text-xs font-semibold hover:bg-green-700 transition shadow-sm">
+                                    ✓ Terima Pembayaran
+                                </button>
+                            </form>
+                            <form action="{{ route('admin.orders.rejectPayment', $order) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="px-5 py-2.5 bg-red-600 text-white rounded-xl text-xs font-semibold hover:bg-red-700 transition shadow-sm">
+                                    ✗ Tolak Pembayaran
+                                </button>
+                            </form>
+                        </div>
+                    @else
+                        <div class="px-4 py-2 bg-green-50 border border-green-200 text-green-700 rounded-xl text-xs font-medium inline-flex items-center gap-1.5 shadow-sm">
+                            <span>✓</span> Pembayaran Terverifikasi
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+    @endif
 
     <!-- Custom Request & Referensi Image Section -->
     <div class="bg-white border border-gray-100 rounded-3xl p-8 shadow-[0_4px_20px_rgba(28,20,16,0.01)] mb-8">
@@ -265,9 +321,11 @@
                     <label class="block text-xs font-bold text-dark-brown uppercase tracking-wider mb-2">Pilih Status Produksi</label>
                     <select name="status" class="w-full px-4 py-3 bg-white border border-soft-beige rounded-xl text-sm focus:outline-none focus:border-caramel">
                         <option value="pending" @selected($order->status == 'pending')>Pending (Menunggu Pembayaran)</option>
+                        <option value="menunggu_verifikasi" @selected($order->status == 'menunggu_verifikasi')>Menunggu Verifikasi Pembayaran</option>
                         <option value="produksi" @selected($order->status == 'produksi')>Produksi (Sedang Dibuat)</option>
                         <option value="finishing" @selected($order->status == 'finishing')>Finishing (Tahap Akhir)</option>
-                        <option value="selesai" @selected($order->status == 'selesai')>Selesai (Siap Dikirim)</option>
+                        <option value="siap_dikirim" @selected($order->status == 'siap_dikirim')>Siap Dikirim (Kurir)</option>
+                        <option value="selesai" @selected($order->status == 'selesai')>Selesai (Diterima Customer)</option>
                     </select>
                 </div>
                 

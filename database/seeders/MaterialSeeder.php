@@ -10,13 +10,13 @@ class MaterialSeeder extends Seeder
     public function run(): void
     {
         $materials = [
-            ['Kain Kanvas', 'Kain', 20, 5, 'aman'],
-            ['Tali Tas', 'Aksesoris', 18, 5, 'aman'],
-            ['Resleting', 'Aksesoris', 16, 5, 'aman'],
-            ['Benang', 'Aksesoris', 14, 5, 'aman'],
-            ['Label Kulit', 'Branding', 12, 5, 'aman'],
+            ['Kain kanvas', 'Kain', 20, 5, 'aman'],
+            ['Tali tas', 'Aksesoris', 18, 5, 'menipis'],
+            ['Resleting', 'Aksesoris', 16, 5, 'habis'],
+            ['Benang', 'Benang', 14, 5, 'aman'],
+            ['Label kulit', 'Branding', 12, 5, 'menipis'],
             ['Kancing', 'Aksesoris', 10, 5, 'habis'],
-            ['Dekorasi', 'Dekorasi', 8, 5, 'aman'],
+            ['Aksesoris', 'Dekorasi', 8, 5, 'aman'],
         ];
 
         foreach ($materials as $m) {

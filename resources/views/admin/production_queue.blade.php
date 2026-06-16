@@ -1,108 +1,126 @@
 @extends('layouts.admin')
 
 @section('content')
-    <div class="mb-6">
-        <h1 class="text-3xl font-serif">Production Queue</h1>
+    <!-- Page Header -->
+    <div class="mb-8 flex justify-between items-center">
+        <h1 class="text-[34px] font-serif font-bold text-[#4B2B20]">Production Queue</h1>
     </div>
 
-    <div class="grid grid-cols-4 gap-4 mb-6">
-        <div class="bg-yellow-100 rounded-lg p-4 border-l-4 border-yellow-500">
-            <p class="text-gray-600 text-sm">Menunggu</p>
-            <p class="text-3xl font-semibold">{{ count($waiting) }}</p>
+    @if (session('success'))
+        <div class="mb-6 p-4 bg-green-50 border border-green-200 text-green-700 rounded-2xl text-sm shadow-sm flex items-center gap-2">
+            <span>✅</span>
+            <span>{{ session('success') }}</span>
         </div>
-        <div class="bg-blue-100 rounded-lg p-4 border-l-4 border-blue-500">
-            <p class="text-gray-600 text-sm">Sedang Dibuat</p>
-            <p class="text-3xl font-semibold">{{ count($inProgress) }}</p>
-        </div>
-        <div class="bg-purple-100 rounded-lg p-4 border-l-4 border-purple-500">
-            <p class="text-gray-600 text-sm">Finishing</p>
-            <p class="text-3xl font-semibold">{{ count($finishing) }}</p>
-        </div>
-        <div class="bg-green-100 rounded-lg p-4 border-l-4 border-green-500">
-            <p class="text-gray-600 text-sm">Siap Kirim</p>
-            <p class="text-3xl font-semibold">{{ count($ready) }}</p>
-        </div>
-    </div>
+    @endif
 
-    <div class="grid grid-cols-4 gap-4">
-        <!-- Menunggu -->
-        <div class="bg-white rounded-lg shadow p-4">
-            <h3 class="font-semibold mb-4 text-center text-yellow-600">MENUNGGU</h3>
-            <div class="space-y-3">
-                @forelse ($waiting as $order)
-                    <div class="bg-yellow-50 border border-yellow-200 rounded p-3">
-                        <p class="font-semibold text-sm">{{ $order->code }}</p>
-                        <p class="text-xs text-gray-600">{{ $order->customer_name }}</p>
-                        <p class="text-xs text-gray-600">{{ $order->product }}</p>
-                        <form method="post" action="{{ route('admin.orders.updateStatus', $order) }}" class="mt-2">
-                            @csrf
-                            <input type="hidden" name="status" value="produksi">
-                            <button type="submit" class="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600">Mulai Produksi</button>
-                        </form>
-                    </div>
-                @empty
-                    <p class="text-center text-gray-400 text-sm py-4">Tidak ada</p>
-                @endforelse
-            </div>
-        </div>
+    <!-- Kanban Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-5 items-start">
+        @php
+            $columns = [
+                [
+                    'title' => 'Menunggu',
+                    'orders' => $waiting,
+                    'emptyText' => 'Belum ada antrean',
+                ],
+                [
+                    'title' => 'Sedang Dibuat',
+                    'orders' => $inProgress,
+                    'emptyText' => 'Tidak ada pengerjaan',
+                ],
+                [
+                    'title' => 'Finishing',
+                    'orders' => $finishing,
+                    'emptyText' => 'Tidak ada finishing',
+                ],
+                [
+                    'title' => 'Siap Dikirim',
+                    'orders' => $ready,
+                    'emptyText' => 'Tidak ada siap kirim',
+                ],
+                [
+                    'title' => 'Selesai',
+                    'orders' => $completed,
+                    'emptyText' => 'Belum ada yang selesai',
+                ],
+            ];
+        @endphp
 
-        <!-- Sedang Dibuat -->
-        <div class="bg-white rounded-lg shadow p-4">
-            <h3 class="font-semibold mb-4 text-center text-blue-600">SEDANG DIBUAT</h3>
-            <div class="space-y-3">
-                @forelse ($inProgress as $order)
-                    <div class="bg-blue-50 border border-blue-200 rounded p-3">
-                        <p class="font-semibold text-sm">{{ $order->code }}</p>
-                        <p class="text-xs text-gray-600">{{ $order->customer_name }}</p>
-                        <p class="text-xs text-gray-600">{{ $order->product }}</p>
-                        <form method="post" action="{{ route('admin.orders.updateStatus', $order) }}" class="mt-2">
-                            @csrf
-                            <input type="hidden" name="status" value="finishing">
-                            <button type="submit" class="text-xs bg-purple-500 text-white px-2 py-1 rounded hover:bg-purple-600">Ke Finishing</button>
-                        </form>
-                    </div>
-                @empty
-                    <p class="text-center text-gray-400 text-sm py-4">Tidak ada</p>
-                @endforelse
-            </div>
-        </div>
+        @foreach ($columns as $col)
+            <!-- Column -->
+            <div class="bg-[#FAF5EF] rounded-[24px] p-5 min-h-[650px] border border-[#F5ECE2] flex flex-col">
+                <!-- Column Header -->
+                <div class="flex justify-between items-center mb-5 shrink-0">
+                    <h2 class="font-bold text-base text-[#4B2B20]">{{ $col['title'] }}</h2>
+                    <span class="text-xs font-semibold bg-[#EAD8C9]/40 text-[#A56A43] px-2.5 py-1 rounded-full">
+                        {{ count($col['orders']) }}
+                    </span>
+                </div>
 
-        <!-- Finishing -->
-        <div class="bg-white rounded-lg shadow p-4">
-            <h3 class="font-semibold mb-4 text-center text-purple-600">FINISHING</h3>
-            <div class="space-y-3">
-                @forelse ($finishing as $order)
-                    <div class="bg-purple-50 border border-purple-200 rounded p-3">
-                        <p class="font-semibold text-sm">{{ $order->code }}</p>
-                        <p class="text-xs text-gray-600">{{ $order->customer_name }}</p>
-                        <p class="text-xs text-gray-600">{{ $order->product }}</p>
-                        <form method="post" action="{{ route('admin.orders.updateStatus', $order) }}" class="mt-2">
-                            @csrf
-                            <input type="hidden" name="status" value="selesai">
-                            <button type="submit" class="text-xs bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600">Selesai</button>
-                        </form>
-                    </div>
-                @empty
-                    <p class="text-center text-gray-400 text-sm py-4">Tidak ada</p>
-                @endforelse
-            </div>
-        </div>
+                <!-- Column Cards Container -->
+                <div class="flex-1 flex flex-col gap-4 overflow-y-auto max-h-[550px] pr-1">
+                    @forelse ($col['orders'] as $order)
+                        @php
+                            $deadlineDate = $order->created_at ? $order->created_at->addDays(5) : now()->addDays(5);
+                            $daysLeft = now()->diffInDays($deadlineDate, false);
+                            $isUrgent = $daysLeft <= 2;
+                        @endphp
+                        <!-- Card -->
+                        <div class="bg-white rounded-[20px] p-5 shadow-[0_4px_20px_rgba(75,43,32,0.03)] border border-[#FAF6F0] hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(75,43,32,0.07)] transition duration-300 flex flex-col gap-3 group">
+                            <!-- Card Header -->
+                            <div class="flex justify-between items-start gap-2">
+                                <span class="font-bold text-[15px] text-[#4B2B20] tracking-wide">{{ $order->code }}</span>
+                                
+                                <!-- Status Updater Dropdown -->
+                                <form method="post" action="{{ route('admin.orders.updateStatus', $order) }}" class="relative select-status-form shrink-0">
+                                    @csrf
+                                    <select name="status" onchange="this.form.submit()" class="text-[10px] bg-[#FAF2EA]/70 text-[#A56A43] font-bold rounded-full py-1 pl-2.5 pr-6 border border-transparent hover:border-[#A56A43]/30 focus:outline-none cursor-pointer appearance-none transition">
+                                        <option value="pending" @selected($order->status == 'pending')>Menunggu</option>
+                                        <option value="produksi" @selected($order->status == 'produksi')>Sedang Dibuat</option>
+                                        <option value="finishing" @selected($order->status == 'finishing')>Finishing</option>
+                                        <option value="siap_dikirim" @selected($order->status == 'siap_dikirim')>Siap Dikirim</option>
+                                        <option value="selesai" @selected($order->status == 'selesai')>Selesai</option>
+                                    </select>
+                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#A56A43]">
+                                        <svg class="h-2.5 w-2.5 fill-current" viewBox="0 0 20 20">
+                                            <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/>
+                                        </svg>
+                                    </div>
+                                </form>
+                            </div>
 
-        <!-- Siap Dikirim -->
-        <div class="bg-white rounded-lg shadow p-4">
-            <h3 class="font-semibold mb-4 text-center text-green-600">SIAP DIKIRIM</h3>
-            <div class="space-y-3">
-                @forelse ($ready as $order)
-                    <div class="bg-green-50 border border-green-200 rounded p-3">
-                        <p class="font-semibold text-sm">{{ $order->code }}</p>
-                        <p class="text-xs text-gray-600">{{ $order->customer_name }}</p>
-                        <p class="text-xs text-gray-600">{{ $order->product }}</p>
-                        <p class="text-xs text-green-600 font-semibold mt-2">✓ Selesai</p>
-                    </div>
-                @empty
-                    <p class="text-center text-gray-400 text-sm py-4">Tidak ada</p>
-                @endforelse
+                            <!-- Card Body -->
+                            <div class="flex flex-col gap-1 text-[13px] text-gray-500 font-medium">
+                                <p><span class="text-gray-400">Customer:</span> <span class="text-gray-700">{{ $order->customer_name }}</span></p>
+                                <p class="text-gray-700 font-semibold">{{ $order->product }}</p>
+                                <p><span class="text-gray-400">Deadline:</span> <span class="text-[#A56A43] font-semibold">{{ $deadlineDate->translatedFormat('j M') }}</span></p>
+                            </div>
+
+                            <!-- Card Footer -->
+                            <div class="pt-1 flex items-center justify-between">
+                                @if($isUrgent)
+                                    <span class="inline-block text-xs bg-[#D79A4F] text-white font-bold py-1.5 px-4 rounded-full shadow-sm">
+                                        Urgent
+                                    </span>
+                                @else
+                                    <span class="inline-block text-xs bg-[#FAF2EA] text-[#A56A43] font-bold py-1.5 px-4 rounded-full">
+                                        Normal
+                                    </span>
+                                @endif
+
+                                <!-- View Details Link -->
+                                <a href="{{ route('admin.orders.show', $order->id) }}" class="text-xs font-bold text-[#A56A43] hover:underline opacity-0 group-hover:opacity-100 transition duration-200">
+                                    Detail →
+                                </a>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="border-2 border-dashed border-[#EAD8C9]/40 rounded-[20px] p-6 text-center text-xs text-gray-400 font-medium my-auto flex flex-col items-center gap-2">
+                            <span>📦</span>
+                            <span>{{ $col['emptyText'] }}</span>
+                        </div>
+                    @endforelse
+                </div>
             </div>
-        </div>
+        @endforeach
     </div>
 @endsection
