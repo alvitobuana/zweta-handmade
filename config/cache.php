@@ -27,8 +27,13 @@ return [
     | same cache driver to group types of items stored in your caches.
     |
     | Supported drivers: "array", "database", "file", "memcached",
+<<<<<<< HEAD
     |                    "redis", "dynamodb", "octane",
     |                    "failover", "null"
+=======
+    |                    "redis", "dynamodb", "storage", "octane",
+    |                    "session", "failover", "null"
+>>>>>>> 7d3d76c5ac893614aeb83c1d057e180f21b81278
     |
     */
 
@@ -53,6 +58,15 @@ return [
             'lock_path' => storage_path('framework/cache/data'),
         ],
 
+<<<<<<< HEAD
+=======
+        'storage' => [
+            'driver' => 'storage',
+            'disk' => env('CACHE_STORAGE_DISK'),
+            'path' => env('CACHE_STORAGE_PATH', 'framework/cache/data'),
+        ],
+
+>>>>>>> 7d3d76c5ac893614aeb83c1d057e180f21b81278
         'memcached' => [
             'driver' => 'memcached',
             'persistent_id' => env('MEMCACHED_PERSISTENT_ID'),
@@ -114,4 +128,20 @@ return [
 
     'prefix' => env('CACHE_PREFIX', Str::slug((string) env('APP_NAME', 'laravel')).'-cache-'),
 
+<<<<<<< HEAD
+=======
+    /*
+    |--------------------------------------------------------------------------
+    | Serializable Classes
+    |--------------------------------------------------------------------------
+    |
+    | This value determines the classes that can be unserialized from cache
+    | storage. By default, no PHP classes will be unserialized from your
+    | cache to prevent gadget chain attacks if your APP_KEY is leaked.
+    |
+    */
+
+    'serializable_classes' => false,
+
+>>>>>>> 7d3d76c5ac893614aeb83c1d057e180f21b81278
 ];

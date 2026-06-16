@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;600&display=swap');
+
+@import "tailwindcss";
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../views/**/*.blade.php';
+
+:root{
+    --dark-brown: #4B2B20;
+    --caramel: #A56A43;
+    --cream: #FFF8F2;
+    --soft-beige: #EAD9CC;
+    --dusty-pink: #D89CA4;
+}
+
+@theme {
+    --color-dark-brown: var(--dark-brown);
+    --color-caramel: var(--caramel);
+    --color-cream: var(--cream);
+    --color-soft-beige: var(--soft-beige);
+    --color-dusty-pink: var(--dusty-pink);
+}
+
+html,body{font-family: Poppins, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial}
+
+/* small helpers used by the scaffolding views */
+.container{max-width:1100px}
+.text-muted{color:#7a6f66}
+
+/* components */
+.card{@apply bg-white rounded-lg p-4 shadow-sm}
+.badge{@apply inline-block px-3 py-1 rounded-full text-sm}
+.timeline-item{@apply flex items-start gap-4}
+
+/* visual polish */
+.card{border-radius:22px}
+.card{box-shadow:0 6px 18px rgba(28,20,16,0.04)}
+
+
