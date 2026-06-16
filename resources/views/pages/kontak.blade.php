@@ -10,11 +10,9 @@
     <p class="text-gray-500 mt-2">Hubungi Zweta Handmade untuk konsultasi pesanan custom, katalog produk, dan informasi pembayaran.</p>
 </div>
 
-<!-- Main Grid -->
-<div class="grid lg:grid-cols-2 gap-8 mb-8">
-
-    <!-- LEFT: Contact Info -->
-    <div class="bg-white rounded-3xl shadow-md p-8 border border-soft-beige/40 space-y-6">
+<!-- Contact Info -->
+<div class="bg-white rounded-3xl shadow-md p-8 border border-soft-beige/40 mb-8">
+    <div class="grid sm:grid-cols-2 gap-6">
 
         <!-- WhatsApp -->
         <div class="flex items-start gap-4">
@@ -28,8 +26,6 @@
             </div>
         </div>
 
-        <div class="border-t border-soft-beige/50"></div>
-
         <!-- Email -->
         <div class="flex items-start gap-4">
             <div class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center text-blue-600 text-lg shrink-0">✉️</div>
@@ -41,8 +37,6 @@
                 </a>
             </div>
         </div>
-
-        <div class="border-t border-soft-beige/50"></div>
 
         <!-- Instagram -->
         <div class="flex items-start gap-4">
@@ -56,8 +50,6 @@
             </div>
         </div>
 
-        <div class="border-t border-soft-beige/50"></div>
-
         <!-- Alamat -->
         <div class="flex items-start gap-4">
             <div class="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center text-orange-600 text-lg shrink-0">📍</div>
@@ -66,13 +58,6 @@
                 <p class="text-gray-600 text-sm">Bekasi, Jawa Barat</p>
             </div>
         </div>
-    </div>
-
-    <!-- RIGHT: Map Placeholder -->
-    <div class="bg-soft-beige/60 rounded-3xl border border-soft-beige flex flex-col items-center justify-center min-h-64 p-10 text-center">
-        <div class="text-5xl mb-4">🗺️</div>
-        <p class="font-semibold text-caramel text-sm">Google Maps / Lokasi Workshop</p>
-        <p class="text-gray-400 text-xs mt-2">Area ini bisa diganti embed maps saat implementasi web.</p>
     </div>
 </div>
 
