@@ -6,7 +6,7 @@
         <div>
             <div class="bg-gradient-to-br from-[--soft-beige] to-[--cream] rounded-2xl h-96 flex items-center justify-center mb-6 shadow-lg overflow-hidden">
                 @if ($product->image)
-                    <img src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}"
+                    <img src="{{ str_starts_with($product->image, 'uploads/') ? asset($product->image) : Storage::url($product->image) }}" alt="{{ $product->name }}"
                          class="w-full h-full object-cover">
                 @else
                     <svg class="w-24 h-24 text-[--caramel] opacity-30" fill="currentColor" viewBox="0 0 24 24">

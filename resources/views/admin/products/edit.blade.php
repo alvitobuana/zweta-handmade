@@ -52,7 +52,7 @@
                 <!-- Large Photo Preview Container -->
                 <div id="preview-image-container" class="w-full h-80 bg-[#FAF0E6] rounded-3xl flex flex-col items-center justify-center overflow-hidden mb-4 relative border border-gray-100/50">
                     @if ($product->image)
-                        <img src="{{ Storage::url($product->image) }}" class="w-full h-full object-cover">
+                        <img src="{{ str_starts_with($product->image, 'uploads/') ? asset($product->image) : Storage::url($product->image) }}" class="w-full h-full object-cover">
                     @else
                         <!-- Minimalist SVG Bag Illustration -->
                         <svg class="w-20 h-20 text-dark-brown/20" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">

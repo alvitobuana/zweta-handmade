@@ -31,7 +31,7 @@
                     <!-- Product Image Box -->
                     <div class="w-full h-40 bg-[#FAF0E6] rounded-2xl flex flex-col items-center justify-center overflow-hidden mb-4 relative">
                         @if ($p->image)
-                            <img src="{{ Storage::url($p->image) }}" alt="{{ $p->name }}" class="w-full h-full object-cover">
+                            <img src="{{ str_starts_with($p->image, 'uploads/') ? asset($p->image) : Storage::url($p->image) }}" alt="{{ $p->name }}" class="w-full h-full object-cover">
                         @else
                             <!-- Minimalist SVG Bag Illustration -->
                             <svg class="w-14 h-14 text-dark-brown/20" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">

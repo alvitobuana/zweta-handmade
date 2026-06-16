@@ -8,16 +8,34 @@ use App\Models\Order;
 
 class OrderController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $orders = Order::latest()->paginate(15);
-        return view('admin.orders', compact('orders'));
+        $search = $request->query('search');
+        $status = $request->query('status');
+        
+        $query = Order::query();
+
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('code', 'like', "%{$search}%")
+                  ->orWhere('customer_name', 'like', "%{$search}%");
+            });
+        }
+
+        if ($status) {
+            $query->where('status', $status);
+        }
+
+        $orders = $query->latest()->paginate(15);
+        return view('admin.orders', compact('orders', 'search', 'status'));
     }
 
     public function show($id)
     {
         $order = Order::findOrFail($id);
-        return view('admin.order_show', compact('order'));
+        $customer = \App\Models\Customer::where('name', $order->customer_name)->first();
+        $customRequest = \App\Models\CustomRequest::where('customer_name', $order->customer_name)->first();
+        return view('admin.order_show', compact('order', 'customer', 'customRequest'));
     }
 
     public function updateStatus(Request $request, Order $order)

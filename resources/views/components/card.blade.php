@@ -11,7 +11,7 @@
         <!-- Image -->
         <div class="bg-gradient-to-br from-[--soft-beige] to-[--cream] h-48 flex items-center justify-center overflow-hidden group-hover:scale-105 transition duration-300">
             @if ($image)
-                <img src="{{ Storage::url($image) }}" alt="{{ $title }}"
+                <img src="{{ str_starts_with($image, 'uploads/') ? asset($image) : Storage::url($image) }}" alt="{{ $title }}"
                      class="w-full h-full object-cover">
             @else
                 <svg class="w-20 h-20 text-[--caramel] opacity-40" fill="currentColor" viewBox="0 0 24 24">

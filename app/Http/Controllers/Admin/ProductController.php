@@ -45,7 +45,13 @@ class ProductController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('products', 'public');
+            $file = $request->file('image');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            if (!file_exists(public_path('uploads/products'))) {
+                mkdir(public_path('uploads/products'), 0755, true);
+            }
+            $file->move(public_path('uploads/products'), $filename);
+            $data['image'] = 'uploads/products/' . $filename;
         }
 
         Product::create($data);
@@ -77,15 +83,33 @@ class ProductController extends Controller
 
         if ($request->remove_image == '1') {
             if ($product->image) {
-                Storage::disk('public')->delete($product->image);
+                if (str_starts_with($product->image, 'uploads/')) {
+                    if (file_exists(public_path($product->image))) {
+                        unlink(public_path($product->image));
+                    }
+                } else {
+                    Storage::disk('public')->delete($product->image);
+                }
             }
             $data['image'] = null;
         } elseif ($request->hasFile('image')) {
             // Hapus gambar lama jika ada
             if ($product->image) {
-                Storage::disk('public')->delete($product->image);
+                if (str_starts_with($product->image, 'uploads/')) {
+                    if (file_exists(public_path($product->image))) {
+                        unlink(public_path($product->image));
+                    }
+                } else {
+                    Storage::disk('public')->delete($product->image);
+                }
             }
-            $data['image'] = $request->file('image')->store('products', 'public');
+            $file = $request->file('image');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            if (!file_exists(public_path('uploads/products'))) {
+                mkdir(public_path('uploads/products'), 0755, true);
+            }
+            $file->move(public_path('uploads/products'), $filename);
+            $data['image'] = 'uploads/products/' . $filename;
         }
 
         $product->update($data);
@@ -98,7 +122,13 @@ class ProductController extends Controller
 
         // Hapus file gambar dari storage bila ada
         if ($product->image) {
-            Storage::disk('public')->delete($product->image);
+            if (str_starts_with($product->image, 'uploads/')) {
+                if (file_exists(public_path($product->image))) {
+                    unlink(public_path($product->image));
+                }
+            } else {
+                Storage::disk('public')->delete($product->image);
+            }
         }
 
         $product->delete();

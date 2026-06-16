@@ -27,6 +27,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin.dashboard');
     Route::resource('products', \App\Http\Controllers\Admin\ProductController::class, ['as' => 'admin']);
     Route::get('/orders', [\App\Http\Controllers\Admin\OrderController::class, 'index'])->name('admin.orders.index');
+    Route::get('/orders/{id}', [\App\Http\Controllers\Admin\OrderController::class, 'show'])->name('admin.orders.show');
     Route::post('/orders/{order}/status', [\App\Http\Controllers\Admin\OrderController::class, 'updateStatus'])->name('admin.orders.updateStatus');
     Route::get('/custom-requests', [\App\Http\Controllers\Admin\CustomRequestController::class, 'index'])->name('admin.customrequests.index');
     Route::post('/custom-requests/{customRequest}/status', [\App\Http\Controllers\Admin\CustomRequestController::class, 'updateStatus'])->name('admin.customrequests.updateStatus');
