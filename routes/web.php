@@ -62,7 +62,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::delete('/customers/{customer}', [\App\Http\Controllers\Admin\CustomerController::class, 'destroy'])->name('admin.customers.destroy');
     Route::get('/reports', [\App\Http\Controllers\Admin\ReportController::class, 'index'])->name('admin.reports.index');
     Route::get('/materials', [\App\Http\Controllers\Admin\MaterialController::class, 'index'])->name('admin.materials.index');
+    Route::post('/materials', [\App\Http\Controllers\Admin\MaterialController::class, 'store'])->name('admin.materials.store');
     Route::get('/materials/{material}/edit', [\App\Http\Controllers\Admin\MaterialController::class, 'edit'])->name('admin.materials.edit');
     Route::patch('/materials/{material}', [\App\Http\Controllers\Admin\MaterialController::class, 'update'])->name('admin.materials.update');
+    Route::delete('/materials/{material}', [\App\Http\Controllers\Admin\MaterialController::class, 'destroy'])->name('admin.materials.destroy');
     Route::get('/production', [\App\Http\Controllers\Admin\ProductionController::class, 'index'])->name('admin.production');
 });
