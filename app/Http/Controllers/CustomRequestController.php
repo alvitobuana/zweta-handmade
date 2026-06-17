@@ -21,8 +21,15 @@ class CustomRequestController extends Controller
             'model' => 'required|string',
             'color' => 'required|string',
             'notes' => 'nullable|string',
-            'deadline' => 'nullable|date'
+            'deadline' => 'nullable|date',
+            'reference_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
+
+        if ($request->hasFile('reference_image')) {
+            $imageName = time().'_reference_'.uniqid().'.'.$request->reference_image->extension();
+            $request->reference_image->move(public_path('uploads/custom_references'), $imageName);
+            $data['reference_image'] = 'uploads/custom_references/' . $imageName;
+        }
 
         CustomRequest::create($data + ['status' => 'menunggu']);
         return redirect()->route('tracking')->with('success', 'Custom request submitted!');

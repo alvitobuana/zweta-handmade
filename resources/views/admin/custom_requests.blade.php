@@ -112,7 +112,7 @@
             <!-- Right Box & Actions (3 cols) -->
             <div class="lg:col-span-3 flex flex-col items-center gap-6">
                 <!-- Reference Image Box -->
-                <div class="w-full max-w-[180px] bg-[#FAF0E6] rounded-2xl p-5 flex flex-col items-center justify-center border border-gray-100/50 shadow-sm shrink-0">
+                <div id="reference-image-container" class="w-full max-w-[180px] h-[180px] bg-[#FAF0E6] rounded-2xl flex flex-col items-center justify-center border border-gray-100/50 shadow-sm shrink-0 overflow-hidden">
                     <svg class="w-16 h-16 text-dark-brown/20" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="50" cy="55" r="30" fill="#FFF8F2" />
                         <path d="M35 45 C 35 15, 65 15, 65 45" stroke="#A56A43" stroke-width="2" stroke-linecap="round" fill="none" />
@@ -152,6 +152,7 @@
                     "model": "{{ $r->model ?? 'Tote Bag' }}",
                     "color": "{{ $r->color ?? 'Cocoa' }}",
                     "notes": "{!! addslashes($r->notes ?? '') !!}",
+                    "reference_image": "{{ $r->reference_image ? asset($r->reference_image) : '' }}",
                     "updateUrl": "{{ route('admin.customrequests.updateStatus', $r->id) }}"
                 },
             @endforeach
@@ -197,6 +198,28 @@
             document.getElementById('detail-color').innerText = colorDisplay;
             document.getElementById('detail-size').innerText = size;
             document.getElementById('detail-notes').innerText = data.notes ? data.notes : 'Tidak ada catatan.';
+
+            // Populate reference image
+            const imgContainer = document.getElementById('reference-image-container');
+            if (data.reference_image) {
+                imgContainer.innerHTML = `
+                    <a href="${data.reference_image}" target="_blank" class="w-full h-full block group relative">
+                        <img src="${data.reference_image}" alt="Reference Image" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <span class="text-[10px] text-white font-bold uppercase tracking-wider">Perbesar 🔍</span>
+                        </div>
+                    </a>
+                `;
+            } else {
+                imgContainer.innerHTML = `
+                    <svg class="w-16 h-16 text-dark-brown/20" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="55" r="30" fill="#FFF8F2" />
+                        <path d="M35 45 C 35 15, 65 15, 65 45" stroke="#A56A43" stroke-width="2" stroke-linecap="round" fill="none" />
+                        <path d="M28 45 H 72 L 68 80 C 67 83, 64 85, 61 85 H 39 C 36 85, 33 83, 32 80 L 28 45 Z" fill="#A56A43" opacity="0.8" />
+                    </svg>
+                    <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-3">Tidak Ada</span>
+                `;
+            }
 
             // Update form actions
             document.getElementById('form-terima').action = data.updateUrl;

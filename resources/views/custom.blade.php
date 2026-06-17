@@ -19,7 +19,7 @@
                     </div>
                 @endif
 
-                <form action="{{ route('custom.store') }}" method="post" class="space-y-6">
+                <form action="{{ route('custom.store') }}" method="post" enctype="multipart/form-data" class="space-y-6">
                     @csrf
                     
                     <!-- Customer Info Section -->
@@ -91,6 +91,22 @@
                             <textarea name="notes" rows="4" placeholder="Jelaskan desain tas impian Anda, detail khusus, atau permintaan tambahan..." 
                                 class="w-full px-4 py-3 border-2 border-soft-beige rounded-lg focus:outline-none focus:border-caramel resize-none">{{ old('notes') }}</textarea>
                         </div>
+                        <div class="mt-4">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Gambar Referensi (Opsional)</label>
+                            <div class="flex items-center justify-center w-full">
+                                <label class="flex flex-col items-center justify-center w-full h-36 border-2 border-dashed border-soft-beige rounded-lg cursor-pointer bg-cream hover:bg-soft-beige hover:bg-opacity-20 transition">
+                                    <div class="flex flex-col items-center justify-center pt-5 pb-6 text-center px-4">
+                                        <span class="text-3xl mb-2">🖼️</span>
+                                        <p class="text-sm text-gray-600 font-medium">Klik untuk upload gambar referensi</p>
+                                        <p class="text-xs text-gray-500 mt-1">PNG, JPG, JPEG (Max. 2MB)</p>
+                                    </div>
+                                    <input type="file" name="reference_image" id="reference_image_input" class="hidden" accept="image/*" />
+                                </label>
+                            </div>
+                            @error('reference_image')
+                                <p class="text-red-600 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
 
                     <!-- Timeline Section -->
@@ -127,13 +143,15 @@
         <div class="space-y-6">
             <!-- Preview Card -->
             <div class="bg-gradient-to-br from-soft-beige to-cream rounded-2xl p-8 shadow-lg">
-                <h3 class="text-lg font-serif text-dark-brown mb-4">👜 Preview Tas</h3>
-                <div class="bg-white rounded-xl h-64 flex items-center justify-center mb-6 shadow-md">
-                    <svg class="w-20 h-20 text-caramel opacity-30" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M7 4a3 3 0 016 0v12a3 3 0 11-6 0V4z"/>
-                    </svg>
+                <h3 class="text-lg font-serif text-dark-brown mb-4">👜 Gambar Referensi</h3>
+                <div class="bg-white rounded-xl h-64 flex items-center justify-center mb-4 shadow-md overflow-hidden border border-soft-beige">
+                    <img id="reference_image_preview" src="" alt="Preview Gambar Referensi" class="w-full h-full object-cover hidden">
+                    <div id="preview_placeholder" class="text-center p-4">
+                        <span class="text-4xl text-gray-400 block mb-2">📷</span>
+                        <p class="text-sm text-gray-500 font-medium">Belum ada gambar referensi.</p>
+                        <p class="text-xs text-gray-400 mt-1">Unggah gambar di formulir kiri untuk melihat preview live.</p>
+                    </div>
                 </div>
-                <p class="text-sm text-gray-700">Preview tas akan diperbarui berdasarkan pilihan model dan warna Anda.</p>
             </div>
 
             <!-- Pricing Card -->
@@ -168,6 +186,35 @@
             </div>
         </div>
     </div>
+
+    @push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const input = document.getElementById('reference_image_input');
+            const preview = document.getElementById('reference_image_preview');
+            const placeholder = document.getElementById('preview_placeholder');
+
+            if (input) {
+                input.addEventListener('change', function() {
+                    const file = this.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            preview.src = e.target.result;
+                            preview.classList.remove('hidden');
+                            placeholder.classList.add('hidden');
+                        }
+                        reader.readAsDataURL(file);
+                    } else {
+                        preview.src = "";
+                        preview.classList.add('hidden');
+                        placeholder.classList.remove('hidden');
+                    }
+                });
+            }
+        });
+    </script>
+    @endpush
 
 @endsection
 
