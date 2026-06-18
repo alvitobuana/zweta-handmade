@@ -12,9 +12,23 @@ class UserController extends Controller
     public function profile()
     {
         $user = Auth::user();
-        // Ambil pesanan terbaru user berdasarkan nama
+        
         $latestOrder = Order::where('customer_name', $user->name)->latest()->first();
-        return view('pages.profile', compact('user', 'latestOrder'));
+        $latestRequest = \App\Models\CustomRequest::where('customer_name', $user->name)->latest()->first();
+        
+        $latestActivity = null;
+        if ($latestOrder && $latestRequest) {
+            $latestActivity = ($latestOrder->created_at >= $latestRequest->created_at) ? $latestOrder : $latestRequest;
+        } else {
+            $latestActivity = $latestOrder ?? $latestRequest;
+        }
+
+        if ($latestActivity && $latestActivity instanceof \App\Models\CustomRequest) {
+            $latestActivity->is_custom_request = true;
+            $latestActivity->product = ($latestActivity->model ?? 'Custom') . ' Custom (Request)';
+        }
+
+        return view('pages.profile', compact('user', 'latestActivity'));
     }
 
     public function edit()

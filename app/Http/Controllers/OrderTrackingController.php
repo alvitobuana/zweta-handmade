@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Order;
+use App\Models\CustomRequest;
 
 class OrderTrackingController extends Controller
 {
@@ -16,10 +17,25 @@ class OrderTrackingController extends Controller
     {
         $code = $request->query('code');
         $order = null;
+        $customRequest = null;
         $userOrders = collect();
 
         if (auth()->check()) {
-            $userOrders = Order::where('customer_name', auth()->user()->name)->latest()->get();
+            $orders = Order::where('customer_name', auth()->user()->name)->latest()->get();
+            $requests = CustomRequest::where('customer_name', auth()->user()->name)
+                ->where('status', 'menunggu')
+                ->latest()
+                ->get()
+                ->map(function($req) {
+                    $req->is_custom_request = true;
+                    $req->product = ($req->model ?? 'Custom') . ' Custom (Request)';
+                    $req->qty = 1;
+                    $req->price = 0;
+                    return $req;
+                });
+
+            $userOrders = $orders->concat($requests)->sortByDesc('created_at');
+
             if (!$code && $userOrders->isNotEmpty()) {
                 $code = $userOrders->first()->code;
             }
@@ -27,9 +43,12 @@ class OrderTrackingController extends Controller
 
         if ($code) {
             $order = Order::where('code', $code)->first();
+            if (!$order) {
+                $customRequest = CustomRequest::where('code', $code)->first();
+            }
         }
         
-        return view('tracking', compact('order', 'code', 'userOrders'));
+        return view('tracking', compact('order', 'customRequest', 'code', 'userOrders'));
     }
 
     public function uploadReceipt(Request $request, $code)

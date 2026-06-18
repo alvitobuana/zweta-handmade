@@ -35,10 +35,14 @@ class CustomRequestController extends Controller
             // Strip currency formatting to get clean integer
             $cleanPrice = intval(preg_replace('/[^0-9]/', '', $request->price));
 
-            // Generate unique tracking code
-            do {
-                $code = 'ZW-CST-' . strtoupper(\Illuminate\Support\Str::random(5));
-            } while (\App\Models\Order::where('code', $code)->exists());
+            // Use the existing code from the custom request, generate only if missing
+            $code = $customRequest->code;
+            if (!$code) {
+                do {
+                    $code = 'ZW-CST-' . strtoupper(\Illuminate\Support\Str::random(5));
+                } while (\App\Models\Order::where('code', $code)->exists());
+                $customRequest->update(['code' => $code]);
+            }
 
             // Create order with pending status (waiting for customer payment upload)
             \App\Models\Order::create([

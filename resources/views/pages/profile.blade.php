@@ -58,68 +58,102 @@
     <div class="bg-white rounded-3xl shadow-md p-8 border border-soft-beige/40">
         <p class="text-lg font-serif font-bold text-dark-brown mb-5">Status Pesanan Terbaru</p>
 
-        @if($latestOrder)
-            <p class="text-caramel font-bold text-sm mb-1">{{ $latestOrder->code }}</p>
-            <p class="font-bold text-dark-brown text-base mb-1">{{ $latestOrder->product }}</p>
-            <p class="text-xs text-gray-400 mb-4">Dipesan: {{ $latestOrder->created_at?->format('d M Y') }}</p>
+        @if($latestActivity)
+            <p class="text-caramel font-bold text-sm mb-1">{{ $latestActivity->code }}</p>
+            <p class="font-bold text-dark-brown text-base mb-1">{{ $latestActivity->product }}</p>
+            <p class="text-xs text-gray-400 mb-4">Dipesan: {{ $latestActivity->created_at?->format('d M Y') }}</p>
 
-            <!-- Status Badge -->
-            @php
-                $statusMap = [
-                    'pending'              => ['label' => 'Menunggu Pembayaran', 'color' => 'bg-yellow-100 text-yellow-700 border border-yellow-300'],
-                    'menunggu_verifikasi'  => ['label' => 'Verifikasi Pembayaran', 'color' => 'bg-amber-100 text-amber-700 border border-amber-300'],
-                    'produksi'             => ['label' => 'Produksi', 'color' => 'bg-blue-100 text-blue-700 border border-blue-300'],
-                    'finishing'            => ['label' => 'Finishing', 'color' => 'bg-purple-100 text-purple-700 border border-purple-300'],
-                    'siap_dikirim'         => ['label' => 'Siap Dikirim', 'color' => 'bg-indigo-100 text-indigo-700 border border-indigo-300'],
-                    'selesai'              => ['label' => 'Selesai', 'color' => 'bg-green-100 text-green-700 border border-green-300'],
-                ];
-                $s = $statusMap[$latestOrder->status] ?? ['label' => ucfirst($latestOrder->status), 'color' => 'bg-gray-100 text-gray-700'];
-                $steps = ['pending', 'menunggu_verifikasi', 'produksi', 'finishing', 'selesai'];
-                $currentIdx = array_search($latestOrder->status, $steps);
-                if ($latestOrder->status === 'siap_dikirim') $currentIdx = 3; // treat as after finishing
-            @endphp
-            <span class="inline-block px-4 py-1.5 rounded-full text-xs font-bold {{ $s['color'] }} mb-6">
-                {{ $s['label'] }}
-            </span>
+            @if(isset($latestActivity->is_custom_request))
+                <!-- Custom Request Status Layout -->
+                <span class="inline-block px-4 py-1.5 rounded-full text-xs font-bold bg-amber-100 text-amber-700 border border-amber-300 mb-6">
+                    Menunggu Konfirmasi Admin
+                </span>
 
-            <!-- Timeline Progress -->
-            <div class="flex items-center gap-0">
-                @php
-                    $timelineSteps = [
-                        ['key' => 'pending',             'label' => 'Diterima'],
-                        ['key' => 'menunggu_verifikasi', 'label' => 'Bayar'],
-                        ['key' => 'produksi',            'label' => 'Produksi'],
-                        ['key' => 'finishing',           'label' => 'Finishing'],
-                        ['key' => 'selesai',             'label' => 'Selesai'],
-                    ];
-                    $orderIdx = array_search($latestOrder->status, array_column($timelineSteps, 'key'));
-                    if ($latestOrder->status === 'siap_dikirim') $orderIdx = 3;
-                    if ($latestOrder->status === 'selesai') $orderIdx = 4;
-                @endphp
-                @foreach($timelineSteps as $i => $step)
-                    <div class="flex flex-col items-center {{ $i < count($timelineSteps) - 1 ? 'flex-1' : '' }}">
-                        <div class="w-8 h-8 rounded-full border-2 flex items-center justify-center text-xs font-bold transition
-                            {{ $i <= $orderIdx ? 'bg-caramel border-caramel text-white' : 'bg-white border-gray-200 text-gray-400' }}">
-                            @if($i < $orderIdx)
-                                ✓
-                            @else
-                                {{ $i + 1 }}
-                            @endif
+                <!-- Timeline Progress for Custom Request -->
+                <div class="flex items-center gap-0">
+                    @php
+                        $timelineSteps = [
+                            ['label' => 'Dikirim'],
+                            ['label' => 'Review'],
+                            ['label' => 'Bayar'],
+                            ['label' => 'Produksi'],
+                        ];
+                        // Since it's waiting for admin, the active step is step 2 (Review), index 1
+                        $orderIdx = 1;
+                    @endphp
+                    @foreach($timelineSteps as $i => $step)
+                        <div class="flex flex-col items-center {{ $i < count($timelineSteps) - 1 ? 'flex-1' : '' }}">
+                            <div class="w-8 h-8 rounded-full border-2 flex items-center justify-center text-xs font-bold transition
+                                {{ $i <= $orderIdx ? ($i == $orderIdx ? 'bg-amber-500 border-amber-500 text-white animate-pulse' : 'bg-caramel border-caramel text-white') : 'bg-white border-gray-200 text-gray-400' }}">
+                                @if($i < $orderIdx)
+                                    ✓
+                                @else
+                                    {{ $i + 1 }}
+                                @endif
+                            </div>
+                            <span class="text-[10px] text-gray-500 mt-1.5 text-center">{{ $step['label'] }}</span>
                         </div>
                         @if($i < count($timelineSteps) - 1)
-                            <div class="h-0 w-full flex items-center absolute">
-                            </div>
+                            <div class="flex-1 h-0.5 {{ $i < $orderIdx ? 'bg-caramel' : 'bg-gray-200' }} mb-4 -mt-4"></div>
                         @endif
-                        <span class="text-[10px] text-gray-500 mt-1.5 text-center">{{ $step['label'] }}</span>
-                    </div>
-                    @if($i < count($timelineSteps) - 1)
-                        <div class="flex-1 h-0.5 {{ $i < $orderIdx ? 'bg-caramel' : 'bg-gray-200' }} mb-4 -mt-4"></div>
-                    @endif
-                @endforeach
-            </div>
+                    @endforeach
+                </div>
+            @else
+                <!-- Regular Order Status Layout -->
+                <!-- Status Badge -->
+                @php
+                    $statusMap = [
+                        'pending'              => ['label' => 'Menunggu Pembayaran', 'color' => 'bg-yellow-100 text-yellow-700 border border-yellow-300'],
+                        'menunggu_verifikasi'  => ['label' => 'Verifikasi Pembayaran', 'color' => 'bg-amber-100 text-amber-700 border border-amber-300'],
+                        'produksi'             => ['label' => 'Produksi', 'color' => 'bg-blue-100 text-blue-700 border border-blue-300'],
+                        'finishing'            => ['label' => 'Finishing', 'color' => 'bg-purple-100 text-purple-700 border border-purple-300'],
+                        'siap_dikirim'         => ['label' => 'Siap Dikirim', 'color' => 'bg-indigo-100 text-indigo-700 border border-indigo-300'],
+                        'selesai'              => ['label' => 'Selesai', 'color' => 'bg-green-100 text-green-700 border border-green-300'],
+                    ];
+                    $s = $statusMap[$latestActivity->status] ?? ['label' => ucfirst($latestActivity->status), 'color' => 'bg-gray-100 text-gray-700'];
+                    $steps = ['pending', 'menunggu_verifikasi', 'produksi', 'finishing', 'selesai'];
+                    $currentIdx = array_search($latestActivity->status, $steps);
+                    if ($latestActivity->status === 'siap_dikirim') $currentIdx = 3; // treat as after finishing
+                @endphp
+                <span class="inline-block px-4 py-1.5 rounded-full text-xs font-bold {{ $s['color'] }} mb-6">
+                    {{ $s['label'] }}
+                </span>
+
+                <!-- Timeline Progress -->
+                <div class="flex items-center gap-0">
+                    @php
+                        $timelineSteps = [
+                            ['key' => 'pending',             'label' => 'Diterima'],
+                            ['key' => 'menunggu_verifikasi', 'label' => 'Bayar'],
+                            ['key' => 'produksi',            'label' => 'Produksi'],
+                            ['key' => 'finishing',           'label' => 'Finishing'],
+                            ['key' => 'selesai',             'label' => 'Selesai'],
+                        ];
+                        $orderIdx = array_search($latestActivity->status, array_column($timelineSteps, 'key'));
+                        if ($latestActivity->status === 'siap_dikirim') $orderIdx = 3;
+                        if ($latestActivity->status === 'selesai') $orderIdx = 4;
+                    @endphp
+                    @foreach($timelineSteps as $i => $step)
+                        <div class="flex flex-col items-center {{ $i < count($timelineSteps) - 1 ? 'flex-1' : '' }}">
+                            <div class="w-8 h-8 rounded-full border-2 flex items-center justify-center text-xs font-bold transition
+                                {{ $i <= $orderIdx ? 'bg-caramel border-caramel text-white' : 'bg-white border-gray-200 text-gray-400' }}">
+                                @if($i < $orderIdx)
+                                    ✓
+                                @else
+                                    {{ $i + 1 }}
+                                @endif
+                            </div>
+                            <span class="text-[10px] text-gray-500 mt-1.5 text-center">{{ $step['label'] }}</span>
+                        </div>
+                        @if($i < count($timelineSteps) - 1)
+                            <div class="flex-1 h-0.5 {{ $i < $orderIdx ? 'bg-caramel' : 'bg-gray-200' }} mb-4 -mt-4"></div>
+                        @endif
+                    @endforeach
+                </div>
+            @endif
 
             <div class="mt-6 pt-5 border-t border-soft-beige/50">
-                <a href="{{ route('tracking', ['code' => $latestOrder->code]) }}"
+                <a href="{{ route('tracking', ['code' => $latestActivity->code]) }}"
                    class="text-caramel hover:underline font-semibold text-sm">
                     Lihat detail pesanan →
                 </a>

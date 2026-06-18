@@ -59,25 +59,37 @@
                                 <td class="py-4 font-bold text-dark-brown">{{ $uo->code }}</td>
                                 <td class="py-4 text-gray-700">{{ $uo->product }}</td>
                                 <td class="py-4 text-gray-500">{{ $uo->created_at ? $uo->created_at->format('d M Y') : '-' }}</td>
-                                <td class="py-4 font-semibold text-caramel">Rp {{ number_format($uo->price, 0, ',', '.') }}</td>
+                                <td class="py-4 font-semibold text-caramel">
+                                    @if(isset($uo->is_custom_request))
+                                        Menunggu Estimasi
+                                    @else
+                                        Rp {{ number_format($uo->price, 0, ',', '.') }}
+                                    @endif
+                                </td>
                                 <td class="py-4">
-                                    <span class="inline-block px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide text-white
-                                        @if($uo->status == 'pending') bg-yellow-500
-                                        @elseif($uo->status == 'menunggu_verifikasi') bg-amber-500
-                                        @elseif($uo->status == 'produksi') bg-blue-500
-                                        @elseif($uo->status == 'finishing') bg-purple-500
-                                        @elseif($uo->status == 'siap_dikirim') bg-indigo-500
-                                        @elseif($uo->status == 'selesai') bg-green-500
-                                        @else bg-gray-500 @endif">
-                                        @if($uo->status == 'pending') Menunggu Pembayaran
-                                        @elseif($uo->status == 'menunggu_verifikasi') Verifikasi
-                                        @elseif($uo->status == 'produksi') Sedang Dibuat
-                                        @elseif($uo->status == 'finishing') Finishing
-                                        @elseif($uo->status == 'siap_dikirim') Siap Dikirim
-                                        @elseif($uo->status == 'selesai') Selesai
-                                        @else {{ ucfirst($uo->status) }}
-                                        @endif
-                                    </span>
+                                    @if(isset($uo->is_custom_request))
+                                        <span class="inline-block px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide text-white bg-amber-500">
+                                            Menunggu Konfirmasi
+                                        </span>
+                                    @else
+                                        <span class="inline-block px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide text-white
+                                            @if($uo->status == 'pending') bg-yellow-500
+                                            @elseif($uo->status == 'menunggu_verifikasi') bg-amber-500
+                                            @elseif($uo->status == 'produksi') bg-blue-500
+                                            @elseif($uo->status == 'finishing') bg-purple-500
+                                            @elseif($uo->status == 'siap_dikirim') bg-indigo-500
+                                            @elseif($uo->status == 'selesai') bg-green-500
+                                            @else bg-gray-500 @endif">
+                                            @if($uo->status == 'pending') Menunggu Pembayaran
+                                            @elseif($uo->status == 'menunggu_verifikasi') Verifikasi
+                                            @elseif($uo->status == 'produksi') Sedang Dibuat
+                                            @elseif($uo->status == 'finishing') Finishing
+                                            @elseif($uo->status == 'siap_dikirim') Siap Dikirim
+                                            @elseif($uo->status == 'selesai') Selesai
+                                            @else {{ ucfirst($uo->status) }}
+                                            @endif
+                                        </span>
+                                    @endif
                                 </td>
                                 <td class="py-4 text-right">
                                     <a href="{{ route('tracking', ['code' => $uo->code]) }}" class="px-4 py-2 bg-caramel text-white rounded-lg font-semibold hover:bg-opacity-95 transition shadow-sm {{ $code == $uo->code ? 'ring-2 ring-caramel ring-offset-2 opacity-75' : '' }}">
@@ -92,8 +104,7 @@
         </div>
     @endif
 
-    <!-- Search Results -->
-    @if ($order)
+    <!-- Search     @if ($order)
         <div class="space-y-8">
             <!-- Order Header -->
             <div class="bg-gradient-to-r from-green-50 to-green-100 rounded-2xl p-8 border-2 border-green-300">
@@ -169,7 +180,8 @@
                                 <span class="font-semibold text-dark-brown text-sm">Zweta Handmade</span>
                             </div>
                         </div>
-                                  <form action="{{ route('tracking.uploadReceipt', $order->code) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+                    </div>
+                    <form action="{{ route('tracking.uploadReceipt', $order->code) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                         @csrf
                         <div>
                             <label class="block text-sm font-semibold text-dark-brown mb-3">Pilih File Foto Bukti Transfer</label>
@@ -298,6 +310,115 @@
                 <div class="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-6">
                     <p class="text-sm text-blue-600 mb-2">Catatan:</p>
                     <p class="text-blue-900">{{ $order->notes }}</p>
+                </div>
+            @endif
+        </div>
+    @elseif ($customRequest)
+        <!-- Rendering CustomRequest (Before Admin Approval) -->
+        <div class="space-y-8">
+            <!-- Custom Request Header -->
+            <div class="bg-gradient-to-r from-amber-50 to-amber-100 border border-amber-300 rounded-2xl p-8">
+                <div class="flex items-center gap-3 mb-2">
+                    <span class="text-3xl">📝</span>
+                    <h2 class="text-2xl font-serif text-amber-800">Request Custom Diterima Admin!</h2>
+                </div>
+                <p class="text-amber-700">Kode Request: <span class="font-bold">{{ $customRequest->code }}</span></p>
+            </div>
+
+            <!-- Custom Request Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-xl p-6 border-l-4 border-caramel shadow-md">
+                    <p class="text-sm text-gray-600 mb-2">Model Tas</p>
+                    <p class="text-xl font-semibold text-dark-brown">{{ $customRequest->model ?? 'Custom' }}</p>
+                </div>
+                <div class="bg-white rounded-xl p-6 border-l-4 border-blue-500 shadow-md">
+                    <p class="text-sm text-gray-600 mb-2">Warna Utama</p>
+                    <p class="text-xl font-semibold text-dark-brown">{{ $customRequest->color }}</p>
+                </div>
+                <div class="bg-white rounded-xl p-6 border-l-4 border-purple-500 shadow-md">
+                    <p class="text-sm text-gray-600 mb-2">Deadline Diinginkan</p>
+                    <p class="text-xl font-semibold text-dark-brown">{{ $customRequest->deadline ? $customRequest->deadline->format('d M Y') : 'Tanpa Deadline' }}</p>
+                </div>
+                <div class="bg-white rounded-xl p-6 border-l-4 border-yellow-500 shadow-md">
+                    <p class="text-sm text-gray-600 mb-2">Estimasi Harga</p>
+                    <p class="text-xl font-bold text-amber-600">Menunggu Estimasi</p>
+                </div>
+            </div>
+
+            <!-- Status Badge -->
+            <div class="bg-white rounded-xl p-6 shadow-md">
+                <p class="text-sm text-gray-600 mb-3">Status Saat Ini</p>
+                <span class="inline-block px-6 py-3 rounded-full text-white font-semibold bg-amber-500">
+                    Menunggu Persetujuan & Estimasi Harga Admin
+                </span>
+            </div>
+
+            <!-- Reference Image if exists -->
+            @if($customRequest->reference_image)
+                <div class="bg-white rounded-2xl p-8 border-l-4 border-caramel shadow-md">
+                    <h3 class="text-xl font-serif text-dark-brown font-semibold mb-4">Gambar Referensi</h3>
+                    <div class="w-64 border border-soft-beige rounded-2xl overflow-hidden bg-white shadow-sm">
+                        <img src="{{ asset($customRequest->reference_image) }}" alt="Gambar Referensi" class="w-full h-auto object-cover">
+                    </div>
+                </div>
+            @endif
+
+            <!-- Custom Request Timeline Progress -->
+            <div class="bg-white rounded-2xl p-8 shadow-md">
+                <h3 class="text-xl font-serif text-dark-brown mb-8">Tahapan Request Custom</h3>
+                
+                <div class="relative">
+                    <!-- Timeline Line -->
+                    <div class="absolute left-6 top-0 bottom-0 w-1 bg-gradient-to-b from-caramel to-gray-300"></div>
+
+                    <!-- Timeline Items -->
+                    <div class="space-y-8">
+                        <!-- Request Dikirim -->
+                        <div class="relative pl-20">
+                            <div class="absolute left-0 w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white text-lg">✓</div>
+                            <div class="bg-green-50 rounded-lg p-4 border-l-4 border-green-500">
+                                <p class="font-semibold text-green-700">Request Custom Dikirim</p>
+                                <p class="text-sm text-green-600">Telah dikirim pada {{ $customRequest->created_at ? $customRequest->created_at->format('d M Y, H:i') : '-' }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Review Admin -->
+                        <div class="relative pl-20">
+                            <div class="absolute left-0 w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center text-white text-lg">
+                                <span class="animate-ping absolute inline-flex h-8 w-8 rounded-full bg-amber-400 opacity-75"></span>
+                                <span class="relative">2</span>
+                            </div>
+                            <div class="bg-amber-50 border-amber-500 rounded-lg p-4 border-l-4">
+                                <p class="font-semibold text-amber-700">Menunggu Estimasi Harga & Konfirmasi Admin</p>
+                                <p class="text-sm text-amber-600">Admin sedang memeriksa detail request custom Anda. Mohon ditunggu.</p>
+                            </div>
+                        </div>
+
+                        <!-- Pembayaran -->
+                        <div class="relative pl-20">
+                            <div class="absolute left-0 w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center text-gray-400 text-lg">3</div>
+                            <div class="bg-gray-50 border-gray-200 rounded-lg p-4 border-l-4">
+                                <p class="font-semibold text-gray-500">Menunggu Pembayaran</p>
+                                <p class="text-sm text-gray-400">Pembayaran dilakukan setelah harga dikonfirmasi oleh admin</p>
+                            </div>
+                        </div>
+
+                        <!-- Produksi -->
+                        <div class="relative pl-20">
+                            <div class="absolute left-0 w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center text-gray-400 text-lg">4</div>
+                            <div class="bg-gray-50 border-gray-200 rounded-lg p-4 border-l-4">
+                                <p class="font-semibold text-gray-500">Mulai Produksi</p>
+                                <p class="text-sm text-gray-400">Proses pengerjaan tas handmade Anda oleh pengrajin</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @if ($customRequest->notes)
+                <div class="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-6">
+                    <p class="text-sm text-blue-600 mb-2">Catatan Request Anda:</p>
+                    <p class="text-blue-900">{{ $customRequest->notes }}</p>
                 </div>
             @endif
         </div>

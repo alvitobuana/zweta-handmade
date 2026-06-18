@@ -9,7 +9,7 @@ class CustomRequest extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['customer_name','email','phone','model','color','notes','status','deadline','reference_image'];
+    protected $fillable = ['code','customer_name','email','phone','model','color','notes','status','deadline','reference_image'];
 
     protected $casts = [
         'deadline' => 'date',

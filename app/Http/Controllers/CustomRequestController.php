@@ -29,7 +29,17 @@ class CustomRequestController extends Controller
         }
 
         $user = auth()->user();
+
+        // Generate unique tracking code checking both tables
+        do {
+            $code = 'ZW-CST-' . strtoupper(\Illuminate\Support\Str::random(5));
+        } while (
+            \App\Models\Order::where('code', $code)->exists() || 
+            \App\Models\CustomRequest::where('code', $code)->exists()
+        );
+
         $customData = array_merge($data, [
+            'code' => $code,
             'customer_name' => $user->name,
             'email' => $user->email,
             'phone' => $user->whatsapp ?? '-',
@@ -37,6 +47,6 @@ class CustomRequestController extends Controller
         ]);
 
         CustomRequest::create($customData);
-        return redirect()->route('tracking')->with('success', 'Request custom berhasil dikirim!');
+        return redirect()->route('tracking', ['code' => $code])->with('success', 'Request custom berhasil dikirim! Silakan pantau status persetujuan admin di bawah.');
     }
 }
