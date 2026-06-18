@@ -101,11 +101,11 @@
             <div class="lg:col-span-4 space-y-4">
                 <div>
                     <label class="block text-xs font-bold text-dark-brown uppercase tracking-wider mb-2">Harga Custom</label>
-                    <input type="text" id="input-price" value="Rp 150.000" class="w-full px-4 py-3 bg-white border border-soft-beige rounded-xl text-xs focus:outline-none focus:border-caramel text-gray-700">
+                    <input type="text" id="input-price" name="price" form="form-terima" value="Rp 150.000" class="w-full px-4 py-3 bg-white border border-soft-beige rounded-xl text-xs focus:outline-none focus:border-caramel text-gray-700" required>
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-dark-brown uppercase tracking-wider mb-2">Estimasi</label>
-                    <input type="text" id="input-estimation" value="7 hari" class="w-full px-4 py-3 bg-white border border-soft-beige rounded-xl text-xs focus:outline-none focus:border-caramel text-gray-700">
+                    <input type="text" id="input-estimation" name="estimation" form="form-terima" value="7 hari" class="w-full px-4 py-3 bg-white border border-soft-beige rounded-xl text-xs focus:outline-none focus:border-caramel text-gray-700" required>
                 </div>
             </div>
 
@@ -122,7 +122,7 @@
                 </div>
 
                 <!-- Status Update Forms -->
-                <div class="w-full flex gap-3">
+                <div id="form-actions-wrapper" class="w-full flex gap-3">
                     <form id="form-terima" method="post" action="" class="flex-1">
                         @csrf
                         <input type="hidden" name="status" value="diproses">
@@ -138,6 +138,11 @@
                         </button>
                     </form>
                 </div>
+
+                <!-- Processed Status Badge -->
+                <div id="processed-status-badge" class="w-full text-center py-2.5 px-4 bg-cream text-dark-brown border border-soft-beige rounded-xl text-xs font-semibold hidden">
+                    Request ini sudah diproses
+                </div>
             </div>
         </div>
     </div>
@@ -152,6 +157,7 @@
                     "model": "{{ $r->model ?? 'Tote Bag' }}",
                     "color": "{{ $r->color ?? 'Cocoa' }}",
                     "notes": "{!! addslashes($r->notes ?? '') !!}",
+                    "status": "{{ $r->status }}",
                     "reference_image": "{{ $r->reference_image ? asset($r->reference_image) : '' }}",
                     "updateUrl": "{{ route('admin.customrequests.updateStatus', $r->id) }}"
                 },
@@ -224,6 +230,32 @@
             // Update form actions
             document.getElementById('form-terima').action = data.updateUrl;
             document.getElementById('form-tolak').action = data.updateUrl;
+
+            // Handle status-based visibility
+            const actionsWrapper = document.getElementById('form-actions-wrapper');
+            const statusBadge = document.getElementById('processed-status-badge');
+            const inputPrice = document.getElementById('input-price');
+            const inputEstimation = document.getElementById('input-estimation');
+
+            if (data.status === 'menunggu') {
+                inputPrice.removeAttribute('disabled');
+                inputEstimation.removeAttribute('disabled');
+                actionsWrapper.classList.remove('hidden');
+                statusBadge.classList.add('hidden');
+            } else {
+                inputPrice.setAttribute('disabled', 'true');
+                inputEstimation.setAttribute('disabled', 'true');
+                actionsWrapper.classList.add('hidden');
+                
+                let badgeText = '✓ Request ini telah disetujui';
+                if (data.status === 'dibatalkan') {
+                    badgeText = '❌ Request ini telah ditolak';
+                } else if (data.status === 'selesai') {
+                    badgeText = '✨ Pengerjaan selesai';
+                }
+                statusBadge.innerText = badgeText;
+                statusBadge.classList.remove('hidden');
+            }
 
             // Show details card
             document.getElementById('detail-card').classList.remove('hidden');
