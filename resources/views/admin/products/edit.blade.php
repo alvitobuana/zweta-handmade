@@ -50,17 +50,18 @@
                 <label class="block text-sm font-bold text-dark-brown mb-3">Foto Produk</label>
                 
                 <!-- Large Photo Preview Container -->
-                <div id="preview-image-container" class="w-full h-80 bg-[#FAF0E6] rounded-3xl flex flex-col items-center justify-center overflow-hidden mb-4 relative border border-gray-100/50">
+                <div id="preview-image-container" class="w-full h-80 bg-[#FAF0E6] rounded-3xl flex flex-col items-center justify-center overflow-hidden mb-4 relative border border-2 border-dashed border-[#A56A43]/30 cursor-pointer hover:bg-[#FAF0E6]/80 transition text-center p-4">
                     @if ($product->image)
                         <img src="{{ str_starts_with($product->image, 'uploads/') ? asset($product->image) : Storage::url($product->image) }}" class="w-full h-full object-cover">
                     @else
                         <!-- Minimalist SVG Bag Illustration -->
-                        <svg class="w-20 h-20 text-dark-brown/20" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="w-16 h-16 text-dark-brown/20" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="50" cy="55" r="30" fill="#FFF8F2" />
                             <path d="M35 45 C 35 15, 65 15, 65 45" stroke="#A56A43" stroke-width="2" stroke-linecap="round" fill="none" />
                             <path d="M28 45 H 72 L 68 80 C 67 83, 64 85, 61 85 H 39 C 36 85, 33 83, 32 80 L 28 45 Z" fill="#A56A43" opacity="0.8" />
                         </svg>
-                        <span class="text-xs text-gray-400 font-bold uppercase tracking-wider mt-4">FOTO</span>
+                        <span class="text-xs text-gray-400 font-bold uppercase tracking-wider mt-3">FOTO</span>
+                        <span class="text-[10px] text-gray-400 mt-1">Drag & drop gambar ke sini atau klik untuk ganti</span>
                     @endif
                 </div>
 
@@ -217,15 +218,56 @@
             document.getElementById('slug-input').value = slug;
         });
 
-        // Dynamic scroll behavior to toggle save button between header (top) and form (bottom right)
+        // Drag and Drop & click on preview box
         document.addEventListener('DOMContentLoaded', function() {
+            const dropZone = document.getElementById('preview-image-container');
+            const fileInput = document.getElementById('image-input');
+
+            if (dropZone && fileInput) {
+                // Click to upload
+                dropZone.addEventListener('click', () => {
+                    fileInput.click();
+                });
+
+                // Drag events
+                ['dragenter', 'dragover'].forEach(eventName => {
+                    dropZone.addEventListener(eventName, (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        dropZone.classList.add('border-caramel', 'bg-[#FAF0E6]/50');
+                    }, false);
+                });
+
+                ['dragleave', 'dragend'].forEach(eventName => {
+                    dropZone.addEventListener(eventName, (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        dropZone.classList.remove('border-caramel', 'bg-[#FAF0E6]/50');
+                    }, false);
+                });
+
+                // Drop event
+                dropZone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dropZone.classList.remove('border-caramel', 'bg-[#FAF0E6]/50');
+                    
+                    const dt = e.dataTransfer;
+                    const files = dt.files;
+                    if (files && files[0]) {
+                        fileInput.files = files;
+                        previewImageFile(fileInput);
+                    }
+                }, false);
+            }
+
+            // Dynamic scroll behavior to toggle save button between header (top) and form (bottom right)
             const scrollContainer = document.querySelector('main');
             const topActions = document.getElementById('top-action-buttons');
             const bottomActions = document.getElementById('bottom-action-buttons');
 
             if (scrollContainer && topActions && bottomActions) {
                 scrollContainer.addEventListener('scroll', function() {
-                    // If scrolled down by more than 150px, hide top buttons and show bottom buttons
                     if (scrollContainer.scrollTop > 150) {
                         topActions.classList.add('opacity-0', 'pointer-events-none');
                         bottomActions.classList.remove('opacity-0', 'pointer-events-none');

@@ -169,16 +169,39 @@
                                 <span class="font-semibold text-dark-brown text-sm">Zweta Handmade</span>
                             </div>
                         </div>
-                    </div>
-
-                    <form action="{{ route('tracking.uploadReceipt', $order->code) }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+                                  <form action="{{ route('tracking.uploadReceipt', $order->code) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                         @csrf
                         <div>
-                            <label class="block text-sm font-semibold text-dark-brown mb-2">Pilih File Foto Bukti Transfer</label>
-                            <input type="file" name="receipt" required class="w-full px-4 py-3 border-2 border-dashed border-soft-beige rounded-xl focus:outline-none focus:border-caramel bg-gray-50 text-sm">
+                            <label class="block text-sm font-semibold text-dark-brown mb-3">Pilih File Foto Bukti Transfer</label>
+                            
+                            <div class="flex flex-col md:flex-row gap-6 items-start">
+                                <!-- Dropzone -->
+                                <div class="flex-1 w-full">
+                                    <label id="receipt_dropzone" class="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-soft-beige rounded-2xl cursor-pointer bg-cream hover:bg-soft-beige hover:bg-opacity-20 transition relative text-center px-4">
+                                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                            <span class="text-3xl mb-2">📄</span>
+                                            <p class="text-sm text-gray-600 font-medium">Drag & drop bukti transfer ke sini atau klik untuk upload</p>
+                                            <p class="text-xs text-gray-500 mt-1">PNG, JPG, JPEG (Max. 2MB)</p>
+                                        </div>
+                                        <input type="file" name="receipt" id="receipt_input" required class="hidden" accept="image/*" />
+                                    </label>
+                                </div>
+                                
+                                <!-- Preview Container -->
+                                <div class="w-full md:w-64">
+                                    <p class="text-xs font-semibold text-gray-500 mb-2">Live Preview:</p>
+                                    <div class="bg-gray-50 border border-soft-beige rounded-2xl h-40 flex items-center justify-center overflow-hidden shadow-sm">
+                                        <img id="receipt_preview" src="" alt="Preview Bukti Transfer" class="w-full h-full object-cover hidden">
+                                        <div id="receipt_preview_placeholder" class="text-center p-4">
+                                            <span class="text-3xl text-gray-300 block mb-1">📷</span>
+                                            <p class="text-[11px] text-gray-400 font-medium">Belum ada file terpilih</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <button type="submit" class="px-6 py-3 bg-caramel text-white font-semibold rounded-xl hover:bg-opacity-95 transition shadow-lg w-full sm:w-auto">
-                            📤 Unggah & Konfirmasi Pembayaran
+                        <button type="submit" class="px-8 py-3 bg-caramel text-white font-semibold rounded-xl hover:bg-opacity-95 transition shadow-lg w-full sm:w-auto flex items-center justify-center gap-2">
+                            <span>📤</span> Unggah & Konfirmasi Pembayaran
                         </button>
                     </form>
                 </div>
@@ -299,5 +322,72 @@
         </div>
     @endif
 
+    @push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const input = document.getElementById('receipt_input');
+            const preview = document.getElementById('receipt_preview');
+            const placeholder = document.getElementById('receipt_preview_placeholder');
+            const dropZone = document.getElementById('receipt_dropzone');
+
+            if (input) {
+                input.addEventListener('change', function() {
+                    const file = this.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            preview.src = e.target.result;
+                            preview.classList.remove('hidden');
+                            placeholder.classList.add('hidden');
+                        }
+                        reader.readAsDataURL(file);
+                    } else {
+                        preview.src = "";
+                        preview.classList.add('hidden');
+                        placeholder.classList.remove('hidden');
+                    }
+                });
+            }
+
+            if (dropZone && input) {
+                // Drag events
+                ['dragenter', 'dragover'].forEach(eventName => {
+                    dropZone.addEventListener(eventName, (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        dropZone.classList.add('border-caramel', 'bg-opacity-40');
+                        dropZone.classList.remove('border-soft-beige');
+                    }, false);
+                });
+
+                ['dragleave', 'dragend'].forEach(eventName => {
+                    dropZone.addEventListener(eventName, (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        dropZone.classList.remove('border-caramel', 'bg-[#FAF0E6]/50');
+                        dropZone.classList.add('border-soft-beige');
+                    }, false);
+                });
+
+                // Drop event
+                dropZone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dropZone.classList.remove('border-caramel', 'bg-opacity-40');
+                    dropZone.classList.add('border-soft-beige');
+                    
+                    const dt = e.dataTransfer;
+                    const files = dt.files;
+                    if (files && files[0]) {
+                        input.files = files;
+                        // Trigger the change event manually to run the preview logic
+                        const event = new Event('change');
+                        input.dispatchEvent(event);
+                    }
+                }, false);
+            }
+        });
+    </script>
+    @endpush
 @endsection
 

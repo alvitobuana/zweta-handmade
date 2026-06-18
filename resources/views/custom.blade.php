@@ -94,10 +94,10 @@
                         <div class="mt-4">
                             <label class="block text-sm font-semibold text-gray-700 mb-2">Gambar Referensi (Opsional)</label>
                             <div class="flex items-center justify-center w-full">
-                                <label class="flex flex-col items-center justify-center w-full h-36 border-2 border-dashed border-soft-beige rounded-lg cursor-pointer bg-cream hover:bg-soft-beige hover:bg-opacity-20 transition">
+                                <label id="custom_dropzone" class="flex flex-col items-center justify-center w-full h-36 border-2 border-dashed border-soft-beige rounded-lg cursor-pointer bg-cream hover:bg-soft-beige hover:bg-opacity-20 transition">
                                     <div class="flex flex-col items-center justify-center pt-5 pb-6 text-center px-4">
                                         <span class="text-3xl mb-2">🖼️</span>
-                                        <p class="text-sm text-gray-600 font-medium">Klik untuk upload gambar referensi</p>
+                                        <p class="text-sm text-gray-600 font-medium">Drag & drop gambar ke sini atau klik untuk upload</p>
                                         <p class="text-xs text-gray-500 mt-1">PNG, JPG, JPEG (Max. 2MB)</p>
                                     </div>
                                     <input type="file" name="reference_image" id="reference_image_input" class="hidden" accept="image/*" />
@@ -193,6 +193,7 @@
             const input = document.getElementById('reference_image_input');
             const preview = document.getElementById('reference_image_preview');
             const placeholder = document.getElementById('preview_placeholder');
+            const dropZone = document.getElementById('custom_dropzone');
 
             if (input) {
                 input.addEventListener('change', function() {
@@ -211,6 +212,44 @@
                         placeholder.classList.remove('hidden');
                     }
                 });
+            }
+
+            if (dropZone && input) {
+                // Drag events
+                ['dragenter', 'dragover'].forEach(eventName => {
+                    dropZone.addEventListener(eventName, (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        dropZone.classList.add('border-caramel', 'bg-opacity-40');
+                        dropZone.classList.remove('border-soft-beige');
+                    }, false);
+                });
+
+                ['dragleave', 'dragend'].forEach(eventName => {
+                    dropZone.addEventListener(eventName, (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        dropZone.classList.remove('border-caramel', 'bg-[#FAF0E6]/50');
+                        dropZone.classList.add('border-soft-beige');
+                    }, false);
+                });
+
+                // Drop event
+                dropZone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dropZone.classList.remove('border-caramel', 'bg-opacity-40');
+                    dropZone.classList.add('border-soft-beige');
+                    
+                    const dt = e.dataTransfer;
+                    const files = dt.files;
+                    if (files && files[0]) {
+                        input.files = files;
+                        // Trigger the change event manually to run the preview logic
+                        const event = new Event('change');
+                        input.dispatchEvent(event);
+                    }
+                }, false);
             }
         });
     </script>
