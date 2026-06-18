@@ -43,26 +43,7 @@
     </div>
 
     <!-- Pagination Links -->
-    <div class="mt-12 custom-pagination">
-        {{ $products->links() }}
+    <div class="mt-12">
+        {{ $products->links('partials.pagination') }}
     </div>
-
-    <style>
-        .custom-pagination nav svg {
-            display: inline-block;
-        }
-        .custom-pagination nav p {
-            margin-bottom: 0px;
-        }
-        /* Style the active button in pagination to use caramel color */
-        .custom-pagination nav span[aria-current="page"] span {
-            background-color: #A56A43 !important; /* caramel */
-            border-color: #A56A43 !important;
-            color: #ffffff !important;
-        }
-        /* Style hover on page items */
-        .custom-pagination nav a:hover {
-            color: #A56A43 !important;
-        }
-    </style>
 @endsection
