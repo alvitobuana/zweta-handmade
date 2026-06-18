@@ -44,7 +44,7 @@ class ProductController extends Controller
             $query->orderBy('name', 'asc');
         }
 
-        $products = $query->get();
+        $products = $query->paginate(8)->withQueryString();
 
         return view('katalog', compact('products', 'search'));
     }
