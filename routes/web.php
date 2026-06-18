@@ -12,8 +12,6 @@ Route::get('/', [ProductController::class, 'index'])->name('home');
 Route::get('/katalog', [ProductController::class, 'katalog'])->name('katalog');
 Route::get('/produk/{slug}', [ProductController::class, 'show'])->name('product.show');
 Route::post('/produk/{slug}/order', [ProductController::class, 'order'])->name('product.order')->middleware('auth');
-Route::get('/custom', [CustomRequestController::class, 'create'])->name('custom');
-Route::post('/custom', [CustomRequestController::class, 'store'])->name('custom.store');
 Route::get('/tracking', [OrderTrackingController::class, 'search'])->name('tracking');
 Route::post('/tracking/{code}/receipt', [OrderTrackingController::class, 'uploadReceipt'])->name('tracking.uploadReceipt');
 
@@ -43,6 +41,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [UserController::class, 'profile'])->name('profile');
     Route::get('/profile/edit', [UserController::class, 'edit'])->name('profile.edit');
     Route::post('/profile/update', [UserController::class, 'update'])->name('profile.update');
+    Route::get('/custom', [CustomRequestController::class, 'create'])->name('custom');
+    Route::post('/custom', [CustomRequestController::class, 'store'])->name('custom.store');
 });
 
 // Kontak page (public)

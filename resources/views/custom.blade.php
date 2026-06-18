@@ -22,37 +22,6 @@
                 <form action="{{ route('custom.store') }}" method="post" enctype="multipart/form-data" class="space-y-6">
                     @csrf
                     
-                    <!-- Customer Info Section -->
-                    <div>
-                        <h3 class="text-lg font-semibold text-dark-brown mb-4">Informasi Pelanggan</h3>
-                        <div class="grid sm:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Lengkap *</label>
-                                <input type="text" name="customer_name" value="{{ old('customer_name') }}" required 
-                                    class="w-full px-4 py-3 border-2 @error('customer_name') border-red-500 @else border-soft-beige @enderror rounded-lg focus:outline-none focus:border-caramel">
-                                @error('customer_name')
-                                    <p class="text-red-600 text-xs mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-2">Nomor WhatsApp *</label>
-                                <input type="text" name="phone" value="{{ old('phone') }}" required 
-                                    class="w-full px-4 py-3 border-2 @error('phone') border-red-500 @else border-soft-beige @enderror rounded-lg focus:outline-none focus:border-caramel">
-                                @error('phone')
-                                    <p class="text-red-600 text-xs mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Email *</label>
-                            <input type="email" name="email" value="{{ old('email') }}" required 
-                                class="w-full px-4 py-3 border-2 @error('email') border-red-500 @else border-soft-beige @enderror rounded-lg focus:outline-none focus:border-caramel">
-                            @error('email')
-                                <p class="text-red-600 text-xs mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-
                     <!-- Design Section -->
                     <div>
                         <h3 class="text-lg font-semibold text-dark-brown mb-4">Spesifikasi Tas</h3>

@@ -15,9 +15,6 @@ class CustomRequestController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'customer_name' => 'required|string',
-            'email' => 'required|email',
-            'phone' => 'required|string',
             'model' => 'required|string',
             'color' => 'required|string',
             'notes' => 'nullable|string',
@@ -31,7 +28,15 @@ class CustomRequestController extends Controller
             $data['reference_image'] = 'uploads/custom_references/' . $imageName;
         }
 
-        CustomRequest::create($data + ['status' => 'menunggu']);
-        return redirect()->route('tracking')->with('success', 'Custom request submitted!');
+        $user = auth()->user();
+        $customData = array_merge($data, [
+            'customer_name' => $user->name,
+            'email' => $user->email,
+            'phone' => $user->whatsapp ?? '-',
+            'status' => 'menunggu'
+        ]);
+
+        CustomRequest::create($customData);
+        return redirect()->route('tracking')->with('success', 'Request custom berhasil dikirim!');
     }
 }
