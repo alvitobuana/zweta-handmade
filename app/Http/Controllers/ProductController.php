@@ -19,6 +19,7 @@ class ProductController extends Controller
     {
         $search = $request->query('search');
         $status = $request->query('status');
+        $category = $request->query('category');
         $sort = $request->query('sort');
 
         $query = Product::query();
@@ -32,6 +33,10 @@ class ProductController extends Controller
 
         if ($status) {
             $query->where('status', $status);
+        }
+
+        if ($category) {
+            $query->where('category', $category);
         }
 
         if ($sort === 'newest') {
