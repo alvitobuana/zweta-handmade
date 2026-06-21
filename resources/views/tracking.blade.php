@@ -165,63 +165,187 @@
 
             <!-- Bukti Pembayaran Form & Status -->
             @if ($order->status == 'pending')
+                <!-- Loading Verification Overlay (Simulasi Gateway) -->
+                <div id="payment-loading-overlay" class="fixed inset-0 bg-black/60 hidden flex-col items-center justify-center z-[99999] text-white">
+                    <div class="bg-white rounded-3xl p-8 flex flex-col items-center text-center max-w-sm mx-4 shadow-2xl border border-gray-100">
+                        <div class="w-16 h-16 border-4 border-caramel border-t-transparent rounded-full animate-spin mb-6"></div>
+                        <h4 id="payment-loading-title" class="font-bold text-dark-brown text-lg mb-2">Menghubungkan ke Bank...</h4>
+                        <p id="payment-loading-desc" class="text-xs text-gray-500 leading-relaxed">Mohon jangan menutup halaman ini, kami sedang memproses transaksi Anda secara aman.</p>
+                    </div>
+                </div>
+
                 <div class="bg-white rounded-2xl p-8 border-l-4 border-caramel shadow-md">
-                    <h3 class="text-xl font-serif text-dark-brown font-semibold mb-4">Upload Bukti Pembayaran</h3>
-                    <p class="text-sm text-gray-600 mb-6">Silakan lakukan transfer ke rekening di bawah ini, lalu unggah foto bukti transfer Anda untuk verifikasi.</p>
+                    <h3 class="text-2xl font-serif text-dark-brown font-bold mb-2">Selesaikan Pembayaran</h3>
+                    <p class="text-sm text-gray-600 mb-6">Pilih salah satu metode pembayaran di bawah untuk menyelesaikan pesanan Anda secara otomatis atau manual.</p>
                     
-                    <!-- Bank info -->
-                    <div class="mb-8">
-                        <div class="bg-[#FFFDF9] p-6 rounded-2xl border border-soft-beige max-w-md">
-                            <p class="text-xs font-bold text-caramel uppercase tracking-wider mb-3">Metode Pembayaran (Transfer Bank)</p>
+                    <!-- Tab Headers -->
+                    <div class="flex border-b border-soft-beige mb-6 gap-2 flex-wrap">
+                        <button onclick="switchPaymentTab('qris-tab')" id="tab-btn-qris-tab" class="px-5 py-3 text-sm font-semibold border-b-2 border-caramel text-caramel transition focus:outline-none">
+                            📱 QRIS (Otomatis)
+                        </button>
+                        <button onclick="switchPaymentTab('va-tab')" id="tab-btn-va-tab" class="px-5 py-3 text-sm font-semibold border-b-2 border-transparent text-gray-500 hover:text-caramel transition focus:outline-none">
+                            🏦 Virtual Account (Otomatis)
+                        </button>
+                        <button onclick="switchPaymentTab('manual-tab')" id="tab-btn-manual-tab" class="px-5 py-3 text-sm font-semibold border-b-2 border-transparent text-gray-500 hover:text-caramel transition focus:outline-none">
+                            ✉️ Transfer Manual (Bukti)
+                        </button>
+                    </div>
+
+                    <!-- TAB 1: QRIS -->
+                    <div id="qris-tab" class="payment-tab-content space-y-6">
+                        <div class="flex flex-col md:flex-row gap-8 items-center md:items-start">
+                            <!-- QRIS Code Mock -->
+                            <div class="w-48 h-48 bg-white border-2 border-soft-beige rounded-2xl p-3 flex flex-col items-center justify-center shadow-sm shrink-0">
+                                <!-- QRIS Header text -->
+                                <span class="text-[9px] font-bold tracking-widest text-red-600 mb-1">QRIS</span>
+                                <!-- Simulated QR code pattern using SVG -->
+                                <svg class="w-32 h-32 text-dark-brown" viewBox="0 0 100 100" fill="currentColor">
+                                    <!-- QR Box patterns -->
+                                    <rect x="5" y="5" width="20" height="20" />
+                                    <rect x="8" y="8" width="14" height="14" fill="white" />
+                                    <rect x="11" y="11" width="8" height="8" />
+                                    
+                                    <rect x="75" y="5" width="20" height="20" />
+                                    <rect x="78" y="8" width="14" height="14" fill="white" />
+                                    <rect x="81" y="81" width="8" height="8" />
+                                    
+                                    <rect x="5" y="75" width="20" height="20" />
+                                    <rect x="8" y="78" width="14" height="14" fill="white" />
+                                    <rect x="11" y="81" width="8" height="8" />
+
+                                    <rect x="75" y="75" width="20" height="20" />
+                                    <rect x="78" y="78" width="14" height="14" fill="white" />
+                                    <rect x="81" y="81" width="8" height="8" />
+                                    
+                                    <!-- Scattered blocks representing data -->
+                                    <rect x="35" y="10" width="10" height="5" />
+                                    <rect x="55" y="15" width="5" height="15" />
+                                    <rect x="30" y="30" width="15" height="5" />
+                                    <rect x="60" y="35" width="10" height="10" />
+                                    <rect x="10" y="35" width="5" height="15" />
+                                    <rect x="15" y="60" width="15" height="5" />
+                                    <rect x="35" y="50" width="20" height="20" />
+                                    <rect x="40" y="55" width="10" height="10" fill="white" />
+                                    <rect x="65" y="60" width="5" height="15" />
+                                    <rect x="50" y="80" width="15" height="5" />
+                                    <rect x="35" y="85" width="10" height="10" />
+                                    <rect x="10" y="55" width="10" height="5" />
+                                </svg>
+                                <span class="text-[8px] text-gray-400 mt-2 font-semibold">GPN - ID1020304050</span>
+                            </div>
+
+                            <div class="flex-1 space-y-4">
+                                <h4 class="font-bold text-dark-brown text-base">Pembayaran QRIS Instan</h4>
+                                <p class="text-xs text-gray-500 leading-relaxed">Scan QRIS di atas menggunakan e-wallet (Gopay, OVO, Dana, LinkAja) atau Mobile Banking Anda. Sistem akan memverifikasi pembayaran Anda secara otomatis secara real-time.</p>
+                                <div class="flex items-center gap-2.5 text-xs text-amber-600 font-semibold bg-amber-50 px-3 py-2 rounded-xl border border-amber-100">
+                                    <span class="animate-pulse">🔄</span>
+                                    <span>Menunggu Pembayaran (Otomatis Mendeteksi)...</span>
+                                </div>
+                                <form action="{{ route('tracking.simulatePayment', $order->code) }}" method="POST" onsubmit="runPaymentSimulation('QRIS', event)" class="pt-2">
+                                    @csrf
+                                    <input type="hidden" name="payment_method" value="QRIS">
+                                    <button type="submit" class="px-6 py-3 bg-caramel hover:bg-opacity-95 text-white font-bold rounded-xl text-xs shadow-md transition flex items-center gap-2">
+                                        <span>📱</span> Simulasikan Pembayaran Sukses (QRIS)
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 2: VIRTUAL ACCOUNT -->
+                    <div id="va-tab" class="payment-tab-content hidden space-y-6">
+                        <div class="space-y-4">
+                            <h4 class="font-bold text-dark-brown text-base">Virtual Account (Verifikasi Otomatis)</h4>
+                            <p class="text-xs text-gray-500 leading-relaxed">Pilih bank Anda untuk mendapatkan nomor rekening Virtual Account khusus. Pembayaran Anda akan diverifikasi dalam beberapa detik setelah transaksi selesai di ATM / m-Banking.</p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+                                <!-- Bank Selector -->
+                                <div class="space-y-2">
+                                    <label class="block text-[11px] font-bold text-dark-brown uppercase tracking-wider">Pilih Bank</label>
+                                    <select id="va-bank-select" onchange="updateVaDetails()" class="w-full px-4 py-2.5 bg-white border-2 border-soft-beige rounded-xl text-xs font-semibold focus:outline-none focus:border-caramel cursor-pointer">
+                                        <option value="BCA">BCA Virtual Account</option>
+                                        <option value="MANDIRI">Mandiri Virtual Account</option>
+                                        <option value="BNI">BNI Virtual Account</option>
+                                        <option value="BRI">BRI Virtual Account</option>
+                                    </select>
+                                </div>
+
+                                <!-- VA Display -->
+                                <div class="bg-[#FFFDF9] border border-soft-beige rounded-2xl p-4 md:col-span-2 flex flex-col gap-2 shadow-sm">
+                                    <span class="text-[10px] font-bold text-caramel uppercase tracking-wider" id="va-bank-label">BCA Virtual Account</span>
+                                    <div class="flex items-center justify-between">
+                                        <span class="font-bold text-dark-brown text-base select-all tracking-wider font-mono" id="va-number-label">88012081234567890</span>
+                                        <button onclick="navigator.clipboard.writeText(document.getElementById('va-number-label').innerText); showToast('📋 Nomor VA berhasil disalin!')" type="button" class="text-[10px] bg-soft-beige text-dark-brown font-bold px-3 py-1.5 rounded-lg hover:bg-caramel hover:text-white transition">Copy</button>
+                                    </div>
+                                    <span class="text-[10px] text-gray-400">Nama Rekening: <span class="font-semibold text-dark-brown">Zweta - {{ $order->customer_name }}</span></span>
+                                </div>
+                            </div>
+
+                            <form action="{{ route('tracking.simulatePayment', $order->code) }}" method="POST" onsubmit="runPaymentSimulation('Virtual Account', event)" class="pt-4 border-t border-soft-beige/50">
+                                @csrf
+                                <input type="hidden" name="payment_method" value="Virtual Account">
+                                <button type="submit" class="px-6 py-3 bg-caramel hover:bg-opacity-95 text-white font-bold rounded-xl text-xs shadow-md transition flex items-center gap-2">
+                                    <span>🏦</span> Simulasikan Pembayaran VA (Otomatis)
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- TAB 3: MANUAL TRANSFER -->
+                    <div id="manual-tab" class="payment-tab-content hidden space-y-6">
+                        <!-- Bank info -->
+                        <div class="bg-[#FFFDF9] p-6 rounded-2xl border border-soft-beige max-w-md shadow-sm">
+                            <p class="text-xs font-bold text-caramel uppercase tracking-wider mb-3">Metode Pembayaran (Transfer Bank Manual)</p>
                             <div class="flex items-center justify-between border-b border-soft-beige/50 pb-3 mb-3">
                                 <span class="text-sm text-gray-500">Nama Bank</span>
                                 <span class="font-bold text-dark-brown text-sm">Bank BCA</span>
                             </div>
                             <div class="flex items-center justify-between border-b border-soft-beige/50 pb-3 mb-3">
                                 <span class="text-sm text-gray-500">Nomor Rekening</span>
-                                <span class="font-bold text-dark-brown text-base select-all">123-456-7890</span>
+                                <span class="font-bold text-dark-brown text-base select-all font-mono">123-456-7890</span>
                             </div>
                             <div class="flex items-center justify-between">
                                 <span class="text-sm text-gray-500">Nama Penerima</span>
                                 <span class="font-semibold text-dark-brown text-sm">Zweta Handmade</span>
                             </div>
                         </div>
-                    </div>
-                    <form action="{{ route('tracking.uploadReceipt', $order->code) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
-                        @csrf
-                        <div>
-                            <label class="block text-sm font-semibold text-dark-brown mb-3">Pilih File Foto Bukti Transfer</label>
-                            
-                            <div class="flex flex-col md:flex-row gap-6 items-start">
-                                <!-- Dropzone -->
-                                <div class="flex-1 w-full">
-                                    <label id="receipt_dropzone" class="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-soft-beige rounded-2xl cursor-pointer bg-cream hover:bg-soft-beige hover:bg-opacity-20 transition relative text-center px-4">
-                                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                                            <span class="text-3xl mb-2">📄</span>
-                                            <p class="text-sm text-gray-600 font-medium">Drag & drop bukti transfer ke sini atau klik untuk upload</p>
-                                            <p class="text-xs text-gray-500 mt-1">PNG, JPG, JPEG (Max. 2MB)</p>
-                                        </div>
-                                        <input type="file" name="receipt" id="receipt_input" required class="hidden" accept="image/*" />
-                                    </label>
-                                </div>
+
+                        <form action="{{ route('tracking.uploadReceipt', $order->code) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+                            @csrf
+                            <div>
+                                <label class="block text-sm font-semibold text-dark-brown mb-3">Pilih File Foto Bukti Transfer</label>
                                 
-                                <!-- Preview Container -->
-                                <div class="w-full md:w-64">
-                                    <p class="text-xs font-semibold text-gray-500 mb-2">Live Preview:</p>
-                                    <div class="bg-gray-50 border border-soft-beige rounded-2xl h-40 flex items-center justify-center overflow-hidden shadow-sm">
-                                        <img id="receipt_preview" src="" alt="Preview Bukti Transfer" class="w-full h-full object-cover hidden">
-                                        <div id="receipt_preview_placeholder" class="text-center p-4">
-                                            <span class="text-3xl text-gray-300 block mb-1">📷</span>
-                                            <p class="text-[11px] text-gray-400 font-medium">Belum ada file terpilih</p>
+                                <div class="flex flex-col md:flex-row gap-6 items-start">
+                                    <!-- Dropzone -->
+                                    <div class="flex-1 w-full">
+                                        <label id="receipt_dropzone" class="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-soft-beige rounded-2xl cursor-pointer bg-cream hover:bg-soft-beige hover:bg-opacity-20 transition relative text-center px-4">
+                                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                                <span class="text-3xl mb-2">📄</span>
+                                                <p class="text-sm text-gray-600 font-medium">Drag & drop bukti transfer ke sini atau klik untuk upload</p>
+                                                <p class="text-xs text-gray-500 mt-1">PNG, JPG, JPEG (Max. 2MB)</p>
+                                            </div>
+                                            <input type="file" name="receipt" id="receipt_input" required class="hidden" accept="image/*" />
+                                        </label>
+                                    </div>
+                                    
+                                    <!-- Preview Container -->
+                                    <div class="w-full md:w-64">
+                                        <p class="text-xs font-semibold text-gray-500 mb-2">Live Preview:</p>
+                                        <div class="bg-gray-50 border border-soft-beige rounded-2xl h-40 flex items-center justify-center overflow-hidden shadow-sm">
+                                            <img id="receipt_preview" src="" alt="Preview Bukti Transfer" class="w-full h-full object-cover hidden">
+                                            <div id="receipt_preview_placeholder" class="text-center p-4">
+                                                <span class="text-3xl text-gray-300 block mb-1">📷</span>
+                                                <p class="text-[11px] text-gray-400 font-medium">Belum ada file terpilih</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <button type="submit" class="px-8 py-3 bg-caramel text-white font-semibold rounded-xl hover:bg-opacity-95 transition shadow-lg w-full sm:w-auto flex items-center justify-center gap-2">
-                            <span>📤</span> Unggah & Konfirmasi Pembayaran
-                        </button>
-                    </form>
+                            <button type="submit" class="px-8 py-3 bg-caramel text-white font-semibold rounded-xl hover:bg-opacity-95 transition shadow-lg w-full sm:w-auto flex items-center justify-center gap-2">
+                                <span>📤</span> Unggah & Konfirmasi Pembayaran
+                            </button>
+                        </form>
+                    </div>
                 </div>
             @elseif ($order->status == 'menunggu_verifikasi')
                 <div class="bg-[#FFFDF9] border-l-4 border-amber-500 rounded-2xl p-8 shadow-md">
@@ -665,6 +789,59 @@
                 imgPreview.src = url;
                 imgPreview.classList.remove('hidden');
             }
+        }
+
+        // --- Simulated Payment Tab Functions ---
+        function switchPaymentTab(tabId) {
+            document.querySelectorAll('.payment-tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+            document.getElementById(tabId).classList.remove('hidden');
+
+            document.querySelectorAll('[id^="tab-btn-"]').forEach(btn => {
+                btn.classList.remove('border-caramel', 'text-caramel');
+                btn.classList.add('border-transparent', 'text-gray-500');
+            });
+            
+            const activeBtn = document.getElementById('tab-btn-' + tabId);
+            activeBtn.classList.add('border-caramel', 'text-caramel');
+            activeBtn.classList.remove('border-transparent', 'text-gray-500');
+        }
+
+        function updateVaDetails() {
+            const bank = document.getElementById('va-bank-select').value;
+            const numberLabel = document.getElementById('va-number-label');
+            const bankLabel = document.getElementById('va-bank-label');
+
+            bankLabel.innerText = bank + ' Virtual Account';
+
+            let prefix = '88012';
+            if (bank === 'BCA') prefix = '88012';
+            else if (bank === 'MANDIRI') prefix = '89022';
+            else if (bank === 'BNI') prefix = '88055';
+            else if (bank === 'BRI') prefix = '88088';
+
+            numberLabel.innerText = prefix + '081234567890';
+        }
+
+        function runPaymentSimulation(method, event) {
+            event.preventDefault();
+            const form = event.target;
+            const overlay = document.getElementById('payment-loading-overlay');
+            const title = document.getElementById('payment-loading-title');
+            const desc = document.getElementById('payment-loading-desc');
+
+            overlay.classList.remove('hidden');
+            overlay.classList.add('flex');
+
+            setTimeout(() => {
+                title.innerText = "Memverifikasi Transaksi...";
+                desc.innerText = "Pembayaran via " + method + " berhasil terdeteksi! Mengubah status pesanan Anda...";
+                
+                setTimeout(() => {
+                    form.submit();
+                }, 1500);
+            }, 1500);
         }
     </script>
     @endpush

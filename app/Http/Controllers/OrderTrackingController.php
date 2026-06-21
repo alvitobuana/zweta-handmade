@@ -90,4 +90,17 @@ class OrderTrackingController extends Controller
 
         return redirect()->back()->with('error', 'Gagal mengunggah bukti transfer.');
     }
+
+    public function simulatePayment(Request $request, $code)
+    {
+        $order = Order::where('code', $code)->firstOrFail();
+        $method = $request->input('payment_method', 'QRIS');
+
+        $order->update([
+            'status' => 'produksi',
+            'notes' => 'Pembayaran otomatis terverifikasi via ' . strtoupper($method) . ' (Simulasi Gateway).',
+        ]);
+
+        return redirect()->route('tracking', ['code' => $code])->with('success', 'Pembayaran via ' . strtoupper($method) . ' berhasil dideteksi secara otomatis! Pesanan Anda telah terverifikasi dan masuk ke proses produksi.');
+    }
 }
