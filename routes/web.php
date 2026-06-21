@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CustomRequestController;
 use App\Http\Controllers\OrderTrackingController;
+use App\Http\Controllers\ChatController;
 
 // Frontend pages (Dynamic)
 Route::get('/', [ProductController::class, 'index'])->name('home');
@@ -15,6 +16,9 @@ Route::post('/produk/{slug}/order', [ProductController::class, 'order'])->name('
 Route::get('/tracking', [OrderTrackingController::class, 'search'])->name('tracking');
 Route::post('/tracking/{code}/receipt', [OrderTrackingController::class, 'uploadReceipt'])->name('tracking.uploadReceipt');
 Route::post('/tracking/{code}/review', [\App\Http\Controllers\ProductReviewController::class, 'store'])->name('product.review.store')->middleware('auth');
+
+// AI Chatbot endpoint (public)
+Route::post('/chat', [ChatController::class, 'chat'])->name('chat');
 
 // Frontend pages (Static Mockups / New Pages)
 Route::get('/home', function () {
