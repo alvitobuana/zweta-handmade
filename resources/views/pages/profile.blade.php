@@ -170,8 +170,14 @@
     </div>
 </div>
 
+@if (session('error'))
+    <div class="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-2xl text-sm shadow-sm flex items-center gap-2 mt-4">
+        <span>❌</span> {{ session('error') }}
+    </div>
+@endif
+
 <!-- Action Buttons -->
-<div class="flex gap-4">
+<div class="flex flex-wrap gap-4 mt-8">
     <a href="{{ route('profile.edit') }}"
        class="px-8 py-3 bg-caramel text-white font-semibold rounded-xl hover:bg-opacity-90 transition shadow-md">
         ✏️ Edit Profil

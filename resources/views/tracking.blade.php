@@ -68,9 +68,15 @@
                                 </td>
                                 <td class="py-4">
                                     @if(isset($uo->is_custom_request))
-                                        <span class="inline-block px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide text-white bg-amber-500">
-                                            Menunggu Konfirmasi
-                                        </span>
+                                        @if($uo->status == 'dibatalkan')
+                                            <span class="inline-block px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide text-white bg-red-500">
+                                                Ditolak Admin
+                                            </span>
+                                        @else
+                                            <span class="inline-block px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide text-white bg-amber-500">
+                                                Menunggu Konfirmasi
+                                            </span>
+                                        @endif
                                     @else
                                         <span class="inline-block px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide text-white
                                             @if($uo->status == 'pending') bg-yellow-500
@@ -307,9 +313,95 @@
             </div>
 
             @if ($order->notes)
-                <div class="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-6">
+                <div class="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-6 mb-8">
                     <p class="text-sm text-blue-600 mb-2">Catatan:</p>
                     <p class="text-blue-900">{{ $order->notes }}</p>
+                </div>
+            @endif
+
+            <!-- Review Section -->
+            @if($order->status === 'selesai' && auth()->check())
+                <div class="bg-gradient-to-br from-soft-beige to-white rounded-2xl p-8 shadow-md border border-caramel/20">
+                    <h3 class="text-2xl font-serif text-dark-brown mb-6 flex items-center gap-2">
+                        <span>⭐</span> Ulasan Produk
+                    </h3>
+                    
+                    @if($existingReview)
+                        <div class="bg-white rounded-xl p-6 border border-soft-beige shadow-sm">
+                            <div class="flex items-center gap-4 mb-4">
+                                <div class="w-12 h-12 rounded-full bg-caramel flex items-center justify-center text-white font-semibold">
+                                    {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-dark-brown">Ulasan Anda</p>
+                                    <p class="text-sm text-yellow-500">
+                                        {!! str_repeat('★', $existingReview->rating) !!}{!! str_repeat('<span class="text-gray-300">★</span>', 5 - $existingReview->rating) !!}
+                                    </p>
+                                </div>
+                                <div class="ml-auto text-xs text-gray-400">
+                                    {{ $existingReview->created_at->diffForHumans() }}
+                                </div>
+                            </div>
+                            <p class="text-gray-700 mb-4">{{ $existingReview->comment }}</p>
+                            @if($existingReview->media_path)
+                                <div class="border border-soft-beige rounded-xl overflow-hidden inline-block shadow-sm">
+                                    @if($existingReview->media_type == 'video')
+                                        <video src="{{ asset($existingReview->media_path) }}" controls class="h-32 object-cover"></video>
+                                    @else
+                                        <img src="{{ asset($existingReview->media_path) }}" alt="Review Media" class="h-32 object-cover cursor-pointer hover:opacity-90" onclick="window.open('{{ asset($existingReview->media_path) }}', '_blank')">
+                                    @endif
+                                </div>
+                            @endif
+                        </div>
+                    @else
+                        <form action="{{ route('product.review.store', $order->code) }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="mb-4">
+                                <label class="block text-sm text-gray-600 mb-2 font-medium">Rating (1-5)</label>
+                                <div class="flex flex-row-reverse justify-end gap-1 rating-stars">
+                                    <input type="radio" id="star5" name="rating" value="5" class="hidden peer" required />
+                                    <label for="star5" class="text-gray-300 text-3xl cursor-pointer peer-checked:text-yellow-500 hover:text-yellow-400 transition-colors">★</label>
+                                    
+                                    <input type="radio" id="star4" name="rating" value="4" class="hidden peer" />
+                                    <label for="star4" class="text-gray-300 text-3xl cursor-pointer peer-checked:text-yellow-500 hover:text-yellow-400 transition-colors peer-checked:peer-hover:text-yellow-500">★</label>
+                                    
+                                    <input type="radio" id="star3" name="rating" value="3" class="hidden peer" />
+                                    <label for="star3" class="text-gray-300 text-3xl cursor-pointer peer-checked:text-yellow-500 hover:text-yellow-400 transition-colors peer-checked:peer-hover:text-yellow-500">★</label>
+                                    
+                                    <input type="radio" id="star2" name="rating" value="2" class="hidden peer" />
+                                    <label for="star2" class="text-gray-300 text-3xl cursor-pointer peer-checked:text-yellow-500 hover:text-yellow-400 transition-colors peer-checked:peer-hover:text-yellow-500">★</label>
+                                    
+                                    <input type="radio" id="star1" name="rating" value="1" class="hidden peer" />
+                                    <label for="star1" class="text-gray-300 text-3xl cursor-pointer peer-checked:text-yellow-500 hover:text-yellow-400 transition-colors peer-checked:peer-hover:text-yellow-500">★</label>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label class="block text-sm text-gray-600 mb-2 font-medium">Komentar (Opsional)</label>
+                                <textarea name="comment" rows="3" class="w-full border-2 border-soft-beige rounded-xl px-4 py-3 bg-white text-dark-brown focus:border-caramel focus:outline-none transition-colors" placeholder="Ceritakan pengalaman Anda dengan produk ini..."></textarea>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <label class="block text-sm text-gray-600 mb-2 font-medium">Upload Foto / Video (Opsional)</label>
+                                <div class="relative w-full border-2 border-dashed border-caramel/50 rounded-2xl p-6 text-center hover:bg-caramel/5 transition bg-white group cursor-pointer" onclick="document.getElementById('review_media').click()">
+                                    <input type="file" id="review_media" name="media" class="hidden" accept="image/jpeg,image/png,image/jpg,video/mp4,video/quicktime" onchange="previewReviewMedia(this)">
+                                    <div id="media_preview_container" class="hidden mt-2 mb-4 relative max-w-xs mx-auto">
+                                        <img id="media_preview_img" src="" class="rounded-xl shadow-sm hidden w-full">
+                                        <video id="media_preview_vid" src="" class="rounded-xl shadow-sm hidden w-full" controls></video>
+                                    </div>
+                                    <div id="media_upload_prompt">
+                                        <span class="text-3xl text-caramel mb-2 block group-hover:scale-110 transition-transform">📸</span>
+                                        <p class="text-sm text-gray-600 font-medium">Klik untuk memilih file</p>
+                                        <p class="text-xs text-gray-400 mt-1">JPG, PNG, MP4 (Max 10MB)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="w-full md:w-auto px-8 py-3 bg-caramel text-white font-semibold rounded-xl hover:bg-opacity-90 transition shadow-lg text-center flex items-center justify-center gap-2">
+                                <span>🚀</span> Kirim Ulasan
+                            </button>
+                        </form>
+                    @endif
                 </div>
             @endif
         </div>
@@ -317,13 +409,23 @@
         <!-- Rendering CustomRequest (Before Admin Approval) -->
         <div class="space-y-8">
             <!-- Custom Request Header -->
-            <div class="bg-gradient-to-r from-amber-50 to-amber-100 border border-amber-300 rounded-2xl p-8">
-                <div class="flex items-center gap-3 mb-2">
-                    <span class="text-3xl">📝</span>
-                    <h2 class="text-2xl font-serif text-amber-800">Request Custom Diterima Admin!</h2>
+            @if($customRequest->status == 'dibatalkan')
+                <div class="bg-gradient-to-r from-red-50 to-red-100 border border-red-300 rounded-2xl p-8">
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="text-3xl">❌</span>
+                        <h2 class="text-2xl font-serif text-red-800">Request Custom Ditolak Admin</h2>
+                    </div>
+                    <p class="text-red-700">Kode Request: <span class="font-bold">{{ $customRequest->code }}</span></p>
                 </div>
-                <p class="text-amber-700">Kode Request: <span class="font-bold">{{ $customRequest->code }}</span></p>
-            </div>
+            @else
+                <div class="bg-gradient-to-r from-amber-50 to-amber-100 border border-amber-300 rounded-2xl p-8">
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="text-3xl">📝</span>
+                        <h2 class="text-2xl font-serif text-amber-800">Request Custom Diterima Admin!</h2>
+                    </div>
+                    <p class="text-amber-700">Kode Request: <span class="font-bold">{{ $customRequest->code }}</span></p>
+                </div>
+            @endif
 
             <!-- Custom Request Grid -->
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -341,17 +443,35 @@
                 </div>
                 <div class="bg-white rounded-xl p-6 border-l-4 border-yellow-500 shadow-md">
                     <p class="text-sm text-gray-600 mb-2">Estimasi Harga</p>
-                    <p class="text-xl font-bold text-amber-600">Menunggu Estimasi</p>
+                    @if($customRequest->status == 'dibatalkan')
+                        <p class="text-xl font-bold text-red-600">Dibatalkan</p>
+                    @else
+                        <p class="text-xl font-bold text-amber-600">Menunggu Estimasi</p>
+                    @endif
                 </div>
             </div>
 
             <!-- Status Badge -->
             <div class="bg-white rounded-xl p-6 shadow-md">
                 <p class="text-sm text-gray-600 mb-3">Status Saat Ini</p>
-                <span class="inline-block px-6 py-3 rounded-full text-white font-semibold bg-amber-500">
-                    Menunggu Persetujuan & Estimasi Harga Admin
-                </span>
+                @if($customRequest->status == 'dibatalkan')
+                    <span class="inline-block px-6 py-3 rounded-full text-white font-semibold bg-red-600">
+                        Request Ditolak oleh Admin
+                    </span>
+                @else
+                    <span class="inline-block px-6 py-3 rounded-full text-white font-semibold bg-amber-500">
+                        Menunggu Persetujuan & Estimasi Harga Admin
+                    </span>
+                @endif
             </div>
+
+            <!-- Alasan Penolakan if exists -->
+            @if($customRequest->status == 'dibatalkan' && $customRequest->rejection_reason)
+                <div class="bg-red-50 border-l-4 border-red-500 rounded-2xl p-8 shadow-md">
+                    <h3 class="text-xl font-serif text-red-800 font-semibold mb-2">Alasan Penolakan Admin:</h3>
+                    <p class="text-sm text-red-700 font-medium leading-relaxed">"{{ $customRequest->rejection_reason }}"</p>
+                </div>
+            @endif
 
             <!-- Reference Image if exists -->
             @if($customRequest->reference_image)
@@ -383,16 +503,28 @@
                         </div>
 
                         <!-- Review Admin -->
-                        <div class="relative pl-20">
-                            <div class="absolute left-0 w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center text-white text-lg">
-                                <span class="animate-ping absolute inline-flex h-8 w-8 rounded-full bg-amber-400 opacity-75"></span>
-                                <span class="relative">2</span>
+                        @if($customRequest->status == 'dibatalkan')
+                            <div class="relative pl-20">
+                                <div class="absolute left-0 w-12 h-12 bg-red-500 rounded-full flex items-center justify-center text-white text-lg">
+                                    ❌
+                                </div>
+                                <div class="bg-red-50 border-red-500 rounded-lg p-4 border-l-4">
+                                    <p class="font-semibold text-red-700">Request Custom Ditolak</p>
+                                    <p class="text-sm text-red-600">Request custom Anda ditolak oleh admin. Silakan buat request baru dengan menyesuaikan catatan dari admin.</p>
+                                </div>
                             </div>
-                            <div class="bg-amber-50 border-amber-500 rounded-lg p-4 border-l-4">
-                                <p class="font-semibold text-amber-700">Menunggu Estimasi Harga & Konfirmasi Admin</p>
-                                <p class="text-sm text-amber-600">Admin sedang memeriksa detail request custom Anda. Mohon ditunggu.</p>
+                        @else
+                            <div class="relative pl-20">
+                                <div class="absolute left-0 w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center text-white text-lg">
+                                    <span class="animate-ping absolute inline-flex h-8 w-8 rounded-full bg-amber-400 opacity-75"></span>
+                                    <span class="relative">2</span>
+                                </div>
+                                <div class="bg-amber-50 border-amber-500 rounded-lg p-4 border-l-4">
+                                    <p class="font-semibold text-amber-700">Menunggu Estimasi Harga & Konfirmasi Admin</p>
+                                    <p class="text-sm text-amber-600">Admin sedang memeriksa detail request custom Anda. Mohon ditunggu.</p>
+                                </div>
                             </div>
-                        </div>
+                        @endif
 
                         <!-- Pembayaran -->
                         <div class="relative pl-20">
@@ -508,6 +640,32 @@
                 }, false);
             }
         });
+
+        function previewReviewMedia(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const container = document.getElementById('media_preview_container');
+            const imgPreview = document.getElementById('media_preview_img');
+            const vidPreview = document.getElementById('media_preview_vid');
+            const prompt = document.getElementById('media_upload_prompt');
+
+            // Reset
+            imgPreview.classList.add('hidden');
+            vidPreview.classList.add('hidden');
+            prompt.classList.add('hidden');
+            container.classList.remove('hidden');
+
+            const url = URL.createObjectURL(file);
+            
+            if (file.type.startsWith('video/')) {
+                vidPreview.src = url;
+                vidPreview.classList.remove('hidden');
+            } else {
+                imgPreview.src = url;
+                imgPreview.classList.remove('hidden');
+            }
+        }
     </script>
     @endpush
 @endsection

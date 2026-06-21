@@ -50,7 +50,8 @@
                 <thead>
                     <tr class="border-b border-gray-100 text-xs font-bold uppercase tracking-wider text-[#4B2B20]">
                         <th class="pb-5 font-bold">Nama Bahan</th>
-                        <th class="pb-5 font-bold">Jenis</th>
+                        <th class="pb-5 font-bold">Kategori</th>
+                        <th class="pb-5 font-bold">Harga</th>
                         <th class="pb-5 font-bold">Jumlah</th>
                         <th class="pb-5 font-bold">Minimum</th>
                         <th class="pb-5 font-bold">Status</th>
@@ -62,6 +63,7 @@
                         <tr class="hover:bg-gray-50/50 transition">
                             <td class="py-4 text-[#4B2B20] font-semibold text-sm">{{ $material->name }}</td>
                             <td class="py-4">{{ $material->type }}</td>
+                            <td class="py-4 font-semibold text-gray-700">Rp {{ number_format($material->price, 0, ',', '.') }}</td>
                             <td class="py-4 font-semibold text-gray-700">{{ $material->quantity }} pcs</td>
                             <td class="py-4 text-gray-400">{{ $material->min_stock }} pcs</td>
                             <td class="py-4">
@@ -88,11 +90,11 @@
                                         Hapus
                                     </button>
                                 </form>
-                            </td>
+                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="py-12 text-center text-gray-400 font-medium">
+                            <td colspan="7" class="py-12 text-center text-gray-400 font-medium">
                                 <div class="text-4xl mb-3">📦</div>
                                 <p>Belum ada data bahan. Klik "Tambah Bahan" untuk mulai.</p>
                             </td>
@@ -137,23 +139,32 @@
                     @enderror
                 </div>
 
-                <!-- Jenis Bahan -->
+                <!-- Kategori -->
                 <div>
                     <label class="block text-xs font-bold text-[#4B2B20] uppercase tracking-wider mb-1.5">
-                        Jenis Bahan <span class="text-red-500">*</span>
+                        Kategori <span class="text-red-500">*</span>
                     </label>
                     <select name="type" required
                             class="w-full px-4 py-3 border-2 border-[#EAD9CC] rounded-xl focus:outline-none focus:border-[#A56A43] text-sm text-[#4B2B20] transition bg-white">
-                        <option value="" disabled {{ old('type') ? '' : 'selected' }}>-- Pilih Jenis --</option>
-                        <option value="Kulit" {{ old('type') == 'Kulit' ? 'selected' : '' }}>Kulit</option>
-                        <option value="Kain" {{ old('type') == 'Kain' ? 'selected' : '' }}>Kain</option>
-                        <option value="Logam" {{ old('type') == 'Logam' ? 'selected' : '' }}>Logam</option>
-                        <option value="Benang" {{ old('type') == 'Benang' ? 'selected' : '' }}>Benang</option>
-                        <option value="Resleting" {{ old('type') == 'Resleting' ? 'selected' : '' }}>Resleting</option>
+                        <option value="" disabled {{ old('type') ? '' : 'selected' }}>-- Pilih Kategori --</option>
+                        <option value="Bahan" {{ old('type') == 'Bahan' ? 'selected' : '' }}>Bahan</option>
                         <option value="Aksesoris" {{ old('type') == 'Aksesoris' ? 'selected' : '' }}>Aksesoris</option>
-                        <option value="Lainnya" {{ old('type') == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
                     </select>
                     @error('type')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Harga -->
+                <div>
+                    <label class="block text-xs font-bold text-[#4B2B20] uppercase tracking-wider mb-1.5">
+                        Harga Rekomendasi (Rp) <span class="text-red-500">*</span>
+                    </label>
+                    <input type="number" name="price" required min="0"
+                           placeholder="Contoh: 15000"
+                           value="{{ old('price', 0) }}"
+                           class="w-full px-4 py-3 border-2 border-[#EAD9CC] rounded-xl focus:outline-none focus:border-[#A56A43] text-sm text-[#4B2B20] placeholder-gray-400 transition">
+                    @error('price')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>

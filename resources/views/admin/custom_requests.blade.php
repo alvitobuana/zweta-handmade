@@ -94,6 +94,7 @@
                 <p>Model: <span id="detail-model" class="font-semibold text-dark-brown">-</span></p>
                 <p>Warna: <span id="detail-color" class="font-semibold text-dark-brown">-</span></p>
                 <p>Ukuran: <span id="detail-size" class="font-semibold text-dark-brown">-</span></p>
+                <p>Bahan: <span id="detail-materials" class="font-semibold text-dark-brown">-</span></p>
                 <p class="pt-2">Catatan: <span id="detail-notes" class="italic text-gray-400">"-"</span></p>
             </div>
 
@@ -130,13 +131,13 @@
                             Terima
                         </button>
                     </form>
-                    <form id="form-tolak" method="post" action="" class="flex-1">
+                    <form id="form-tolak" method="post" action="" class="flex-1 hidden">
                         @csrf
                         <input type="hidden" name="status" value="dibatalkan">
-                        <button type="submit" class="w-full py-2.5 border border-caramel/40 text-caramel bg-white rounded-xl text-xs font-semibold hover:bg-red-500/10 transition text-center">
-                            Tolak
-                        </button>
                     </form>
+                    <button type="button" onclick="openRejectModal()" class="w-full py-2.5 border border-caramel/40 text-caramel bg-white rounded-xl text-xs font-semibold hover:bg-red-500/10 transition text-center">
+                        Tolak
+                    </button>
                 </div>
 
                 <!-- Processed Status Badge -->
@@ -158,7 +159,10 @@
                     "color": "{{ $r->color ?? 'Cocoa' }}",
                     "notes": "{!! addslashes($r->notes ?? '') !!}",
                     "status": "{{ $r->status }}",
+                    "estimated_price": "{{ $r->estimated_price ? 'Rp ' . number_format($r->estimated_price, 0, ',', '.') : 'Rp 150.000' }}",
+                    "materials": "{{ implode(', ', $r->materials->pluck('name')->toArray()) }}",
                     "reference_image": "{{ $r->reference_image ? asset($r->reference_image) : '' }}",
+                    "rejection_reason": "{!! addslashes($r->rejection_reason ?? '') !!}",
                     "updateUrl": "{{ route('admin.customrequests.updateStatus', $r->id) }}"
                 },
             @endforeach
@@ -203,7 +207,11 @@
             document.getElementById('detail-model').innerText = data.model;
             document.getElementById('detail-color').innerText = colorDisplay;
             document.getElementById('detail-size').innerText = size;
+            document.getElementById('detail-materials').innerText = data.materials ? data.materials : '-';
             document.getElementById('detail-notes').innerText = data.notes ? data.notes : 'Tidak ada catatan.';
+            
+            // Populate input values
+            document.getElementById('input-price').value = data.estimated_price;
 
             // Populate reference image
             const imgContainer = document.getElementById('reference-image-container');
@@ -250,10 +258,13 @@
                 let badgeText = '✓ Request ini telah disetujui';
                 if (data.status === 'dibatalkan') {
                     badgeText = '❌ Request ini telah ditolak';
+                    if (data.rejection_reason) {
+                        badgeText += `<br><span class="text-[11px] font-normal text-red-500 mt-1 block">Alasan: "${data.rejection_reason}"</span>`;
+                    }
                 } else if (data.status === 'selesai') {
                     badgeText = '✨ Pengerjaan selesai';
                 }
-                statusBadge.innerText = badgeText;
+                statusBadge.innerHTML = badgeText;
                 statusBadge.classList.remove('hidden');
             }
 
@@ -268,5 +279,53 @@
                 selectRequest(firstId);
             }
         });
+
+        function openRejectModal() {
+            document.getElementById('modal-rejection-reason').value = '';
+            document.getElementById('reject-modal').classList.remove('hidden');
+        }
+
+        function submitRejection() {
+            const reason = document.getElementById('modal-rejection-reason').value.trim();
+            if (!reason) {
+                alert('Alasan penolakan harus diisi!');
+                return;
+            }
+            
+            const formTolak = document.getElementById('form-tolak');
+            let inputReason = document.getElementById('input-rejection-reason');
+            if (!inputReason) {
+                inputReason = document.createElement('input');
+                inputReason.type = 'hidden';
+                inputReason.name = 'rejection_reason';
+                inputReason.id = 'input-rejection-reason';
+                formTolak.appendChild(inputReason);
+            }
+            inputReason.value = reason;
+            
+            formTolak.submit();
+        }
     </script>
+
+    <!-- Rejection Confirmation Modal -->
+    <div id="reject-modal" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center z-50 transition-opacity">
+        <div class="bg-white rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl border border-gray-100 flex flex-col items-center">
+            <h4 class="font-serif font-bold text-dark-brown text-2xl mb-2 text-center">Tolak Custom Request</h4>
+            <p class="text-xs text-gray-500 mb-6 font-medium text-center">Berikan alasan penolakan agar customer tahu alasannya.</p>
+            
+            <div class="w-full mb-6">
+                <label class="block text-xs font-bold text-dark-brown uppercase tracking-wider mb-2">Alasan Penolakan</label>
+                <textarea id="modal-rejection-reason" rows="4" class="w-full px-4 py-3 bg-white border border-soft-beige rounded-xl text-xs focus:outline-none focus:border-caramel text-gray-700 placeholder-gray-400" placeholder="Contoh: Maaf, kapasitas produksi kami penuh untuk model/warna ini..." required></textarea>
+            </div>
+            
+            <div class="flex gap-4 w-full">
+                <button type="button" onclick="document.getElementById('reject-modal').classList.add('hidden')" class="flex-1 py-3 text-sm font-bold text-dark-brown hover:bg-gray-50 border border-soft-beige/50 rounded-xl transition">
+                    Batal
+                </button>
+                <button type="button" onclick="submitRejection()" class="flex-1 py-3 bg-[#E84A4A] text-white rounded-xl text-sm font-bold hover:bg-opacity-95 transition shadow-sm">
+                    Tolak Request
+                </button>
+            </div>
+        </div>
+    </div>
 @endsection

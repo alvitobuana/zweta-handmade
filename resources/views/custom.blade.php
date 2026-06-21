@@ -55,6 +55,37 @@
                                 @enderror
                             </div>
                         </div>
+                        <div class="mt-6">
+                            <label class="block text-sm font-bold text-dark-brown mb-2">Pilihan Bahan (Fabric / Leather)</label>
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
+                                @forelse($materials->where('type', 'Bahan') as $material)
+                                    <label class="flex items-center space-x-3 p-3 border-2 border-soft-beige rounded-xl cursor-pointer hover:border-caramel transition bg-white/50">
+                                        <input type="checkbox" name="materials[{{ $material->id }}]" value="{{ $material->id }}" data-price="{{ $material->price }}" class="material-checkbox w-5 h-5 text-caramel rounded focus:ring-caramel">
+                                        <div class="flex flex-col">
+                                            <span class="text-sm font-semibold text-dark-brown">{{ $material->name }}</span>
+                                            <span class="text-xs text-gray-500">Rp {{ number_format($material->price, 0, ',', '.') }}</span>
+                                        </div>
+                                    </label>
+                                @empty
+                                    <p class="text-xs text-gray-400 col-span-full italic">Tidak ada bahan tersedia.</p>
+                                @endforelse
+                            </div>
+
+                            <label class="block text-sm font-bold text-dark-brown mb-2">Pilihan Aksesoris (Zipper, Straps, dll)</label>
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                @forelse($materials->where('type', 'Aksesoris') as $material)
+                                    <label class="flex items-center space-x-3 p-3 border-2 border-soft-beige rounded-xl cursor-pointer hover:border-caramel transition bg-white/50">
+                                        <input type="checkbox" name="materials[{{ $material->id }}]" value="{{ $material->id }}" data-price="{{ $material->price }}" class="material-checkbox w-5 h-5 text-caramel rounded focus:ring-caramel">
+                                        <div class="flex flex-col">
+                                            <span class="text-sm font-semibold text-dark-brown">{{ $material->name }}</span>
+                                            <span class="text-xs text-gray-500">Rp {{ number_format($material->price, 0, ',', '.') }}</span>
+                                        </div>
+                                    </label>
+                                @empty
+                                    <p class="text-xs text-gray-400 col-span-full italic">Tidak ada aksesoris tersedia.</p>
+                                @endforelse
+                            </div>
+                        </div>
                         <div class="mt-4">
                             <label class="block text-sm font-semibold text-gray-700 mb-2">Catatan/Permintaan Khusus</label>
                             <textarea name="notes" rows="4" placeholder="Jelaskan desain tas impian Anda, detail khusus, atau permintaan tambahan..." 
@@ -128,16 +159,16 @@
                 <h3 class="text-lg font-serif text-dark-brown mb-4">💰 Estimasi Harga</h3>
                 <div class="space-y-3 mb-6">
                     <div class="flex justify-between">
-                        <span class="text-gray-700">Harga Dasar</span>
-                        <span class="font-semibold">Rp 125.000</span>
+                        <span class="text-gray-700">Harga Dasar (Model)</span>
+                        <span id="price_base" class="font-semibold">Rp 125.000</span>
                     </div>
                     <div class="flex justify-between">
-                        <span class="text-gray-700">Customisasi</span>
-                        <span class="font-semibold">+ Rp 50.000</span>
+                        <span class="text-gray-700">Bahan Tambahan</span>
+                        <span id="price_materials" class="font-semibold">+ Rp 0</span>
                     </div>
                     <div class="border-t border-gray-300 pt-3 flex justify-between">
-                        <span class="font-semibold text-dark-brown">Total</span>
-                        <span class="text-2xl font-bold text-caramel">Rp 175.000</span>
+                        <span class="font-semibold text-dark-brown">Estimasi Total</span>
+                        <span id="price_total" class="text-2xl font-bold text-caramel">Rp 125.000</span>
                     </div>
                 </div>
                 <p class="text-xs text-gray-600">*Harga final akan dikonfirmasi setelah Anda mengirim request</p>
@@ -220,6 +251,42 @@
                     }
                 }, false);
             }
+
+            // Pricing logic
+            const modelSelect = document.querySelector('select[name="model"]');
+            const materialCheckboxes = document.querySelectorAll('.material-checkbox');
+            const priceBaseEl = document.getElementById('price_base');
+            const priceMaterialsEl = document.getElementById('price_materials');
+            const priceTotalEl = document.getElementById('price_total');
+
+            const basePrices = {
+                'Sling Bag': 125000,
+                'Backpack': 250000,
+                'Totebag': 150000
+            };
+
+            function updatePricing() {
+                let basePrice = basePrices[modelSelect.value] || 0;
+                let materialsPrice = 0;
+
+                materialCheckboxes.forEach(cb => {
+                    if (cb.checked) {
+                        materialsPrice += parseFloat(cb.dataset.price);
+                    }
+                });
+
+                let total = basePrice + materialsPrice;
+
+                priceBaseEl.textContent = 'Rp ' + basePrice.toLocaleString('id-ID');
+                priceMaterialsEl.textContent = '+ Rp ' + materialsPrice.toLocaleString('id-ID');
+                priceTotalEl.textContent = 'Rp ' + total.toLocaleString('id-ID');
+            }
+
+            modelSelect.addEventListener('change', updatePricing);
+            materialCheckboxes.forEach(cb => cb.addEventListener('change', updatePricing));
+
+            // Initial calculation
+            updatePricing();
         });
     </script>
     @endpush

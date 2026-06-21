@@ -21,6 +21,7 @@ class MaterialController extends Controller
             'type'      => 'required|string|max:255',
             'quantity'  => 'required|integer|min:0',
             'min_stock' => 'required|integer|min:0',
+            'price'     => 'required|integer|min:0',
         ]);
 
         if ($data['quantity'] <= 0) {
@@ -48,6 +49,7 @@ class MaterialController extends Controller
             'type'      => 'sometimes|string|max:255',
             'quantity'  => 'required|integer|min:0',
             'min_stock' => 'required|integer|min:0',
+            'price'     => 'required|integer|min:0',
         ]);
 
         if ($data['quantity'] <= 0) {

@@ -12,4 +12,9 @@ class Product extends Model
     protected $fillable = [
         'name', 'slug', 'description', 'price', 'stock', 'status', 'image', 'category', 'material', 'size', 'colors'
     ];
+
+    public function reviews()
+    {
+        return $this->hasMany(ProductReview::class);
+    }
 }

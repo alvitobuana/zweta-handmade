@@ -84,28 +84,47 @@
             </div>
 
             <!-- Action Buttons -->
-            <div class="flex flex-col sm:flex-row gap-4 mb-8">
+            <div class="mb-8">
                 @if(($product->stock ?? 0) <= 0)
-                    <button disabled class="flex-1 px-6 py-3 bg-gray-200 text-gray-400 border border-gray-300 rounded-full font-semibold cursor-not-allowed shadow-none text-center flex items-center justify-center gap-2">
-                        ❌ Stok Habis
-                    </button>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button disabled class="flex-1 px-6 py-3 bg-gray-200 text-gray-400 border border-gray-300 rounded-full font-semibold cursor-not-allowed shadow-none text-center flex items-center justify-center gap-2">
+                            ❌ Stok Habis
+                        </button>
+                        <a href="{{ route('custom') }}" class="flex-1 px-6 py-3 border-2 border-caramel text-caramel rounded-full font-semibold hover:bg-caramel hover:text-white transition text-center flex items-center justify-center">
+                            🎨 Ajukan Custom
+                        </a>
+                    </div>
                 @else
                     @guest
-                        <a href="{{ route('login') }}?redirect={{ urlencode(request()->fullUrl()) }}" class="flex-1 px-6 py-3 bg-caramel text-white rounded-full font-semibold hover:bg-opacity-90 transition shadow-lg text-center flex items-center justify-center">
-                            🛒 Pesan Sekarang
-                        </a>
-                    @else
-                        <form action="{{ route('product.order', $product->slug) }}" method="POST" class="flex-1">
-                            @csrf
-                            <button type="submit" class="w-full px-6 py-3 bg-caramel text-white rounded-full font-semibold hover:bg-opacity-90 transition shadow-lg">
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <a href="{{ route('login') }}?redirect={{ urlencode(request()->fullUrl()) }}" class="flex-1 px-6 py-3 bg-caramel text-white rounded-full font-semibold hover:bg-opacity-90 transition shadow-lg text-center flex items-center justify-center">
                                 🛒 Pesan Sekarang
-                            </button>
+                            </a>
+                            <a href="{{ route('custom') }}" class="flex-1 px-6 py-3 border-2 border-caramel text-caramel rounded-full font-semibold hover:bg-caramel hover:text-white transition text-center flex items-center justify-center">
+                                🎨 Ajukan Custom
+                            </a>
+                        </div>
+                    @else
+                        <form action="{{ route('product.order', $product->slug) }}" method="POST">
+                            @csrf
+                            <div class="mb-4">
+                                <label class="block text-sm text-gray-600 mb-2 font-medium">Metode Pembayaran</label>
+                                <select name="payment_method" class="w-full border-2 border-soft-beige rounded-xl px-4 py-2.5 bg-white text-dark-brown focus:border-caramel focus:outline-none transition">
+                                    <option value="transfer">Transfer Bank (Upload Bukti)</option>
+                                    <option value="cod">Cash on Delivery (Bayar di Tempat)</option>
+                                </select>
+                            </div>
+                            <div class="flex flex-col sm:flex-row gap-4">
+                                <button type="submit" class="flex-1 px-6 py-3 bg-caramel text-white rounded-full font-semibold hover:bg-opacity-90 transition shadow-lg flex items-center justify-center">
+                                    🛒 Pesan Sekarang
+                                </button>
+                                <a href="{{ route('custom') }}" class="flex-1 px-6 py-3 border-2 border-caramel text-caramel rounded-full font-semibold hover:bg-caramel hover:text-white transition text-center flex items-center justify-center">
+                                    🎨 Ajukan Custom
+                                </a>
+                            </div>
                         </form>
                     @endguest
                 @endif
-                <a href="{{ route('custom') }}" class="flex-1 px-6 py-3 border-2 border-caramel text-caramel rounded-full font-semibold hover:bg-caramel hover:text-white transition text-center flex items-center justify-center">
-                    🎨 Ajukan Custom
-                </a>
             </div>
 
             <!-- Share & Wishlist -->
@@ -151,23 +170,53 @@
 
     <!-- Reviews Section -->
     <section class="mb-16">
-        <h2 class="text-2xl font-serif text-dark-brown mb-6">Ulasan Pelanggan</h2>
-        <div class="grid md:grid-cols-2 gap-6">
-            @for ($i = 0; $i < 2; $i++)
-                <div class="bg-white border-2 border-soft-beige rounded-xl p-6 hover:border-caramel transition">
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="w-12 h-12 rounded-full bg-caramel flex items-center justify-center text-white font-semibold">
-                            {{ substr('Pelanggan', 0, 1) }}
-                        </div>
-                        <div>
-                            <p class="font-semibold">Pelanggan Puas</p>
-                            <p class="text-sm text-yellow-500">⭐⭐⭐⭐⭐</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-700">"Kualitas tas sangat bagus, pengiriman cepat, dan pelayanan memuaskan. Akan pesan lagi!"</p>
-                </div>
-            @endfor
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-serif text-dark-brown">Ulasan Pelanggan</h2>
+            <div class="flex items-center gap-2">
+                <span class="text-yellow-500 font-bold text-lg">★</span>
+                <span class="font-semibold text-dark-brown">{{ $product->reviews->count() > 0 ? number_format($product->reviews->avg('rating'), 1) : '-' }}</span>
+                <span class="text-gray-500 text-sm">({{ $product->reviews->count() }} ulasan)</span>
+            </div>
         </div>
+        
+        @if($product->reviews->count() > 0)
+            <div class="grid md:grid-cols-2 gap-6">
+                @foreach ($product->reviews as $review)
+                    <div class="bg-white border-2 border-soft-beige rounded-xl p-6 hover:border-caramel transition">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 rounded-full bg-caramel flex items-center justify-center text-white font-semibold shadow-sm">
+                                {{ strtoupper(substr($review->user->name ?? 'User', 0, 1)) }}
+                            </div>
+                            <div>
+                                <p class="font-semibold text-dark-brown">{{ $review->user->name ?? 'User' }}</p>
+                                <p class="text-sm text-yellow-500">
+                                    {!! str_repeat('★', $review->rating) !!}{!! str_repeat('<span class="text-gray-300">★</span>', 5 - $review->rating) !!}
+                                </p>
+                            </div>
+                            <div class="ml-auto text-xs text-gray-400">
+                                {{ $review->created_at->diffForHumans() }}
+                            </div>
+                        </div>
+                        <p class="text-gray-700 mb-4">{{ $review->comment }}</p>
+                        
+                        @if($review->media_path)
+                            <div class="mt-4 border border-soft-beige rounded-xl overflow-hidden inline-block shadow-sm">
+                                @if($review->media_type == 'video')
+                                    <video src="{{ asset($review->media_path) }}" controls class="h-32 object-cover"></video>
+                                @else
+                                    <img src="{{ asset($review->media_path) }}" alt="Review Media" class="h-32 object-cover cursor-pointer hover:opacity-90" onclick="window.open('{{ asset($review->media_path) }}', '_blank')">
+                                @endif
+                            </div>
+                        @endif
+                    </div>
+                @endforeach
+            </div>
+        @else
+            <div class="bg-white border-2 border-dashed border-soft-beige rounded-xl p-12 text-center">
+                <p class="text-gray-500 mb-2">Belum ada ulasan untuk produk ini.</p>
+                <p class="text-sm text-gray-400">Jadilah yang pertama memberikan ulasan setelah membeli produk ini!</p>
+            </div>
+        @endif
     </section>
 
 @endsection

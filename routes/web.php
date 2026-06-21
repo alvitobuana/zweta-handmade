@@ -14,6 +14,7 @@ Route::get('/produk/{slug}', [ProductController::class, 'show'])->name('product.
 Route::post('/produk/{slug}/order', [ProductController::class, 'order'])->name('product.order')->middleware('auth');
 Route::get('/tracking', [OrderTrackingController::class, 'search'])->name('tracking');
 Route::post('/tracking/{code}/receipt', [OrderTrackingController::class, 'uploadReceipt'])->name('tracking.uploadReceipt');
+Route::post('/tracking/{code}/review', [\App\Http\Controllers\ProductReviewController::class, 'store'])->name('product.review.store')->middleware('auth');
 
 // Frontend pages (Static Mockups / New Pages)
 Route::get('/home', function () {

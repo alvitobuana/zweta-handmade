@@ -15,16 +15,35 @@
             @csrf
             @method('PATCH')
 
-            <!-- Name Field (Disabled) -->
+            <!-- Name Field -->
             <div>
-                <label class="block text-xs font-bold text-[#4B2B20] uppercase tracking-wider mb-2">Nama Bahan</label>
-                <input type="text" value="{{ $material->name }}" class="w-full px-5 py-3.5 bg-gray-50 border border-[#F2ECE4] rounded-[18px] text-sm text-gray-500 font-medium focus:outline-none" disabled>
+                <label class="block text-xs font-bold text-[#4B2B20] uppercase tracking-wider mb-2">Nama Bahan <span class="text-red-500">*</span></label>
+                <input type="text" name="name" value="{{ old('name', $material->name) }}" class="w-full px-5 py-3.5 bg-white border border-[#F2ECE4] rounded-[18px] text-sm text-[#4B2B20] font-medium focus:outline-none focus:border-[#A56A43] focus:ring-1 focus:ring-[#A56A43] transition" required>
+                @error('name')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
-            <!-- Type Field (Disabled) -->
+            <!-- Kategori Field -->
             <div>
-                <label class="block text-xs font-bold text-[#4B2B20] uppercase tracking-wider mb-2">Jenis</label>
-                <input type="text" value="{{ $material->type }}" class="w-full px-5 py-3.5 bg-gray-50 border border-[#F2ECE4] rounded-[18px] text-sm text-gray-500 font-medium focus:outline-none" disabled>
+                <label class="block text-xs font-bold text-[#4B2B20] uppercase tracking-wider mb-2">Kategori <span class="text-red-500">*</span></label>
+                <select name="type" required
+                        class="w-full px-5 py-3.5 bg-white border border-[#F2ECE4] rounded-[18px] text-sm text-[#4B2B20] font-medium focus:outline-none focus:border-[#A56A43] focus:ring-1 focus:ring-[#A56A43] transition">
+                    <option value="Bahan" {{ old('type', $material->type) == 'Bahan' ? 'selected' : '' }}>Bahan</option>
+                    <option value="Aksesoris" {{ old('type', $material->type) == 'Aksesoris' ? 'selected' : '' }}>Aksesoris</option>
+                </select>
+                @error('type')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- Price Field -->
+            <div>
+                <label class="block text-xs font-bold text-[#4B2B20] uppercase tracking-wider mb-2">Harga Rekomendasi (Rp)</label>
+                <input type="number" name="price" value="{{ $material->price }}" class="w-full px-5 py-3.5 bg-white border border-[#F2ECE4] rounded-[18px] text-sm text-[#4B2B20] font-medium focus:outline-none focus:border-[#A56A43] focus:ring-1 focus:ring-[#A56A43] transition" required min="0">
+                @error('price')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             <!-- Quantity & Min Stock Fields -->

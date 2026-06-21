@@ -56,7 +56,7 @@ class ProductController extends Controller
 
     public function show($slug)
     {
-        $product = Product::where('slug', $slug)->firstOrFail();
+        $product = Product::with('reviews.user')->where('slug', $slug)->firstOrFail();
         return view('product', compact('product'));
     }
 
@@ -73,6 +73,9 @@ class ProductController extends Controller
             $code = 'ORD-' . strtoupper(\Illuminate\Support\Str::random(6));
         } while (Order::where('code', $code)->exists());
 
+        $paymentMethod = $request->input('payment_method', 'transfer');
+        $initialStatus = $paymentMethod === 'cod' ? 'produksi' : 'pending';
+
         // Create Order
         Order::create([
             'code' => $code,
@@ -80,7 +83,8 @@ class ProductController extends Controller
             'product' => $product->name,
             'qty' => 1,
             'price' => $product->price,
-            'status' => 'pending',
+            'status' => $initialStatus,
+            'payment_method' => $paymentMethod,
             'notes' => 'Pemesanan langsung dari detail produk',
         ]);
 

@@ -23,7 +23,7 @@ class OrderTrackingController extends Controller
         if (auth()->check()) {
             $orders = Order::where('customer_name', auth()->user()->name)->latest()->get();
             $requests = CustomRequest::where('customer_name', auth()->user()->name)
-                ->where('status', 'menunggu')
+                ->whereIn('status', ['menunggu', 'dibatalkan'])
                 ->latest()
                 ->get()
                 ->map(function($req) {
@@ -47,8 +47,12 @@ class OrderTrackingController extends Controller
                 $customRequest = CustomRequest::where('code', $code)->first();
             }
         }
+        $existingReview = null;
+        if ($order && $order->status === 'selesai') {
+            $existingReview = \App\Models\ProductReview::where('order_code', $order->code)->first();
+        }
         
-        return view('tracking', compact('order', 'customRequest', 'code', 'userOrders'));
+        return view('tracking', compact('order', 'customRequest', 'code', 'userOrders', 'existingReview'));
     }
 
     public function uploadReceipt(Request $request, $code)

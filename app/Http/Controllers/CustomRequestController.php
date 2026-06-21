@@ -9,7 +9,8 @@ class CustomRequestController extends Controller
 {
     public function create()
     {
-        return view('custom');
+        $materials = \App\Models\Material::all();
+        return view('custom', compact('materials'));
     }
 
     public function store(Request $request)
@@ -38,15 +39,41 @@ class CustomRequestController extends Controller
             \App\Models\CustomRequest::where('code', $code)->exists()
         );
 
+        $basePrices = [
+            'Sling Bag' => 125000,
+            'Backpack' => 250000,
+            'Totebag' => 150000
+        ];
+        
+        $basePrice = $basePrices[$data['model']] ?? 0;
+        $materialsPrice = 0;
+
+        if ($request->has('materials') && is_array($request->materials)) {
+            $materialsPrice = \App\Models\Material::whereIn('id', $request->materials)->sum('price');
+        }
+        
+        $estimatedPrice = $basePrice + $materialsPrice;
+
         $customData = array_merge($data, [
             'code' => $code,
             'customer_name' => $user->name,
             'email' => $user->email,
             'phone' => $user->whatsapp ?? '-',
-            'status' => 'menunggu'
+            'status' => 'menunggu',
+            'estimated_price' => $estimatedPrice,
         ]);
 
-        CustomRequest::create($customData);
+        $customRequest = CustomRequest::create($customData);
+
+        if ($request->has('materials') && is_array($request->materials)) {
+            // Attach materials with default qty of 1 for simplicity
+            $materialsWithQty = [];
+            foreach ($request->materials as $materialId) {
+                $materialsWithQty[$materialId] = ['qty' => 1];
+            }
+            $customRequest->materials()->sync($materialsWithQty);
+        }
+
         return redirect()->route('tracking', ['code' => $code])->with('success', 'Request custom berhasil dikirim! Silakan pantau status persetujuan admin di bawah.');
     }
 }

@@ -10,7 +10,7 @@ class CustomRequestController extends Controller
 {
     public function index()
     {
-        $requests = CustomRequest::latest()->paginate(15);
+        $requests = CustomRequest::with('materials')->latest()->paginate(15);
         return view('admin.custom_requests', compact('requests'));
     }
 
@@ -41,7 +41,7 @@ class CustomRequestController extends Controller
                 do {
                     $code = 'ZW-CST-' . strtoupper(\Illuminate\Support\Str::random(5));
                 } while (\App\Models\Order::where('code', $code)->exists());
-                $customRequest->update(['code' => $code]);
+                $customRequest->code = $code;
             }
 
             // Create order with pending status (waiting for customer payment upload)
@@ -54,9 +54,15 @@ class CustomRequestController extends Controller
                 'status' => 'pending',
                 'notes' => 'Estimasi: ' . $request->estimation . '. Warna: ' . $customRequest->color . '. Catatan: ' . ($customRequest->notes ?? '-'),
             ]);
+        } elseif ($request->status === 'dibatalkan') {
+            $request->validate([
+                'rejection_reason' => 'required|string|max:1000',
+            ]);
+            $customRequest->rejection_reason = $request->rejection_reason;
         }
 
-        $customRequest->update(['status' => $request->status]);
+        $customRequest->status = $request->status;
+        $customRequest->save();
         
         $msg = 'Status request diperbarui';
         if ($request->status === 'diproses') {
