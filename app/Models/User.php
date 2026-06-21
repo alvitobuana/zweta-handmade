@@ -58,4 +58,26 @@ class User extends Authenticatable
     {
         return (bool) $this->is_admin;
     }
+
+    /**
+     * Model booted method to sync with Customer table.
+     */
+    protected static function booted(): void
+    {
+        static::saved(function (User $user) {
+            if (!$user->is_admin) {
+                \App\Models\Customer::updateOrCreate(
+                    ['email' => $user->email],
+                    [
+                        'name' => $user->name,
+                        'phone' => $user->whatsapp ?? '-',
+                    ]
+                );
+            }
+        });
+
+        static::deleted(function (User $user) {
+            \App\Models\Customer::where('email', $user->email)->delete();
+        });
+    }
 }

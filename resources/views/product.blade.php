@@ -202,9 +202,9 @@
                         @if($review->media_path)
                             <div class="mt-4 border border-soft-beige rounded-xl overflow-hidden inline-block shadow-sm">
                                 @if($review->media_type == 'video')
-                                    <video src="{{ asset($review->media_path) }}" controls class="h-32 object-cover"></video>
+                                    <video src="/{{ $review->media_path }}" controls class="h-32 object-cover"></video>
                                 @else
-                                    <img src="{{ asset($review->media_path) }}" alt="Review Media" class="h-32 object-cover cursor-pointer hover:opacity-90" onclick="window.open('{{ asset($review->media_path) }}', '_blank')">
+                                    <img src="/{{ $review->media_path }}" alt="Review Media" class="h-32 object-cover cursor-pointer hover:opacity-90" onclick="window.open('/{{ $review->media_path }}', '_blank')">
                                 @endif
                             </div>
                         @endif

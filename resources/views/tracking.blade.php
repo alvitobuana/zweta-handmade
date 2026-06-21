@@ -346,9 +346,9 @@
                             @if($existingReview->media_path)
                                 <div class="border border-soft-beige rounded-xl overflow-hidden inline-block shadow-sm">
                                     @if($existingReview->media_type == 'video')
-                                        <video src="{{ asset($existingReview->media_path) }}" controls class="h-32 object-cover"></video>
+                                        <video src="/{{ $existingReview->media_path }}" controls class="h-32 object-cover"></video>
                                     @else
-                                        <img src="{{ asset($existingReview->media_path) }}" alt="Review Media" class="h-32 object-cover cursor-pointer hover:opacity-90" onclick="window.open('{{ asset($existingReview->media_path) }}', '_blank')">
+                                        <img src="/{{ $existingReview->media_path }}" alt="Review Media" class="h-32 object-cover cursor-pointer hover:opacity-90" onclick="window.open('/{{ $existingReview->media_path }}', '_blank')">
                                     @endif
                                 </div>
                             @endif

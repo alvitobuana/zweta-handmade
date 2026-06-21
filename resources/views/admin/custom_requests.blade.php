@@ -95,6 +95,7 @@
                 <p>Warna: <span id="detail-color" class="font-semibold text-dark-brown">-</span></p>
                 <p>Ukuran: <span id="detail-size" class="font-semibold text-dark-brown">-</span></p>
                 <p>Bahan: <span id="detail-materials" class="font-semibold text-dark-brown">-</span></p>
+                <p>Deadline Diinginkan: <span id="detail-deadline" class="font-semibold text-dark-brown">-</span></p>
                 <p class="pt-2">Catatan: <span id="detail-notes" class="italic text-gray-400">"-"</span></p>
             </div>
 
@@ -163,6 +164,7 @@
                     "materials": "{{ implode(', ', $r->materials->pluck('name')->toArray()) }}",
                     "reference_image": "{{ $r->reference_image ? asset($r->reference_image) : '' }}",
                     "rejection_reason": "{!! addslashes($r->rejection_reason ?? '') !!}",
+                    "deadline": "{{ $r->deadline ? $formatIndo($r->deadline) : 'Tanpa Deadline' }}",
                     "updateUrl": "{{ route('admin.customrequests.updateStatus', $r->id) }}"
                 },
             @endforeach
@@ -208,6 +210,7 @@
             document.getElementById('detail-color').innerText = colorDisplay;
             document.getElementById('detail-size').innerText = size;
             document.getElementById('detail-materials').innerText = data.materials ? data.materials : '-';
+            document.getElementById('detail-deadline').innerText = data.deadline;
             document.getElementById('detail-notes').innerText = data.notes ? data.notes : 'Tidak ada catatan.';
             
             // Populate input values

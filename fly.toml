@@ -28,7 +28,7 @@ console_command = 'php /var/www/html/artisan tinker'
   destination = '/data'
 
 [deploy]
-  release_command = 'php artisan migrate:fresh --seed --force'
+  release_command = 'php artisan migrate --force'
 
 [http_service]
   internal_port = 8080
