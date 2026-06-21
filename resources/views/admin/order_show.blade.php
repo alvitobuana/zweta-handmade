@@ -304,11 +304,13 @@
         </div>
 
         <!-- Action Button (Bottom Right) -->
+        @if($order->status != 'pending' && $order->status != 'menunggu_verifikasi')
         <div class="flex justify-end mt-8">
             <button onclick="document.getElementById('status-modal').classList.remove('hidden')" class="px-6 py-2.5 bg-caramel text-white rounded-xl text-xs font-semibold hover:bg-opacity-95 transition shadow-sm text-center">
                 Update Status
             </button>
         </div>
+        @endif
     </div>
 
     <!-- Status Editor Modal Overlay -->
@@ -320,8 +322,6 @@
                 <div>
                     <label class="block text-xs font-bold text-dark-brown uppercase tracking-wider mb-2">Pilih Status Produksi</label>
                     <select name="status" class="w-full px-4 py-3 bg-white border border-soft-beige rounded-xl text-sm focus:outline-none focus:border-caramel">
-                        <option value="pending" @selected($order->status == 'pending')>Pending (Menunggu Pembayaran)</option>
-                        <option value="menunggu_verifikasi" @selected($order->status == 'menunggu_verifikasi')>Menunggu Verifikasi Pembayaran</option>
                         <option value="produksi" @selected($order->status == 'produksi')>Produksi (Sedang Dibuat)</option>
                         <option value="finishing" @selected($order->status == 'finishing')>Finishing (Tahap Akhir)</option>
                         <option value="siap_dikirim" @selected($order->status == 'siap_dikirim')>Siap Dikirim (Kurir)</option>

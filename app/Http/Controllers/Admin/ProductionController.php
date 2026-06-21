@@ -10,7 +10,7 @@ class ProductionController extends Controller
 {
     public function index()
     {
-        $waiting = Order::where('status', 'pending')->get();
+        $waiting = Order::whereIn('status', ['pending', 'menunggu_verifikasi'])->get();
         $inProgress = Order::where('status', 'produksi')->get();
         $finishing = Order::where('status', 'finishing')->get();
         $ready = Order::where('status', 'siap_dikirim')->get();

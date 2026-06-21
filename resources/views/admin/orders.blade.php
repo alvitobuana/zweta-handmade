@@ -33,7 +33,6 @@
                 @endif
                 <select name="status" onchange="this.form.submit()" class="px-5 py-2.5 bg-[#FAF0E6] border border-caramel/40 text-dark-brown rounded-xl text-xs font-semibold focus:outline-none cursor-pointer hover:bg-opacity-80 transition">
                     <option value="">Filter Status (Semua)</option>
-                    <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
                     <option value="produksi" {{ request('status') == 'produksi' ? 'selected' : '' }}>Produksi</option>
                     <option value="finishing" {{ request('status') == 'finishing' ? 'selected' : '' }}>Finishing</option>
                     <option value="siap_dikirim" {{ request('status') == 'siap_dikirim' ? 'selected' : '' }}>Siap Dikirim</option>
@@ -85,17 +84,21 @@
                             
                             <!-- Produksi Status (Inline Editable Dropdown) -->
                             <td class="py-4 text-xs text-gray-500">
-                                <form method="post" action="{{ route('admin.orders.updateStatus', $o) }}" class="inline">
-                                    @csrf
-                                    <select name="status" onchange="this.form.submit()" class="bg-transparent text-xs text-gray-500 font-medium cursor-pointer focus:outline-none border-b border-dashed border-gray-300 hover:text-caramel">
-                                        <option value="pending" @selected($o->status == 'pending')>Menunggu Pembayaran</option>
-                                        <option value="menunggu_verifikasi" @selected($o->status == 'menunggu_verifikasi')>Menunggu Verifikasi</option>
-                                        <option value="produksi" @selected($o->status == 'produksi')>Produksi</option>
-                                        <option value="finishing" @selected($o->status == 'finishing')>Finishing</option>
-                                        <option value="siap_dikirim" @selected($o->status == 'siap_dikirim')>Siap Dikirim</option>
-                                        <option value="selesai" @selected($o->status == 'selesai')>Selesai</option>
-                                    </select>
-                                </form>
+                                @if($o->status == 'pending')
+                                    <span class="text-amber-600 font-semibold bg-amber-50 px-2 py-0.5 rounded text-[10px] uppercase tracking-wider">Menunggu Pembayaran</span>
+                                @elseif($o->status == 'menunggu_verifikasi')
+                                    <span class="text-indigo-600 font-semibold bg-indigo-50 px-2 py-0.5 rounded text-[10px] uppercase tracking-wider animate-pulse">Menunggu Verifikasi</span>
+                                @else
+                                    <form method="post" action="{{ route('admin.orders.updateStatus', $o) }}" class="inline">
+                                        @csrf
+                                        <select name="status" onchange="this.form.submit()" class="bg-transparent text-xs text-gray-500 font-medium cursor-pointer focus:outline-none border-b border-dashed border-gray-300 hover:text-caramel">
+                                            <option value="produksi" @selected($o->status == 'produksi')>Produksi</option>
+                                            <option value="finishing" @selected($o->status == 'finishing')>Finishing</option>
+                                            <option value="siap_dikirim" @selected($o->status == 'siap_dikirim')>Siap Dikirim</option>
+                                            <option value="selesai" @selected($o->status == 'selesai')>Selesai</option>
+                                        </select>
+                                    </form>
+                                @endif
                             </td>
                             
                             <!-- Tgl Pesan -->

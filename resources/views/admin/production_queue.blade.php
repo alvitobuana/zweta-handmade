@@ -71,21 +71,26 @@
                                 <span class="font-bold text-[15px] text-[#4B2B20] tracking-wide">{{ $order->code }}</span>
                                 
                                 <!-- Status Updater Dropdown -->
-                                <form method="post" action="{{ route('admin.orders.updateStatus', $order) }}" class="relative select-status-form shrink-0">
-                                    @csrf
-                                    <select name="status" onchange="this.form.submit()" class="text-[10px] bg-[#FAF2EA]/70 text-[#A56A43] font-bold rounded-full py-1 pl-2.5 pr-6 border border-transparent hover:border-[#A56A43]/30 focus:outline-none cursor-pointer appearance-none transition">
-                                        <option value="pending" @selected($order->status == 'pending')>Menunggu</option>
-                                        <option value="produksi" @selected($order->status == 'produksi')>Sedang Dibuat</option>
-                                        <option value="finishing" @selected($order->status == 'finishing')>Finishing</option>
-                                        <option value="siap_dikirim" @selected($order->status == 'siap_dikirim')>Siap Dikirim</option>
-                                        <option value="selesai" @selected($order->status == 'selesai')>Selesai</option>
-                                    </select>
-                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#A56A43]">
-                                        <svg class="h-2.5 w-2.5 fill-current" viewBox="0 0 20 20">
-                                            <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/>
-                                        </svg>
-                                    </div>
-                                </form>
+                                @if($order->status == 'pending' || $order->status == 'menunggu_verifikasi')
+                                    <span class="inline-block text-[10px] bg-[#FAF2EA]/70 text-[#A56A43] font-bold rounded-full py-1 px-3 border border-transparent select-none">
+                                        {{ $order->status == 'pending' ? 'Belum Bayar' : 'Menunggu Verifikasi' }}
+                                    </span>
+                                @else
+                                    <form method="post" action="{{ route('admin.orders.updateStatus', $order) }}" class="relative select-status-form shrink-0">
+                                        @csrf
+                                        <select name="status" onchange="this.form.submit()" class="text-[10px] bg-[#FAF2EA]/70 text-[#A56A43] font-bold rounded-full py-1 pl-2.5 pr-6 border border-transparent hover:border-[#A56A43]/30 focus:outline-none cursor-pointer appearance-none transition">
+                                            <option value="produksi" @selected($order->status == 'produksi')>Sedang Dibuat</option>
+                                            <option value="finishing" @selected($order->status == 'finishing')>Finishing</option>
+                                            <option value="siap_dikirim" @selected($order->status == 'siap_dikirim')>Siap Dikirim</option>
+                                            <option value="selesai" @selected($order->status == 'selesai')>Selesai</option>
+                                        </select>
+                                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#A56A43]">
+                                            <svg class="h-2.5 w-2.5 fill-current" viewBox="0 0 20 20">
+                                                <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/>
+                                            </svg>
+                                        </div>
+                                    </form>
+                                @endif
                             </div>
 
                             <!-- Card Body -->
