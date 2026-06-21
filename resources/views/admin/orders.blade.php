@@ -54,6 +54,7 @@
                         <th class="pb-4 font-bold text-xs">Produk</th>
                         <th class="pb-4 font-bold text-xs">Bayar</th>
                         <th class="pb-4 font-bold text-xs">Produksi</th>
+                        <th class="pb-4 font-bold text-xs">Tgl Pesan</th>
                         <th class="pb-4 font-bold text-xs">Deadline</th>
                         <th class="pb-4 font-bold text-xs text-right">Aksi</th>
                     </tr>
@@ -74,7 +75,9 @@
                             <!-- Bayar Status -->
                             <td class="py-4 text-xs text-gray-500">
                                 @if($o->status == 'pending')
-                                    <span class="text-amber-600 font-semibold bg-amber-50 px-2 py-0.5 rounded text-[10px] uppercase tracking-wider">Pending</span>
+                                    <span class="text-amber-600 font-semibold bg-amber-50 px-2 py-0.5 rounded text-[10px] uppercase tracking-wider">Belum Bayar</span>
+                                @elseif($o->status == 'menunggu_verifikasi')
+                                    <span class="text-indigo-600 font-semibold bg-indigo-50 px-2 py-0.5 rounded text-[10px] uppercase tracking-wider animate-pulse">Menunggu Verifikasi</span>
                                 @else
                                     <span class="text-green-600 font-semibold bg-green-50 px-2 py-0.5 rounded text-[10px] uppercase tracking-wider">Terverifikasi</span>
                                 @endif
@@ -85,7 +88,8 @@
                                 <form method="post" action="{{ route('admin.orders.updateStatus', $o) }}" class="inline">
                                     @csrf
                                     <select name="status" onchange="this.form.submit()" class="bg-transparent text-xs text-gray-500 font-medium cursor-pointer focus:outline-none border-b border-dashed border-gray-300 hover:text-caramel">
-                                        <option value="pending" @selected($o->status == 'pending')>Menunggu</option>
+                                        <option value="pending" @selected($o->status == 'pending')>Menunggu Pembayaran</option>
+                                        <option value="menunggu_verifikasi" @selected($o->status == 'menunggu_verifikasi')>Menunggu Verifikasi</option>
                                         <option value="produksi" @selected($o->status == 'produksi')>Produksi</option>
                                         <option value="finishing" @selected($o->status == 'finishing')>Finishing</option>
                                         <option value="siap_dikirim" @selected($o->status == 'siap_dikirim')>Siap Dikirim</option>
@@ -94,9 +98,14 @@
                                 </form>
                             </td>
                             
-                            <!-- Deadline -->
+                            <!-- Tgl Pesan -->
                             <td class="py-4 text-xs text-gray-500">
-                                {{ $o->created_at ? $o->created_at->addDays(5)->translatedFormat('j F') : '14 Juni' }}
+                                {{ $o->created_at ? $o->created_at->translatedFormat('j M') : '-' }}
+                            </td>
+
+                            <!-- Deadline -->
+                            <td class="py-4 text-xs text-gray-500 font-semibold text-amber-700">
+                                {{ $o->created_at ? $o->created_at->addDays(5)->translatedFormat('j M') : '14 Juni' }}
                             </td>
                             
                             <!-- Aksi (Detail Link) -->
@@ -109,7 +118,7 @@
 
                         <!-- Expandable Details Row -->
                         <tr id="detail-{{ $o->id }}" class="hidden bg-[#FFF8F2]/40">
-                            <td colspan="7" class="px-6 py-4 border-t border-b border-gray-100">
+                            <td colspan="8" class="px-6 py-4 border-t border-b border-gray-100">
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs text-gray-500 p-2">
                                     <div>
                                         <p class="font-bold text-dark-brown uppercase tracking-wider text-[10px] mb-1">Rincian Pembelian</p>
@@ -132,7 +141,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="py-8 text-center text-xs text-gray-400">Tidak ada pesanan ditemukan.</td>
+                            <td colspan="8" class="py-8 text-center text-xs text-gray-400">Tidak ada pesanan ditemukan.</td>
                         </tr>
                     @endforelse
                 </tbody>

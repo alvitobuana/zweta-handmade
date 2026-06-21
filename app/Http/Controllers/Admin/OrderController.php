@@ -26,7 +26,9 @@ class OrderController extends Controller
             $query->where('status', $status);
         }
 
-        $orders = $query->latest()->paginate(15);
+        $orders = $query->orderByRaw("CASE WHEN status = 'menunggu_verifikasi' THEN 0 ELSE 1 END")
+            ->orderBy('created_at', 'desc')
+            ->paginate(15);
         return view('admin.orders', compact('orders', 'search', 'status'));
     }
 
