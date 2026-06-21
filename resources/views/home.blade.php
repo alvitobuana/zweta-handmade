@@ -237,7 +237,7 @@
         <!-- Product Cards Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             @foreach($aiRecommended as $index => $rec)
-            <a href="{{ route('produk.show', $rec->slug) }}"
+            <a href="{{ route('product.show', $rec->slug) }}"
                class="group bg-white rounded-2xl border border-gray-100 shadow-[0_4px_20px_rgba(28,20,16,0.04)] hover:shadow-[0_8px_30px_rgba(165,106,67,0.12)] hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col">
 
                 <!-- Product Image -->
