@@ -64,6 +64,9 @@ EOT;
                     'generationConfig' => [
                         'temperature' => 0.7,
                         'maxOutputTokens' => 1000,
+                        'thinkingConfig' => [
+                            'thinkingBudget' => 0
+                        ]
                     ]
                 ]
             );
