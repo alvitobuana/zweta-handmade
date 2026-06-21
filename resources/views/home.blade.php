@@ -213,11 +213,109 @@
         </div>
     </section>
 
+    <!-- ✨ AI Recommendation Section -->
+    @if($aiRecommended->isNotEmpty())
+    <section class="mb-20">
+        <!-- Section Header -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-10">
+            <div>
+                <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-3"
+                      style="background: linear-gradient(135deg, #A56A43 0%, #C8905A 100%); color: #fff; box-shadow: 0 2px 12px rgba(165,106,67,0.25);">
+                    ✨ Rekomendasi AI
+                </span>
+                <h2 class="text-2xl sm:text-3xl font-serif text-dark-brown font-bold leading-tight">
+                    Pilihan Terpopuler untuk Anda
+                </h2>
+                <p class="text-sm text-gray-400 mt-1">Direkomendasikan berdasarkan data penjualan & ulasan pelanggan</p>
+            </div>
+            <a href="{{ route('katalog') }}"
+               class="shrink-0 px-6 py-2.5 border border-soft-beige bg-white text-dark-brown rounded-full text-sm font-semibold hover:bg-gray-50 transition">
+                Lihat Semua →
+            </a>
+        </div>
+
+        <!-- Product Cards Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            @foreach($aiRecommended as $index => $rec)
+            <a href="{{ route('produk.show', $rec->slug) }}"
+               class="group bg-white rounded-2xl border border-gray-100 shadow-[0_4px_20px_rgba(28,20,16,0.04)] hover:shadow-[0_8px_30px_rgba(165,106,67,0.12)] hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col">
+
+                <!-- Product Image -->
+                <div class="relative overflow-hidden bg-[#FAF0E6] aspect-square">
+                    @if($rec->image)
+                        <img src="/{{ $rec->image }}" alt="{{ $rec->name }}"
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    @else
+                        <div class="w-full h-full flex items-center justify-center">
+                            <svg class="w-16 h-16 text-caramel opacity-30" viewBox="0 0 200 200" fill="none">
+                                <path d="M65 85 C 65 25, 135 25, 135 85" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+                                <path d="M50 85 H 150 L 142 165 C 141 170, 137 174, 132 174 H 68 C 63 174, 59 170, 58 165 L 50 85 Z" fill="currentColor"/>
+                            </svg>
+                        </div>
+                    @endif
+
+                    <!-- AI Score Badge -->
+                    @if($index === 0)
+                    <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-white text-[10px] font-bold uppercase tracking-wider"
+                          style="background: linear-gradient(135deg, #A56A43, #C8905A);">
+                        🔥 Terlaris
+                    </span>
+                    @elseif($index === 1)
+                    <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-white text-[10px] font-bold uppercase tracking-wider bg-amber-500">
+                        ⭐ Populer
+                    </span>
+                    @else
+                    <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-white text-[10px] font-bold uppercase tracking-wider bg-gray-400">
+                        👍 Direkomendasikan
+                    </span>
+                    @endif
+
+                    <!-- Stock status -->
+                    @if($rec->stock <= 0)
+                    <span class="absolute top-3 right-3 px-2 py-0.5 bg-red-100 text-red-500 text-[10px] font-semibold rounded-full">Habis</span>
+                    @endif
+                </div>
+
+                <!-- Card Content -->
+                <div class="p-4 flex flex-col flex-1">
+                    <h3 class="font-bold text-dark-brown text-sm leading-snug mb-1 group-hover:text-caramel transition-colors">
+                        {{ $rec->name }}
+                    </h3>
+
+                    <!-- Rating & Orders -->
+                    <div class="flex items-center gap-3 mb-2">
+                        @if($rec->avg_rating > 0)
+                        <span class="flex items-center gap-1 text-yellow-500 text-xs font-semibold">
+                            ★ {{ $rec->avg_rating }}
+                        </span>
+                        @endif
+                        @if($rec->order_count > 0)
+                        <span class="text-[11px] text-gray-400">{{ $rec->order_count }} terjual</span>
+                        @endif
+                    </div>
+
+                    <!-- Price -->
+                    <p class="text-caramel font-bold text-base mt-auto pt-2 border-t border-gray-50">
+                        Rp {{ number_format($rec->price, 0, ',', '.') }}
+                    </p>
+                </div>
+            </a>
+            @endforeach
+        </div>
+
+        <!-- AI explanation note -->
+        <p class="text-center text-[11px] text-gray-300 mt-6 italic">
+            🤖 Rekomendasi dihasilkan berdasarkan analisis data penjualan, rating ulasan, dan ketersediaan stok secara otomatis.
+        </p>
+    </section>
+    @endif
+
     <!-- Testimoni Customer Section -->
     <section class="mb-20">
         <h2 class="text-2xl sm:text-3xl font-serif text-dark-brown font-bold mb-8">
             Testimoni Customer
         </h2>
+
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <!-- Testimonial 1 -->
             <div class="bg-white rounded-2xl border border-gray-100 p-6 flex flex-col shadow-[0_4px_20px_rgba(28,20,16,0.02)]">
