@@ -142,12 +142,29 @@
             msgs.scrollTop = msgs.scrollHeight;
         }
 
+        function formatMarkdown(text) {
+            if (!text) return '';
+            // Escape HTML for security
+            let escaped = text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+            
+            // Bold (**text**) -> <strong>text</strong>
+            escaped = escaped.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            // Italic (*text*) -> <em>text</em>
+            escaped = escaped.replace(/\*(.*?)\*/g, '<em>$1</em>');
+            return escaped;
+        }
+
         function appendBot(text) {
             const msgs = document.getElementById('chat-messages');
             const div = document.createElement('div');
             div.className = 'chat-bubble';
             div.style.cssText = 'align-self:flex-start;max-width:85%;background:#fff;color:#1C1410;padding:10px 14px;border-radius:18px 18px 18px 4px;font-size:13px;line-height:1.6;word-break:break-word;border:1px solid #f0e8e0;white-space:pre-wrap;box-shadow:0 2px 8px rgba(28,20,16,0.06);';
-            div.textContent = text;
+            div.innerHTML = formatMarkdown(text);
             msgs.appendChild(div);
             msgs.scrollTop = msgs.scrollHeight;
         }
