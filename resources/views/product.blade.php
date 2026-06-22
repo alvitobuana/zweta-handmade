@@ -110,7 +110,9 @@
                             <div class="mb-4">
                                 <label class="block text-sm text-gray-600 mb-2 font-medium">Metode Pembayaran</label>
                                 <select name="payment_method" class="w-full border-2 border-soft-beige rounded-xl px-4 py-2.5 bg-white text-dark-brown focus:border-caramel focus:outline-none transition">
-                                    <option value="transfer">Transfer Bank (Upload Bukti)</option>
+                                    <option value="qris">QRIS (Otomatis & Instan)</option>
+                                    <option value="va">Virtual Account (Verifikasi Otomatis)</option>
+                                    <option value="transfer">Transfer Bank Manual (Upload Bukti)</option>
                                     <option value="cod">Cash on Delivery (Bayar di Tempat)</option>
                                 </select>
                             </div>

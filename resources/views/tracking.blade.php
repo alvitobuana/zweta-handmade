@@ -178,21 +178,24 @@
                     <h3 class="text-2xl font-serif text-dark-brown font-bold mb-2">Selesaikan Pembayaran</h3>
                     <p class="text-sm text-gray-600 mb-6">Pilih salah satu metode pembayaran di bawah untuk menyelesaikan pesanan Anda secara otomatis atau manual.</p>
                     
+                    @php
+                        $activeMethod = $order->payment_method ?? 'qris';
+                    @endphp
                     <!-- Tab Headers -->
                     <div class="flex border-b border-soft-beige mb-6 gap-2 flex-wrap">
-                        <button onclick="switchPaymentTab('qris-tab')" id="tab-btn-qris-tab" class="px-5 py-3 text-sm font-semibold border-b-2 border-caramel text-caramel transition focus:outline-none">
+                        <button onclick="switchPaymentTab('qris-tab')" id="tab-btn-qris-tab" class="px-5 py-3 text-sm font-semibold border-b-2 {{ $activeMethod === 'qris' ? 'border-caramel text-caramel' : 'border-transparent text-gray-500' }} hover:text-caramel transition focus:outline-none">
                             📱 QRIS (Otomatis)
                         </button>
-                        <button onclick="switchPaymentTab('va-tab')" id="tab-btn-va-tab" class="px-5 py-3 text-sm font-semibold border-b-2 border-transparent text-gray-500 hover:text-caramel transition focus:outline-none">
+                        <button onclick="switchPaymentTab('va-tab')" id="tab-btn-va-tab" class="px-5 py-3 text-sm font-semibold border-b-2 {{ $activeMethod === 'va' ? 'border-caramel text-caramel' : 'border-transparent text-gray-500' }} hover:text-caramel transition focus:outline-none">
                             🏦 Virtual Account (Otomatis)
                         </button>
-                        <button onclick="switchPaymentTab('manual-tab')" id="tab-btn-manual-tab" class="px-5 py-3 text-sm font-semibold border-b-2 border-transparent text-gray-500 hover:text-caramel transition focus:outline-none">
+                        <button onclick="switchPaymentTab('manual-tab')" id="tab-btn-manual-tab" class="px-5 py-3 text-sm font-semibold border-b-2 {{ $activeMethod === 'transfer' ? 'border-caramel text-caramel' : 'border-transparent text-gray-500' }} hover:text-caramel transition focus:outline-none">
                             ✉️ Transfer Manual (Bukti)
                         </button>
                     </div>
 
                     <!-- TAB 1: QRIS -->
-                    <div id="qris-tab" class="payment-tab-content space-y-6">
+                    <div id="qris-tab" class="payment-tab-content {{ $activeMethod === 'qris' ? '' : 'hidden' }} space-y-6">
                         <div class="flex flex-col md:flex-row gap-8 items-center md:items-start">
                             <!-- QRIS Code Mock -->
                             <div class="w-48 h-48 bg-white border-2 border-soft-beige rounded-2xl p-3 flex flex-col items-center justify-center shadow-sm shrink-0">
@@ -253,7 +256,7 @@
                     </div>
 
                     <!-- TAB 2: VIRTUAL ACCOUNT -->
-                    <div id="va-tab" class="payment-tab-content hidden space-y-6">
+                    <div id="va-tab" class="payment-tab-content {{ $activeMethod === 'va' ? '' : 'hidden' }} space-y-6">
                         <div class="space-y-4">
                             <h4 class="font-bold text-dark-brown text-base">Virtual Account (Verifikasi Otomatis)</h4>
                             <p class="text-xs text-gray-500 leading-relaxed">Pilih bank Anda untuk mendapatkan nomor rekening Virtual Account khusus. Pembayaran Anda akan diverifikasi dalam beberapa detik setelah transaksi selesai di ATM / m-Banking.</p>
@@ -292,7 +295,7 @@
                     </div>
 
                     <!-- TAB 3: MANUAL TRANSFER -->
-                    <div id="manual-tab" class="payment-tab-content hidden space-y-6">
+                    <div id="manual-tab" class="payment-tab-content {{ $activeMethod === 'transfer' ? '' : 'hidden' }} space-y-6">
                         <!-- Bank info -->
                         <div class="bg-[#FFFDF9] p-6 rounded-2xl border border-soft-beige max-w-md shadow-sm">
                             <p class="text-xs font-bold text-caramel uppercase tracking-wider mb-3">Metode Pembayaran (Transfer Bank Manual)</p>
