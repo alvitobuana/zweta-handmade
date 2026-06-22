@@ -103,4 +103,59 @@ class OrderTrackingController extends Controller
 
         return redirect()->route('tracking', ['code' => $code])->with('success', 'Pembayaran via ' . strtoupper($method) . ' berhasil dideteksi secara otomatis! Pesanan Anda telah terverifikasi dan masuk ke proses produksi.');
     }
+
+    /**
+     * Handle QRIS QR code scan from phone.
+     * Verifies the order payment automatically and returns a mobile-friendly success page.
+     */
+    public function qrisVerify(Request $request, $code)
+    {
+        $order = Order::where('code', $code)->first();
+
+        if (!$order) {
+            return response()->view('qris_result', [
+                'success' => false,
+                'message' => 'Pesanan tidak ditemukan.',
+                'code'    => $code,
+            ], 404);
+        }
+
+        if ($order->status !== 'pending') {
+            return view('qris_result', [
+                'success'      => true,
+                'alreadyPaid'  => true,
+                'message'      => 'Pembayaran sudah terverifikasi sebelumnya. Terima kasih!',
+                'order'        => $order,
+            ]);
+        }
+
+        $order->update([
+            'status' => 'produksi',
+            'notes'  => 'Pembayaran otomatis terverifikasi via QRIS (Scan dari HP Customer).',
+        ]);
+
+        return view('qris_result', [
+            'success'     => true,
+            'alreadyPaid' => false,
+            'message'     => 'Pembayaran QRIS berhasil! Pesanan Anda sedang diproses.',
+            'order'       => $order,
+        ]);
+    }
+
+    /**
+     * Return JSON status of an order for polling.
+     */
+    public function orderStatus(Request $request, $code)
+    {
+        $order = Order::where('code', $code)->first();
+
+        if (!$order) {
+            return response()->json(['status' => 'not_found'], 404);
+        }
+
+        return response()->json([
+            'status'  => $order->status,
+            'pending' => $order->status === 'pending',
+        ]);
+    }
 }

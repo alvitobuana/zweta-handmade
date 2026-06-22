@@ -16,6 +16,8 @@ Route::post('/produk/{slug}/order', [ProductController::class, 'order'])->name('
 Route::get('/tracking', [OrderTrackingController::class, 'search'])->name('tracking');
 Route::post('/tracking/{code}/receipt', [OrderTrackingController::class, 'uploadReceipt'])->name('tracking.uploadReceipt');
 Route::post('/tracking/{code}/simulate-payment', [OrderTrackingController::class, 'simulatePayment'])->name('tracking.simulatePayment');
+Route::get('/tracking/{code}/qris-pay', [OrderTrackingController::class, 'qrisVerify'])->name('tracking.qrisPay');
+Route::get('/tracking/{code}/status', [OrderTrackingController::class, 'orderStatus'])->name('tracking.orderStatus');
 Route::post('/tracking/{code}/review', [\App\Http\Controllers\ProductReviewController::class, 'store'])->name('product.review.store')->middleware('auth');
 
 // AI Chatbot endpoint (public)

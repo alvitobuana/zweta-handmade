@@ -196,60 +196,76 @@
 
                     <!-- TAB 1: QRIS -->
                     <div id="qris-tab" class="payment-tab-content {{ $activeMethod === 'qris' ? '' : 'hidden' }} space-y-6">
-                        <div class="flex flex-col md:flex-row gap-8 items-center md:items-start">
-                            <!-- QRIS Code Mock -->
-                            <div class="w-48 h-48 bg-white border-2 border-soft-beige rounded-2xl p-3 flex flex-col items-center justify-center shadow-sm shrink-0">
-                                <!-- QRIS Header text -->
-                                <span class="text-[9px] font-bold tracking-widest text-red-600 mb-1">QRIS</span>
-                                <!-- Simulated QR code pattern using SVG -->
-                                <svg class="w-32 h-32 text-dark-brown" viewBox="0 0 100 100" fill="currentColor">
-                                    <!-- QR Box patterns -->
-                                    <rect x="5" y="5" width="20" height="20" />
-                                    <rect x="8" y="8" width="14" height="14" fill="white" />
-                                    <rect x="11" y="11" width="8" height="8" />
-                                    
-                                    <rect x="75" y="5" width="20" height="20" />
-                                    <rect x="78" y="8" width="14" height="14" fill="white" />
-                                    <rect x="81" y="81" width="8" height="8" />
-                                    
-                                    <rect x="5" y="75" width="20" height="20" />
-                                    <rect x="8" y="78" width="14" height="14" fill="white" />
-                                    <rect x="11" y="81" width="8" height="8" />
 
-                                    <rect x="75" y="75" width="20" height="20" />
-                                    <rect x="78" y="78" width="14" height="14" fill="white" />
-                                    <rect x="81" y="81" width="8" height="8" />
-                                    
-                                    <!-- Scattered blocks representing data -->
-                                    <rect x="35" y="10" width="10" height="5" />
-                                    <rect x="55" y="15" width="5" height="15" />
-                                    <rect x="30" y="30" width="15" height="5" />
-                                    <rect x="60" y="35" width="10" height="10" />
-                                    <rect x="10" y="35" width="5" height="15" />
-                                    <rect x="15" y="60" width="15" height="5" />
-                                    <rect x="35" y="50" width="20" height="20" />
-                                    <rect x="40" y="55" width="10" height="10" fill="white" />
-                                    <rect x="65" y="60" width="5" height="15" />
-                                    <rect x="50" y="80" width="15" height="5" />
-                                    <rect x="35" y="85" width="10" height="10" />
-                                    <rect x="10" y="55" width="10" height="5" />
-                                </svg>
-                                <span class="text-[8px] text-gray-400 mt-2 font-semibold">GPN - ID1020304050</span>
+                        <!-- Payment Verified Banner (hidden until polling detects success) -->
+                        <div id="qris-verified-banner" class="hidden items-center gap-3 bg-green-50 border border-green-200 text-green-700 rounded-2xl p-4">
+                            <span class="text-2xl">✅</span>
+                            <div>
+                                <p class="font-bold text-sm">Pembayaran Terverifikasi!</p>
+                                <p class="text-xs">QRIS berhasil dideteksi. Halaman akan diperbarui...</p>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col md:flex-row gap-8 items-center md:items-start">
+                            <!-- QRIS Code — Real & Scannable -->
+                            <div class="shrink-0 flex flex-col items-center gap-2">
+                                <div class="bg-white border-2 border-soft-beige rounded-2xl p-3 shadow-md relative" id="qris-container">
+                                    <!-- Pulse ring while waiting -->
+                                    <div id="qris-pulse-ring" class="absolute -inset-2 rounded-2xl border-2 border-caramel/40 animate-ping"></div>
+                                    <!-- Real QR Code via API -->
+                                    <img
+                                        src="https://api.qrserver.com/v1/create-qr-code/?data={{ urlencode(route('tracking.qrisPay', $order->code)) }}&size=180x180&margin=6&color=3B1F0A&bgcolor=FFFFFF"
+                                        alt="QRIS - Scan dengan HP Anda"
+                                        class="w-44 h-44 object-contain block"
+                                        id="qris-img"
+                                    >
+                                    <!-- QRIS badge -->
+                                    <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex items-center gap-1 bg-red-600 text-white text-[8px] font-black tracking-widest px-2 py-0.5 rounded-full">
+                                        <span>▦</span> QRIS
+                                    </div>
+                                </div>
+                                <p class="text-[10px] text-gray-400 font-semibold">GPN · {{ $order->code }}</p>
+                                <div class="flex items-center gap-1.5 text-[10px] text-amber-600 font-semibold bg-amber-50 px-2.5 py-1 rounded-full border border-amber-100" id="qris-waiting-label">
+                                    <span class="inline-block w-2 h-2 bg-amber-400 rounded-full animate-pulse"></span>
+                                    Menunggu scan...
+                                </div>
                             </div>
 
                             <div class="flex-1 space-y-4">
-                                <h4 class="font-bold text-dark-brown text-base">Pembayaran QRIS Instan</h4>
-                                <p class="text-xs text-gray-500 leading-relaxed">Scan QRIS di atas menggunakan e-wallet (Gopay, OVO, Dana, LinkAja) atau Mobile Banking Anda. Sistem akan memverifikasi pembayaran Anda secara otomatis secara real-time.</p>
-                                <div class="flex items-center gap-2.5 text-xs text-amber-600 font-semibold bg-amber-50 px-3 py-2 rounded-xl border border-amber-100">
-                                    <span class="animate-pulse">🔄</span>
-                                    <span>Menunggu Pembayaran (Otomatis Mendeteksi)...</span>
+                                <h4 class="font-bold text-dark-brown text-base">Scan QRIS dengan HP Anda</h4>
+                                <p class="text-xs text-gray-500 leading-relaxed">Arahkan kamera HP Anda ke QR code di samping menggunakan <strong>GoPay, OVO, Dana, ShopeePay, LinkAja</strong> atau <strong>Mobile Banking</strong> Anda. Begitu terbayar, halaman ini akan otomatis terperbarui.</p>
+
+                                <!-- Step guide -->
+                                <div class="space-y-2">
+                                    <div class="flex items-center gap-2.5 text-xs text-gray-600">
+                                        <span class="w-5 h-5 rounded-full bg-caramel text-white flex items-center justify-center font-bold text-[10px] shrink-0">1</span>
+                                        <span>Buka aplikasi e-wallet atau m-Banking</span>
+                                    </div>
+                                    <div class="flex items-center gap-2.5 text-xs text-gray-600">
+                                        <span class="w-5 h-5 rounded-full bg-caramel text-white flex items-center justify-center font-bold text-[10px] shrink-0">2</span>
+                                        <span>Pilih menu <strong>Scan / Bayar QRIS</strong></span>
+                                    </div>
+                                    <div class="flex items-center gap-2.5 text-xs text-gray-600">
+                                        <span class="w-5 h-5 rounded-full bg-caramel text-white flex items-center justify-center font-bold text-[10px] shrink-0">3</span>
+                                        <span>Scan QR, konfirmasi nominal, lalu bayar</span>
+                                    </div>
+                                    <div class="flex items-center gap-2.5 text-xs text-green-600 font-semibold">
+                                        <span class="w-5 h-5 rounded-full bg-green-500 text-white flex items-center justify-center font-bold text-[10px] shrink-0">✓</span>
+                                        <span>Pesanan otomatis terverifikasi secara real-time!</span>
+                                    </div>
                                 </div>
-                                <form action="{{ route('tracking.simulatePayment', $order->code) }}" method="POST" onsubmit="runPaymentSimulation('QRIS', event)" class="pt-2">
+
+                                <!-- Nominal -->
+                                <div class="bg-soft-beige rounded-xl px-4 py-3 flex items-center justify-between">
+                                    <span class="text-xs text-gray-600 font-medium">Total yang perlu dibayar</span>
+                                    <span class="text-lg font-bold text-caramel">Rp {{ number_format($order->price, 0, ',', '.') }}</span>
+                                </div>
+
+                                <!-- Fallback simulate button (for demo without phone) -->
+                                <form action="{{ route('tracking.simulatePayment', $order->code) }}" method="POST" onsubmit="runPaymentSimulation('QRIS', event)" class="pt-1">
                                     @csrf
                                     <input type="hidden" name="payment_method" value="QRIS">
-                                    <button type="submit" class="px-6 py-3 bg-caramel hover:bg-opacity-95 text-white font-bold rounded-xl text-xs shadow-md transition flex items-center gap-2">
-                                        <span>📱</span> Simulasikan Pembayaran Sukses (QRIS)
-                                    </button>
+                                    <button type="submit" class="text-xs text-gray-400 hover:text-caramel underline transition">↩ Simulasikan via tombol (tanpa HP)</button>
                                 </form>
                             </div>
                         </div>
@@ -846,6 +862,81 @@
                 }, 1500);
             }, 1500);
         }
+
+        // ─── QRIS Real-time Polling ──────────────────────────────────────────
+        // Poll the order status endpoint every 3 seconds while on QRIS tab.
+        // When phone scans the QR and verifies, the page auto-updates.
+        @if(isset($order) && $order->status === 'pending')
+        (function startQrisPolling() {
+            const orderCode = '{{ $order->code }}';
+            const statusUrl = '{{ route("tracking.orderStatus", $order->code) }}';
+            let polling = null;
+            let isPolling = false;
+
+            function showVerifiedBanner() {
+                const banner = document.getElementById('qris-verified-banner');
+                const waitingLabel = document.getElementById('qris-waiting-label');
+                const pulseRing = document.getElementById('qris-pulse-ring');
+                const qrisImg = document.getElementById('qris-img');
+
+                if (banner) {
+                    banner.classList.remove('hidden');
+                    banner.classList.add('flex');
+                    banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                if (waitingLabel) {
+                    waitingLabel.innerHTML = '<span class="inline-block w-2 h-2 bg-green-500 rounded-full"></span> Terbayar! ✓';
+                    waitingLabel.classList.remove('text-amber-600', 'bg-amber-50', 'border-amber-100');
+                    waitingLabel.classList.add('text-green-600', 'bg-green-50', 'border-green-100');
+                }
+                if (pulseRing) pulseRing.remove();
+                if (qrisImg) {
+                    qrisImg.style.filter = 'grayscale(1) opacity(0.4)';
+                }
+            }
+
+            async function checkStatus() {
+                try {
+                    const res = await fetch(statusUrl);
+                    const data = await res.json();
+                    if (!data.pending) {
+                        // Payment confirmed by phone!
+                        clearInterval(polling);
+                        showVerifiedBanner();
+                        // Show loading overlay then reload
+                        setTimeout(() => {
+                            const overlay = document.getElementById('payment-loading-overlay');
+                            const title   = document.getElementById('payment-loading-title');
+                            const desc    = document.getElementById('payment-loading-desc');
+                            if (overlay && title && desc) {
+                                overlay.classList.remove('hidden');
+                                overlay.classList.add('flex');
+                                title.innerText = '🎉 Pembayaran QRIS Terverifikasi!';
+                                desc.innerText  = 'Pembayaran Anda berhasil diterima via scan QRIS. Halaman sedang diperbarui...';
+                            }
+                            setTimeout(() => window.location.reload(), 2000);
+                        }, 1200);
+                    }
+                } catch(e) {
+                    // Network error - silently ignore
+                }
+            }
+
+            // Start polling immediately, then every 3s
+            checkStatus();
+            polling = setInterval(checkStatus, 3000);
+
+            // Stop polling if user navigates away (saves resources)
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    clearInterval(polling);
+                } else {
+                    checkStatus();
+                    polling = setInterval(checkStatus, 3000);
+                }
+            });
+        })();
+        @endif
     </script>
     @endpush
 @endsection
